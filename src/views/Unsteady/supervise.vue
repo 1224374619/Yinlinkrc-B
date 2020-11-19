@@ -9,13 +9,25 @@
         <el-tab-pane name="first">
           <span slot="label">全部</span>
           <el-table :data="tableData" style="width: 100%">
-            <el-table-column prop="date" label="活动封面"></el-table-column>
-            <el-table-column prop="name" label="活动名称"></el-table-column>
-            <el-table-column prop="address" label="报名人数"></el-table-column>
-            <el-table-column prop="date" label="活动开始时间"></el-table-column>
-            <el-table-column prop="name" label="活动截止时间"></el-table-column>
-            <el-table-column prop="address" label="发布时间"></el-table-column>
-            <el-table-column prop="address" label="活动状态"></el-table-column>
+            <el-table-column prop="activityPosterUrl" label="活动封面">
+              <template slot-scope="scope">
+                <img :src="scope.row.activityPosterUrl" width="60" height="60" class="head_pic" />
+              </template>
+            </el-table-column>
+            <el-table-column prop="activityName" label="活动名称"></el-table-column>
+            <el-table-column prop="registrationNum" label="报名人数"></el-table-column>
+            <el-table-column label="活动开始时间" show-overflow-tooltip>
+              <template slot-scope="scope">{{scope.row.activityStartTime|formatDateThree}}</template>
+            </el-table-column>
+            <el-table-column label="活动截止时间" show-overflow-tooltip>
+              <template slot-scope="scope">{{scope.row.activityEndTime|formatDateThree}}</template>
+            </el-table-column>
+            <el-table-column label="发布时间" show-overflow-tooltip>
+              <template slot-scope="scope">{{scope.row.createdTime|formatDateThree}}</template>
+            </el-table-column>
+            <el-table-column label="活动状态">
+              <template slot-scope="scope">{{scope.row.activityState|level}}</template>
+            </el-table-column>
             <el-table-column label="操作">
               <template slot-scope="scope">
                 <el-button @click="handleClickdetail(scope.row)" type="text" size="small">报名详情</el-button>
@@ -37,16 +49,28 @@
         </el-tab-pane>
         <el-tab-pane label="待审核" name="second">
           <el-table :data="tableData" style="width: 100%">
-            <el-table-column prop="date" label="活动封面"></el-table-column>
-            <el-table-column prop="name" label="活动名称"></el-table-column>
-            <el-table-column prop="address" label="报名人数"></el-table-column>
-            <el-table-column prop="date" label="活动开始时间"></el-table-column>
-            <el-table-column prop="name" label="活动截止时间"></el-table-column>
-            <el-table-column prop="address" label="发布时间"></el-table-column>
-            <el-table-column prop="address" label="活动状态"></el-table-column>
+            <el-table-column prop="activityPosterUrl" label="活动封面">
+              <template slot-scope="scope">
+                <img :src="scope.row.activityPosterUrl" width="60" height="60" class="head_pic" />
+              </template>
+            </el-table-column>
+            <el-table-column prop="activityName" label="活动名称"></el-table-column>
+            <el-table-column prop="registrationNum" label="报名人数"></el-table-column>
+            <el-table-column label="活动开始时间" show-overflow-tooltip>
+              <template slot-scope="scope">{{scope.row.activityStartTime|formatDateThree}}</template>
+            </el-table-column>
+            <el-table-column label="活动截止时间" show-overflow-tooltip>
+              <template slot-scope="scope">{{scope.row.activityEndTime|formatDateThree}}</template>
+            </el-table-column>
+            <el-table-column label="发布时间" show-overflow-tooltip>
+              <template slot-scope="scope">{{scope.row.createdTime|formatDateThree}}</template>
+            </el-table-column>
+            <el-table-column label="活动状态">
+              <template slot-scope="scope">{{scope.row.activityState|level}}</template>
+            </el-table-column>
             <el-table-column label="操作">
               <template slot-scope="scope">
-                <el-button type="text" size="small">报名详情</el-button>
+                <el-button @click="handleClickdetail(scope.row)" type="text" size="small">报名详情</el-button>
                 <el-button type="text" size="small">分享</el-button>
                 <el-button type="text" size="small">查看</el-button>
               </template>
@@ -58,24 +82,36 @@
             <el-dropdown>
               <span class="el-dropdown-link">审核通过</span>
               <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item icon="el-icon-plus">全部</el-dropdown-item>
-                <el-dropdown-item icon="el-icon-circle-plus">报名未开始</el-dropdown-item>
-                <el-dropdown-item icon="el-icon-circle-plus-outline">报名进行中</el-dropdown-item>
-                <el-dropdown-item icon="el-icon-check">报名已截至</el-dropdown-item>
+                <el-dropdown-item @click.native="activitytatus(null)">全部</el-dropdown-item>
+                <el-dropdown-item @click.native="activitytatus('REGISTRATION_NOT_STARTED')">报名未开始</el-dropdown-item>
+                <el-dropdown-item @click.native="activitytatus('REGISTRATION_IN_PROGRESS')">报名进行中</el-dropdown-item>
+                <el-dropdown-item @click.native="activitytatus('REGISTRATION_IS_UP')">报名已截至</el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
           </template>
           <el-table :data="tableData" style="width: 100%">
-            <el-table-column prop="date" label="活动封面"></el-table-column>
-            <el-table-column prop="name" label="活动名称"></el-table-column>
-            <el-table-column prop="address" label="报名人数"></el-table-column>
-            <el-table-column prop="date" label="活动开始时间"></el-table-column>
-            <el-table-column prop="name" label="活动截止时间"></el-table-column>
-            <el-table-column prop="address" label="发布时间"></el-table-column>
-            <el-table-column prop="address" label="活动状态"></el-table-column>
+            <el-table-column prop="activityPosterUrl" label="活动封面">
+              <template slot-scope="scope">
+                <img :src="scope.row.activityPosterUrl" width="60" height="60" class="head_pic" />
+              </template>
+            </el-table-column>
+            <el-table-column prop="activityName" label="活动名称"></el-table-column>
+            <el-table-column prop="registrationNum" label="报名人数"></el-table-column>
+            <el-table-column label="活动开始时间" show-overflow-tooltip>
+              <template slot-scope="scope">{{scope.row.activityStartTime|formatDateThree}}</template>
+            </el-table-column>
+            <el-table-column label="活动截止时间" show-overflow-tooltip>
+              <template slot-scope="scope">{{scope.row.activityEndTime|formatDateThree}}</template>
+            </el-table-column>
+            <el-table-column label="发布时间" show-overflow-tooltip>
+              <template slot-scope="scope">{{scope.row.createdTime|formatDateThree}}</template>
+            </el-table-column>
+            <el-table-column label="活动状态">
+              <template slot-scope="scope">{{scope.row.activityState|level}}</template>
+            </el-table-column>
             <el-table-column label="操作">
               <template slot-scope="scope">
-                <el-button type="text" size="small">报名详情</el-button>
+                <el-button @click="handleClickdetail(scope.row)" type="text" size="small">报名详情</el-button>
                 <el-button type="text" size="small">分享</el-button>
                 <el-button type="text" size="small">查看</el-button>
               </template>
@@ -84,16 +120,28 @@
         </el-tab-pane>
         <el-tab-pane label="审核未通过" name="fourth">
           <el-table :data="tableData" style="width: 100%">
-            <el-table-column prop="date" label="活动封面"></el-table-column>
-            <el-table-column prop="name" label="活动名称"></el-table-column>
-            <el-table-column prop="address" label="报名人数"></el-table-column>
-            <el-table-column prop="date" label="活动开始时间"></el-table-column>
-            <el-table-column prop="name" label="活动截止时间"></el-table-column>
-            <el-table-column prop="address" label="发布时间"></el-table-column>
-            <el-table-column prop="address" label="活动状态"></el-table-column>
+            <el-table-column prop="activityPosterUrl" label="活动封面">
+              <template slot-scope="scope">
+                <img :src="scope.row.activityPosterUrl" width="60" height="60" class="head_pic" />
+              </template>
+            </el-table-column>
+            <el-table-column prop="activityName" label="活动名称"></el-table-column>
+            <el-table-column prop="registrationNum" label="报名人数"></el-table-column>
+            <el-table-column label="活动开始时间" show-overflow-tooltip>
+              <template slot-scope="scope">{{scope.row.activityStartTime|formatDateThree}}</template>
+            </el-table-column>
+            <el-table-column label="活动截止时间" show-overflow-tooltip>
+              <template slot-scope="scope">{{scope.row.activityEndTime|formatDateThree}}</template>
+            </el-table-column>
+            <el-table-column label="发布时间" show-overflow-tooltip>
+              <template slot-scope="scope">{{scope.row.createdTime|formatDateThree}}</template>
+            </el-table-column>
+            <el-table-column label="活动状态">
+              <template slot-scope="scope">{{scope.row.activityState|level}}</template>
+            </el-table-column>
             <el-table-column label="操作">
               <template slot-scope="scope">
-                <el-button type="text" size="small">报名详情</el-button>
+                <el-button @click="handleClickdetail(scope.row)" type="text" size="small">报名详情</el-button>
                 <el-button type="text" size="small">分享</el-button>
                 <el-button type="text" size="small">查看</el-button>
               </template>
@@ -109,58 +157,106 @@ export default {
   data() {
     return {
       activeName: "first",
+      activityRegistrationState: null,
+      activityState: null,
       supervise: "",
-      tableData: [
-        {
-          date: "2016-05-02",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄"
-        },
-        {
-          date: "2016-05-04",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1517 弄"
-        },
-        {
-          date: "2016-05-01",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1519 弄"
-        },
-        {
-          date: "2016-05-03",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1516 弄"
-        }
-      ],
+      tableData: [],
       page: {
         total: 0,
-        pageSize: 5,
+        pageSize: 10,
         current: 1,
-        pageSizeOpts: [5, 10, 20]
+        pageSizeOpts: [10, 20, 30]
       }
     };
   },
   methods: {
+    //报名状态筛选
+    activitytatus(res) {
+      console.log(res);
+      this.activeName = "third";
+      this.activityState = "HAVE_PUBLISHED";
+      this.activityRegistrationState = res;
+      this.activityList();
+    },
+    //活动列表
+    activityList() {
+      let params = {
+        activityName: this.supervise ? this.supervise : null,
+        activityRegistrationState: this.activityRegistrationState,
+        activityState: this.activityState,
+        pageNum: this.page.current,
+        pageSize: this.page.pageSize,
+        sortBy: null,
+        sortOrder: null
+      };
+      this.$http
+        .post("/business-core/activity/list", params)
+        .then(res => {
+          if (res.data.code == 200) {
+            this.tableData = res.data.data.list;
+          } else {
+          }
+        })
+        .catch(error => {});
+    },
     handleClick(tab, event) {
       console.log(tab, event);
+      if (tab.name === "first") {
+        this.activityState = null;
+        this.activityList();
+      } else if (tab.name === "second") {
+        this.activityState = "PROCESSING";
+        this.activityList();
+      } else if (tab.name === "third") {
+        this.activityState = "HAVE_PUBLISHED";
+        this.activityList();
+      } else if (tab.name === "fourth") {
+        this.activityState = "NOT_PASSED";
+        this.activityList();
+      }
     },
     //查看详情
     handleClickdetail(row) {
+      console.log(row)
       this.$router.push({
-        path: "/unsteady/promotionalDetail"
+        path: "/unsteady/promotionalDetail",
+        query: {id:row.id}
       });
     },
     handleSizeChange(val) {
       this.page.pageSize = val;
       this.page.current = 1;
-      this.notification();
     },
     handleCurrentChange(val) {
       this.page.current = val;
-      this.notification();
     }
   },
-  created() {}
+  created() {
+    this.activityList();
+  },
+  filters: {
+    level(level) {
+      var a;
+      switch (level) {
+        case "NOT_KNOWN":
+          a = "未知";
+          break;
+        case "PROCESSING":
+          a = "待审核";
+          break;
+        case "HAVE_PUBLISHED":
+          a = "已发布";
+          break;
+        case "NOT_PASSED":
+          a = "未通过";
+          break;
+        default:
+          a = "已下线";
+          break;
+      }
+      return a;
+    }
+  }
 };
 </script>
 

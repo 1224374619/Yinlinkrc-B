@@ -1,6 +1,6 @@
 <template>
   <div class="container" style="background:#ffffff">
-    <el-dialog title="更换头像" :visible.sync="dialogVisible" width="30%" :before-close="handleClose">
+    <!-- <el-dialog title="更换头像" :visible.sync="dialogVisible" width="30%" :before-close="handleClose">
       <div style="margin:-20px 0 0 0">上传头像：</div>
       <div style="margin: 20px auto;width:100%">
         <el-upload
@@ -20,7 +20,7 @@
         <el-button @click="dialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
       </span>
-    </el-dialog>
+    </el-dialog> -->
     <el-dialog
       title="更换手机号"
       :visible.sync="dialogVisiblephone"
@@ -163,7 +163,7 @@ export default {
       }, 100);
     };
     return {
-      myHeaders: { "Auth-Token": Cookies.get("token") },
+      myHeaders: { "Auth-Token": token },
       uploadDatas: {
         label: "company-account-avatar"
       },
@@ -336,6 +336,7 @@ export default {
     //图片上传
     handleAvatarSuccess(res, file) {
       this.file = res.data;
+      console.log(URL.createObjectURL(file.raw))
       this.imageUrl = URL.createObjectURL(file.raw);
       this.avatar();
     },
@@ -418,10 +419,10 @@ export default {
   },
   computed: {
     uploadUrl() {
-      return "/api/v2/business-user/account/avatar";
+      return "/api/business-user/account/avatar";
     },
     uploadCompanyFile() {
-      return "/api/v2/file-service/files/upload";
+      return "/api/file-service-dev/files/upload";
     }
   }
 };

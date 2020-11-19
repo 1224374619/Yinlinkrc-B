@@ -238,7 +238,7 @@ Vue.filter('formatDate', function (value) {
   }
 });
 Vue.filter('formatDateOne', function (value) {
-  return Moment(value).format('YYYY-MM-DD')
+  return Moment(value).format('YYYY.MM.DD')
 })
 Vue.filter('formatDateTwo', function (value) {
   return Moment(value).format('YYYY-MM-DD HH:mm')

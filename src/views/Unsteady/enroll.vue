@@ -12,9 +12,9 @@
             <el-option label="未报名" value="2"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label>
+        <!-- <el-form-item label>
           <el-input placeholder="搜索活动名称" suffix-icon="el-icon-search" v-model="input1"></el-input>
-        </el-form-item>
+        </el-form-item> -->
       </el-form>
       <el-form :inline="true" :model="formInline" class="demo-form-inline" v-else>
         <el-form-item label="审核状态">
@@ -25,9 +25,9 @@
             <el-option label="审核未通过" value="3"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label>
+        <!-- <el-form-item label>
           <el-input placeholder="搜索活动名称" suffix-icon="el-icon-search" v-model="input1"></el-input>
-        </el-form-item>
+        </el-form-item> -->
       </el-form>
       <div class="excel">导处Excel</div>
       <div>

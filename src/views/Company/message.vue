@@ -153,11 +153,11 @@
               :on-error="handleAvatarError"
             >
               <img v-if="imageUrl" :src="imageUrl" class="avatar" />
-              <i
+              <!-- <i
                 v-else
                 style="border:1px solid #dcdfe6;margin:0 200px 0 0"
                 class="el-icon-plus avatar-uploader-icon"
-              ></i>
+              ></i> -->
               <div class="el-upload__tip">支持图片格式：png、jpg、jpeg，最大不超过 3M。</div>
               <div class="el-upload__tip">为了尽快通过审核，请上传真实合法且清晰的执照图片。</div>
             </el-upload>
@@ -303,7 +303,7 @@ export default {
   name: "home",
   data() {
     return {
-      myHeaders: { "Auth-Token": Cookies.get("token") },
+      myHeaders: { "Auth-Token": token },
       uploadData: {
         label: "company-logo"
       },
@@ -403,6 +403,7 @@ export default {
   },
   methods: {
     handleAvatarSuccess(res, file) {
+      console.log(URL.createObjectURL(file.raw))
       this.imageUrl = URL.createObjectURL(file.raw);
       this.file = res.data;
     },
@@ -673,7 +674,7 @@ export default {
   },
   computed: {
     uploadUrl() {
-      return "/api/v2/file-service/files/upload";
+      return "/api/file-service-dev/files/upload";
     }
   },
   created() {

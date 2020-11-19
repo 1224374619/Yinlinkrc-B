@@ -10,14 +10,14 @@
         </div>
         <div class="content-nava">
           <div>
-            2020上海技术分享
-            <span>报名进行中</span>
+            {{this.appraiseDetails.activityName}}
+            <span>{{this.appraiseDetails.activityRegistrationState|level}}</span>
           </div>
-          <div>报名时间：2019.6.18 10:00-2020.02.02</div>
-          <div>活动时间：2019.6.18 10:00-2020.02.02</div>
+          <div>报名时间：{{this.appraiseDetails.registrationStartTime|formatDateOne}}-{{this.appraiseDetails.registrationEndTime|formatDateOne}}</div>
+          <div>活动时间：{{this.appraiseDetails.activityStartTime|formatDateOne}}-{{this.appraiseDetails.activityEndTime|formatDateOne}}</div>
           <div>发布时间：2019.6.18 10:00</div>
           <div>活动地址：线上活动</div>
-          <div>报名人数：1/100</div>
+          <div>报名人数：{{this.appraiseDetails.registeredNum}}/{{this.appraiseDetails.registrationNum}}</div>
           <div>
             <button>分享活动</button>
             <button>报名详情</button>
@@ -27,8 +27,7 @@
       <div class="footer">
         <div class="footer-title">活动详情</div>
         <div class="footer-content">
-          阿里巴巴网创立于1999年，总部设在中国上海，员工超过30000人，目前公司已在北京、广州、深圳、成都、杭州、南京、厦门、重庆、青岛、武汉、三亚、南通等95个境内城市，新加坡、首尔、香港等22个境外城市设立分支机构，在中国南通、苏格兰爱丁堡设立服务联络中心。2010年，携程旅行网战略投资台湾易游网和香港永安旅游，实现两岸三地的互通。2014年，投资途风旅行网，将触角延伸及北美洲。
-          阿里巴巴网创立于1999年，总部设在中国上海，员工超过30000人，目前公司已在北京、广州、深圳、成都、杭州、南京、厦门、重庆、青岛、武汉、三亚、南通等95个境内城市，新加坡、首尔、香港等22个境外城市设立分支机构，在中国南通、苏格兰爱丁堡设立服务联络中心。2010年，携程旅行网战略投资台湾易游网和香港永安旅游，实现两岸三地的互通。2014年，投资途风旅行网，将触角延伸及北美洲。
+          {{this.appraiseDetails.activityContent}}
         </div>
       </div>
     </div>
@@ -37,10 +36,46 @@
 <script>
 export default {
   data() {
-    return {};
+    return {
+      id: "",
+      appraiseDetails: {}
+    };
   },
-  methods: {},
-  created() {}
+  methods: {
+    //活动详情
+    appraiseDetail() {
+      this.$http
+        .get(`/business-core/activity/${this.id}`)
+        .then(res => {
+          if (res.data.code == 200) {
+            this.appraiseDetails = res.data.data;
+          } else {
+          }
+        })
+        .catch(error => {});
+    }
+  },
+  created() {
+    this.id = this.$route.query.id;
+    this.appraiseDetail();
+  },
+  filters: {
+    level(level) {
+      var a;
+      switch (level) {
+        case "REGISTRATION_NOT_STARTED":
+          a = "报名未开始";
+          break;
+        case "REGISTRATION_IN_PROGRESS":
+          a = "报名进行中";
+          break;
+        case "REGISTRATION_IS_UP":
+          a = "报名已截止";
+          break;
+      }
+      return a;
+    }
+  }
 };
 </script>
 
