@@ -6,7 +6,7 @@
     <div class="content">
       <div class="content-nav">
         <div>
-          <img src="../../assets/images/a6.png" />
+          <img :src="this.appraiseDetails.activityPosterUrl" />
         </div>
         <div class="content-nava">
           <div>
@@ -16,19 +16,18 @@
           <div>报名时间：{{this.appraiseDetails.registrationStartTime|formatDateOne}}-{{this.appraiseDetails.registrationEndTime|formatDateOne}}</div>
           <div>活动时间：{{this.appraiseDetails.activityStartTime|formatDateOne}}-{{this.appraiseDetails.activityEndTime|formatDateOne}}</div>
           <div>发布时间：2019.6.18 10:00</div>
-          <div>活动地址：线上活动</div>
+          <div v-if="this.appraiseDetails.activityMode === 0">活动地址：线上活动</div>
+          <div v-else>活动地址：{{this.appraiseDetails.activityAddress.detail}}</div>
           <div>报名人数：{{this.appraiseDetails.registeredNum}}/{{this.appraiseDetails.registrationNum}}</div>
           <div>
             <button>分享活动</button>
-            <button>报名详情</button>
+            <button @click="enroll(id)">报名详情</button>
           </div>
         </div>
       </div>
       <div class="footer">
         <div class="footer-title">活动详情</div>
-        <div class="footer-content">
-          {{this.appraiseDetails.activityContent}}
-        </div>
+        <div class="footer-content">{{this.appraiseDetails.activityContent}}</div>
       </div>
     </div>
   </div>
@@ -42,6 +41,13 @@ export default {
     };
   },
   methods: {
+    //报名详情
+    enroll(res) {
+      this.$router.push({
+        path: "/unsteady/enroll",
+        query: { id: res }
+      });
+    },
     //活动详情
     appraiseDetail() {
       this.$http

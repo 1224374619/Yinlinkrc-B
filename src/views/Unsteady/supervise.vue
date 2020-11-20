@@ -30,9 +30,9 @@
             </el-table-column>
             <el-table-column label="操作">
               <template slot-scope="scope">
-                <el-button @click="handleClickdetail(scope.row)" type="text" size="small">报名详情</el-button>
+                <el-button @click="handleClickreport(scope.row)" type="text" size="small">报名详情</el-button>
                 <el-button type="text" size="small">分享</el-button>
-                <el-button type="text" size="small">查看</el-button>
+                <el-button type="text" @click="handleClickdetail(scope.row)" size="small">查看</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -70,12 +70,22 @@
             </el-table-column>
             <el-table-column label="操作">
               <template slot-scope="scope">
-                <el-button @click="handleClickdetail(scope.row)" type="text" size="small">报名详情</el-button>
+                <el-button @click="handleClickreport(scope.row)" type="text" size="small">报名详情</el-button>
                 <el-button type="text" size="small">分享</el-button>
-                <el-button type="text" size="small">查看</el-button>
+                <el-button type="text" @click="handleClickdetail(scope.row)" size="small">查看</el-button>
               </template>
             </el-table-column>
           </el-table>
+          <el-pagination
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page="page.current"
+            :page-sizes="page.pageSizeOpts"
+            class="pagination"
+            :page-size="page.pageSize"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="page.total"
+          ></el-pagination>
         </el-tab-pane>
         <el-tab-pane name="third">
           <template slot="label">
@@ -111,12 +121,22 @@
             </el-table-column>
             <el-table-column label="操作">
               <template slot-scope="scope">
-                <el-button @click="handleClickdetail(scope.row)" type="text" size="small">报名详情</el-button>
+                <el-button @click="handleClickreport(scope.row)" type="text" size="small">报名详情</el-button>
                 <el-button type="text" size="small">分享</el-button>
-                <el-button type="text" size="small">查看</el-button>
+                <el-button type="text" @click="handleClickdetail(scope.row)" size="small">查看</el-button>
               </template>
             </el-table-column>
           </el-table>
+          <el-pagination
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page="page.current"
+            :page-sizes="page.pageSizeOpts"
+            class="pagination"
+            :page-size="page.pageSize"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="page.total"
+          ></el-pagination>
         </el-tab-pane>
         <el-tab-pane label="审核未通过" name="fourth">
           <el-table :data="tableData" style="width: 100%">
@@ -141,12 +161,22 @@
             </el-table-column>
             <el-table-column label="操作">
               <template slot-scope="scope">
-                <el-button @click="handleClickdetail(scope.row)" type="text" size="small">报名详情</el-button>
+                <el-button @click="handleClickreport(scope.row)" type="text" size="small">报名详情</el-button>
                 <el-button type="text" size="small">分享</el-button>
-                <el-button type="text" size="small">查看</el-button>
+                <el-button type="text" @click="handleClickdetail(scope.row)" size="small">查看</el-button>
               </template>
             </el-table-column>
           </el-table>
+          <el-pagination
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page="page.current"
+            :page-sizes="page.pageSizeOpts"
+            class="pagination"
+            :page-size="page.pageSize"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="page.total"
+          ></el-pagination>
         </el-tab-pane>
       </el-tabs>
     </div>
@@ -194,6 +224,7 @@ export default {
         .then(res => {
           if (res.data.code == 200) {
             this.tableData = res.data.data.list;
+            this.page.total = res.data.data.total;
           } else {
           }
         })
@@ -215,20 +246,29 @@ export default {
         this.activityList();
       }
     },
+    //报名详情
+    handleClickreport(row) {
+      this.$router.push({
+        path: "/unsteady/enroll",
+        query: { id: row.id }
+      });
+    },
     //查看详情
     handleClickdetail(row) {
-      console.log(row)
+      console.log(row);
       this.$router.push({
         path: "/unsteady/promotionalDetail",
-        query: {id:row.id}
+        query: { id: row.id }
       });
     },
     handleSizeChange(val) {
       this.page.pageSize = val;
       this.page.current = 1;
+      this.activityList();
     },
     handleCurrentChange(val) {
       this.page.current = val;
+      this.activityList();
     }
   },
   created() {

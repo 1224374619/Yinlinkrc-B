@@ -159,8 +159,7 @@ let routes = [{
         meta: {
             requireAuth: true // 在需要登录的路由的meta中添加响应的权限标识
         },
-        leaf: true, //只有一个节点
-        item: 6,
+        leaf: true, //只有一个节
         children: [{
                 path: '/unsteady/enroll',
                 // iconCls: 'el-icon-user',

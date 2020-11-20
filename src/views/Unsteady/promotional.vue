@@ -67,17 +67,22 @@
           </el-form-item>
           <el-form-item label="活动方式" prop="pattern">
             <el-radio-group v-model="unsteadyForm.pattern" class="pattern">
-              <el-radio style="margin:15px 0 0 0" label="0">
-                线下活动
-                <span style="margin:0 0 0 10px">有具体活动地址的线下活动</span>
-              </el-radio>
-              <el-radio style="margin:10px 0 0 0" label="1">
+              <el-radio style="margin:10px 0 0 0" label="0">
                 线上活动
                 <span style="margin:0 0 0 10px">通过网络工具举办的线上活动</span>
               </el-radio>
+              <el-radio style="margin:15px 0 0 0" label="1">
+                线下活动
+                <span style="margin:0 0 0 10px">有具体活动地址的线下活动</span>
+              </el-radio>
             </el-radio-group>
           </el-form-item>
-          <el-form-item label="活动地址" prop="unsteadyAddress" class="unsteadyAddress">
+          <el-form-item
+            label="活动地址"
+            prop="unsteadyAddress"
+            class="unsteadyAddress"
+            v-if="this.unsteadyForm.pattern === '0'"
+          >
             <el-cascader
               v-model="unsteadyForm.unsteadyAddress"
               :props="props"
@@ -344,7 +349,7 @@ export default {
       },
       unsteady: true,
       dialogVisible: false,
-      checkList: [],
+      checkList: ["0", "1", "2"],
       unsteadyForm: {
         unsteadyName: "",
         unsteadyTime: [],
