@@ -81,7 +81,7 @@
             label="活动地址"
             prop="unsteadyAddress"
             class="unsteadyAddress"
-            v-if="this.unsteadyForm.pattern === '0'"
+            v-if="this.unsteadyForm.pattern === '1'"
           >
             <el-cascader
               v-model="unsteadyForm.unsteadyAddress"

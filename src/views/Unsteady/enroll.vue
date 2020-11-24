@@ -255,8 +255,8 @@ export default {
         registrationIds: this.arrActivity
       };
       this.dialogVisible = true;
-      this.$local
-        .post("/business-core/activity/registration/export", activityList, {
+      this.$localo
+        .post("/backend-manager/activity/registration/export", activityList, {
           responseType: "blob"
         })
         .then(res => {
