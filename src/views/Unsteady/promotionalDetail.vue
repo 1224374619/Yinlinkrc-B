@@ -27,7 +27,7 @@
       </div>
       <div class="footer">
         <div class="footer-title">活动详情</div>
-        <div class="footer-content">{{this.appraiseDetails.activityContent}}</div>
+        <div class="footer-content" v-html="this.appraiseDetails.activityContent"></div>
       </div>
     </div>
   </div>

@@ -148,6 +148,7 @@ export default {
               if (res.status == 200) {
                 let token = res.headers["auth-token"]
                 Cookies.set("Btoken", token);
+                window.sessionStorage.setItem('Btoken', res.headers["auth-token"])
                 this.state();
                 // this.$router.push({ path: "/home" });
               } else {
@@ -239,7 +240,7 @@ export default {
       this.$router.push({ path: "resetpassword" });
     },
     business() {
-      window.open("http://47.102.145.186/business/#/login");
+      window.open("https://www.yinlinkrc.com/client-zh/#/home");
     }
   },
   created() {

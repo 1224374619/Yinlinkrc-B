@@ -98,7 +98,7 @@
           :on-success="handleAvatarSuccess"
           :on-error="handleAvatarError"
         >
-          <img v-if="imageUrl" :src="imageUrl" class="avatar" />
+          <img v-if="this.imageUrl" src="this.imageUrl" class="avatar" />
           <i v-else class="el-icon-plus avatar-uploader-icon"></i>
         </el-upload>
         <!-- <div @click="avatar" style="font-size:14px;color:#ff7152;margin:10px 0 0 65px">更换头像</div> -->

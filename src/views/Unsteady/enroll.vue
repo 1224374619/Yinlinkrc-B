@@ -18,7 +18,7 @@
           <div class="loading-text">下载中...</div>
         </div>
       </el-dialog>
-      <el-form :inline="true" :model="formInline" class="demo-form-inline" v-if="verify">
+      <el-form :inline="true" :model="formInline" class="demo-form-inline">
         <el-form-item label="报名状态">
           <el-select
             style="width:150px"
@@ -31,11 +31,6 @@
             <el-option label="已取消" value="CANCELED"></el-option>
           </el-select>
         </el-form-item>
-        <!-- <el-form-item label>
-          <el-input placeholder="搜索活动名称" suffix-icon="el-icon-search" v-model="input1"></el-input>
-        </el-form-item>-->
-      </el-form>
-      <el-form :inline="true" :model="formInline" class="demo-form-inline" v-else>
         <el-form-item label="审核状态">
           <el-select
             style="width:150px"
@@ -43,7 +38,6 @@
             placeholder="请选择"
             @change="regions()"
           >
-            <el-option label="全部" value="0"></el-option>
             <el-option label="待审核" value="PROCESSING"></el-option>
             <el-option label="审核通过" value="PASSED"></el-option>
             <el-option label="审核未通过" value="NOT_PASSED"></el-option>
@@ -53,6 +47,12 @@
           <el-input placeholder="搜索活动名称" suffix-icon="el-icon-search" v-model="input1"></el-input>
         </el-form-item>-->
       </el-form>
+      <!-- <el-form :inline="true" :model="formInline" class="demo-form-inline">
+        
+        <el-form-item label>
+          <el-input placeholder="搜索活动名称" suffix-icon="el-icon-search" v-model="input1"></el-input>
+        </el-form-item>
+      </el-form>-->
       <div class="excel" @click="uploadFile()">导处Excel</div>
       <div>
         <el-table
@@ -71,6 +71,7 @@
           <el-table-column
             v-for="(item,index) in this.formAttributes"
             :key="index"
+            show-overflow-tooltip
             :label="item.chineseName"
             v-if="item.englishName === 'email'"
             prop="registrations.email"
@@ -78,6 +79,7 @@
           <el-table-column
             v-for="(item,index) in this.formAttributes"
             :key="index"
+            show-overflow-tooltip
             :label="item.chineseName"
             v-if="item.englishName === 'phone'"
             prop="registrations.phone"
@@ -124,15 +126,22 @@
             v-if="item.englishName === 'major'"
             prop="registrations.major"
           ></el-table-column>
-          <el-table-column prop="registrationReview" v-if="!verify" label="审核状态"></el-table-column>
+          <el-table-column prop="registrationReview" v-if="!verify" label="审核状态">
+            <template slot-scope="scope">{{scope.row.registrationReview|levels}}</template>
+          </el-table-column>
           <el-table-column label="报名状态">
             <template slot-scope="scope">{{scope.row.registrationStatus|level}}</template>
           </el-table-column>
         </el-table>
       </div>
-      <div style="margin:30px 0 20px 0" v-if="!verify">
-        <button class="enroll-button" style="margin:0 0 0 60px" type="danger">审核不通过</button>
-        <button class="enroll-buttons" type="primary">审核通过</button>
+      <div style="margin:30px 0 20px 0" v-if="this.formInline.regions === 'PROCESSING'">
+        <button
+          class="enroll-button"
+          style="margin:0 0 0 60px"
+          @click="examinenotPass"
+          type="danger"
+        >审核不通过</button>
+        <button class="enroll-buttons" @click="examinePass" type="primary">审核通过</button>
       </div>
       <el-pagination
         @size-change="handleSizeChange"
@@ -155,8 +164,8 @@ export default {
       id: "",
       formInline: {
         user: "",
-        region: null,
-        regions: null
+        region: "0",
+        regions: "PROCESSING"
       },
       verify: true,
       tableData: [],
@@ -190,6 +199,11 @@ export default {
         .put(`/business-core/activity/registration/noPass`, params)
         .then(res => {
           if (res.data.code == 200) {
+            this.$notify({
+              title: "成功",
+              message: res.data.message,
+              type: "success"
+            });
           } else {
           }
         })
@@ -205,6 +219,11 @@ export default {
         .put(`/business-core/activity/registration/pass`, params)
         .then(res => {
           if (res.data.code == 200) {
+            this.$notify({
+              title: "成功",
+              message: res.data.message,
+              type: "success"
+            });
           } else {
           }
         })
@@ -256,7 +275,7 @@ export default {
       };
       this.dialogVisible = true;
       this.$localo
-        .post("/backend-manager/activity/registration/export", activityList, {
+        .post("/business-core/activity/registration/export", activityList, {
           responseType: "blob"
         })
         .then(res => {
@@ -268,11 +287,11 @@ export default {
             disposition.indexOf("filename=") + 9,
             disposition.length
           );
-          console.log(fileName.split(';'))
+          console.log(fileName.split(";"));
 
           // iso8859-1的字符转换成中文
-          console.log(escape(fileName))
-          fileName = decodeURI(fileName.split(';')[0]);
+          console.log(escape(fileName));
+          fileName = decodeURI(fileName.split(";")[0]);
           console.log(fileName);
           // 去掉双引号
           fileName = fileName.replace(/\"/g, "");
@@ -325,6 +344,21 @@ export default {
           break;
       }
       return a;
+    },
+    levels(levels) {
+      var a;
+      switch (levels) {
+        case "PROCESSING":
+          a = "待审核";
+          break;
+        case "PASSED":
+          a = "审核通过";
+          break;
+        case "NOT_PASSED":
+          a = "审核未通过";
+          break;
+      }
+      return a;
     }
   }
 };
@@ -370,6 +404,7 @@ export default {
       font-family: PingFangSC-Regular;
       color: #FF9B26;
       font-size: 12px;
+      cursor: pointer;
     }
 
     .enroll-button {

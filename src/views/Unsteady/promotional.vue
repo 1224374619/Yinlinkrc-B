@@ -26,8 +26,8 @@
               drag
               multiple
             >
-              <!-- <img v-if="imageUrl" :src="imageUrl" class="avatar" /> -->
-              <div>
+              <img v-if="imageUrl" :src="imageUrl" class="avatar" />
+              <div v-else>
                 <i class="el-icon-upload"></i>
                 <div class="el-upload__text">
                   将文件拖到此处，或
@@ -69,11 +69,11 @@
             <el-radio-group v-model="unsteadyForm.pattern" class="pattern">
               <el-radio style="margin:10px 0 0 0" label="0">
                 线上活动
-                <span style="margin:0 0 0 10px">通过网络工具举办的线上活动</span>
+                <span style="margin:0 0 0 10px;color:#aaaaaa">通过网络工具举办的线上活动</span>
               </el-radio>
-              <el-radio style="margin:15px 0 0 0" label="1">
+              <el-radio style="margin:15px 0 0 0;" label="1">
                 线下活动
-                <span style="margin:0 0 0 10px">有具体活动地址的线下活动</span>
+                <span style="margin:0 0 0 10px;color:#aaaaaa">有具体活动地址的线下活动</span>
               </el-radio>
             </el-radio-group>
           </el-form-item>
@@ -298,6 +298,7 @@ import "tinymce/plugins/wordcount";
 import Cookies from "js-cookie";
 import { CodeToTag } from "../../cookie.js";
 let token = Cookies.get("Btoken");
+let Base64 = require("js-base64").Base64;
 export default {
   components: { Editor },
   data() {
@@ -310,7 +311,7 @@ export default {
       },
       imageUrl: "",
       file: "",
-      myHeaders: { "Auth-Token": token },
+      myHeaders: { "Auth-Token": window.sessionStorage.getItem("Btoken") },
       uploadData: {
         label: "activity-poster"
       },
@@ -326,7 +327,7 @@ export default {
         language: "zh_CN",
         skin_url: "/tinymce/skins/ui/oxide",
         plugins:
-          "link lists image code table colorpicker textcolor wordcount contextmenu",
+          "link lists code table colorpicker textcolor wordcount contextmenu",
         // toolbar:
         //     `bold italic underline strikethrough | fontsizeselect | forecolor backcolor |
         //     alignleft aligncenter alignright alignjustify | bullist numlist | outdent indent blockquote |
@@ -508,6 +509,9 @@ export default {
               message: "活动发布成功",
               type: "success"
             });
+            this.$router.push({
+              path: "/unsteady/supervise"
+            });
           } else {
           }
         })
@@ -624,6 +628,7 @@ export default {
     },
     //下一步
     next(formName) {
+      console.log(this.unsteadyForm.unsteadyDetail)
       this.$refs[formName].validate(valid => {
         if (valid) {
           this.unsteady = false;
@@ -676,6 +681,7 @@ export default {
       font-family: PingFangSC-Medium;
       color: #737373;
       font-size: 14px;
+      cursor: pointer;
       margin: 16px 20px 0 0;
     }
   }
@@ -706,8 +712,8 @@ export default {
         flex-direction: row;
 
         .avatar {
-          border: 1px solid red;
-          margin: 40px auto;
+          width: 100%;
+          height: auto;
         }
 
         .el-upload__tip {
