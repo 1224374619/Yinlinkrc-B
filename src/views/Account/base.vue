@@ -419,10 +419,10 @@ export default {
   },
   computed: {
     uploadUrl() {
-      return "/api/business-user/account/avatar";
+      return "/api/v2/business-user/account/avatar";
     },
     uploadCompanyFile() {
-      return "/api/file-service-dev/files/upload";
+      return "/api/v2/file-service-dev/files/upload";
     }
   }
 };

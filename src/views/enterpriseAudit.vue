@@ -572,7 +572,7 @@ export default {
   },
   computed: {
     uploadCompanyFile() {
-      return "/api/file-service-dev/files/upload";
+      return "/api/v2/file-service-dev/files/upload";
     }
   },
   created() {
