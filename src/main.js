@@ -106,6 +106,7 @@ _axioesq.interceptors.request.use(
 _axios.interceptors.response.use(
   response => {
     Cookies.set("Btoken", response.headers['auth-token'])
+    window.sessionStorage.setItem('Btoken', response.headers['auth-token'])
     return response;
   },
   error => {
