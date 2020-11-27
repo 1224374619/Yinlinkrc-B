@@ -95,12 +95,20 @@
             ></el-input>
           </el-form-item>
           <el-form-item label="活动详情" prop="unsteadyDetail" class="unsteadyDetail">
-            <editor
+            <el-input
+              type="textarea"
+              placeholder="请输入内容"
+              v-model="unsteadyForm.unsteadyDetail"
+              maxlength="2000"
+              style="width:759px"
+              show-word-limit
+            ></el-input>
+            <!-- <editor
               style="border:1px solid red"
               id="tinymce"
               v-model="unsteadyForm.unsteadyDetail"
               :init="init"
-            ></editor>
+            ></editor>-->
           </el-form-item>
 
           <div class="title">
@@ -628,7 +636,7 @@ export default {
     },
     //下一步
     next(formName) {
-      console.log(this.unsteadyForm.unsteadyDetail)
+      console.log(this.unsteadyForm.unsteadyDetail);
       this.$refs[formName].validate(valid => {
         if (valid) {
           this.unsteady = false;
