@@ -11,11 +11,13 @@
           <el-table :data="tableData" style="width: 100%">
             <el-table-column prop="activityPosterUrl" label="活动封面">
               <template slot-scope="scope">
-                <img :src="scope.row.activityPosterUrl" width="60" height="60" class="head_pic" />
+               <img :src="scope.row.activityPosterUrl" style="height:52px;width:91px" class="head_pic" />
               </template>
             </el-table-column>
             <el-table-column prop="activityName" label="活动名称"></el-table-column>
-            <el-table-column prop="registrationNum" label="报名人数"></el-table-column>
+            <el-table-column prop="registrationNum" label="报名人数">
+              <template slot-scope="scope">{{scope.row.registeredNum}}/{{scope.row.registrationNum}}</template>
+            </el-table-column>
             <el-table-column label="活动开始时间" show-overflow-tooltip>
               <template slot-scope="scope">{{scope.row.activityStartTime|formatDateThree}}</template>
             </el-table-column>
@@ -51,11 +53,13 @@
           <el-table :data="tableData" style="width: 100%">
             <el-table-column prop="activityPosterUrl" label="活动封面">
               <template slot-scope="scope">
-                <img :src="scope.row.activityPosterUrl" width="60" height="60" class="head_pic" />
+                <img :src="scope.row.activityPosterUrl" style="height:52px;width:91px" class="head_pic" />
               </template>
             </el-table-column>
             <el-table-column prop="activityName" label="活动名称"></el-table-column>
-            <el-table-column prop="registrationNum" label="报名人数"></el-table-column>
+            <el-table-column prop="registrationNum" label="报名人数">
+              <template slot-scope="scope">{{scope.row.registeredNum}}/{{scope.row.registrationNum}}</template>
+            </el-table-column>
             <el-table-column label="活动开始时间" show-overflow-tooltip>
               <template slot-scope="scope">{{scope.row.activityStartTime|formatDateThree}}</template>
             </el-table-column>
@@ -102,11 +106,13 @@
           <el-table :data="tableData" style="width: 100%">
             <el-table-column prop="activityPosterUrl" label="活动封面">
               <template slot-scope="scope">
-                <img :src="scope.row.activityPosterUrl" width="60" height="60" class="head_pic" />
+                <img :src="scope.row.activityPosterUrl" style="height:52px;width:91px" class="head_pic" />
               </template>
             </el-table-column>
             <el-table-column prop="activityName" label="活动名称"></el-table-column>
-            <el-table-column prop="registrationNum" label="报名人数"></el-table-column>
+            <el-table-column prop="registrationNum" label="报名人数">
+              <template slot-scope="scope">{{scope.row.registeredNum}}/{{scope.row.registrationNum}}</template>
+            </el-table-column>
             <el-table-column label="活动开始时间" show-overflow-tooltip>
               <template slot-scope="scope">{{scope.row.activityStartTime|formatDateThree}}</template>
             </el-table-column>
@@ -142,11 +148,13 @@
           <el-table :data="tableData" style="width: 100%">
             <el-table-column prop="activityPosterUrl" label="活动封面">
               <template slot-scope="scope">
-                <img :src="scope.row.activityPosterUrl" width="60" height="60" class="head_pic" />
+               <img :src="scope.row.activityPosterUrl" style="height:52px;width:91px" class="head_pic" />
               </template>
             </el-table-column>
             <el-table-column prop="activityName" label="活动名称"></el-table-column>
-            <el-table-column prop="registrationNum" label="报名人数"></el-table-column>
+            <el-table-column prop="registrationNum" label="报名人数">
+              <template slot-scope="scope">{{scope.row.registeredNum}}/{{scope.row.registrationNum}}</template>
+            </el-table-column>
             <el-table-column label="活动开始时间" show-overflow-tooltip>
               <template slot-scope="scope">{{scope.row.activityStartTime|formatDateThree}}</template>
             </el-table-column>

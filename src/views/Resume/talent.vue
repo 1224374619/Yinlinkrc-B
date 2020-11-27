@@ -155,7 +155,7 @@ export default {
         label: "tag",
         children: "children"
       },
-      dialogVisible:false,
+      dialogVisible: false,
       optionsDegree: [
         {
           value: "0",
@@ -255,13 +255,17 @@ export default {
       //   { resumeIds: 119 },
       //   { arrayFormat: "repeat" }
       // );
-      this.dialogVisible = true
+      this.dialogVisible = true;
       this.$local
-        .post(`/business-core/resumes/batchPackageDownloadLong/byResumeId`,resumeList, {
-          responseType: "blob"
-        })
+        .post(
+          `/business-core/resumes/batchPackageDownloadLong/byResumeId`,
+          resumeList,
+          {
+            responseType: "blob"
+          }
+        )
         .then(res => {
-          this.dialogVisible = false
+          this.dialogVisible = false;
           const disposition = res.headers["content-disposition"];
           let fileName = disposition.substring(
             disposition.indexOf("filename=") + 9,
@@ -290,7 +294,8 @@ export default {
           }
         })
         .catch(error => {
-          this.dialogVisible = false
+          this.dialogVisible = false;
+          console.log(error.response);
           if (error.response.status === 404) {
             this.$notify.error({
               title: "错误",
@@ -302,10 +307,17 @@ export default {
               message: "登陆超时，请重新登录"
             });
           } else {
-            this.$notify.error({
-              title: "错误",
-              message: error.response.data.message
-            });
+            if (this.multipleSelection.length === 0) {
+              this.$notify.error({
+                title: "错误",
+                message: "请选择要下载的文件"
+              });
+            } else {
+              this.$notify.error({
+                title: "错误",
+                message: "下载失败"
+              });
+            }
           }
         });
     },
@@ -466,14 +478,13 @@ export default {
     this.industry = industry.data;
     if (token) {
       this.platform();
-    }else {
+    } else {
       this.$notify.error({
         title: "错误",
         message: "登陆超时，请重新登录"
       });
       this.$router.push({ path: "/login" });
     }
-    
   }
 };
 </script>
@@ -495,16 +506,19 @@ export default {
     color: #1890FF;
   }
 }
+
 .loading {
   text-align: center;
   margin: -20px 0 0 0;
 }
+
 .loading-text {
   font-size: 24px;
   color: #222222;
   text-align: center;
-  margin: 30px 0 30px 0
+  margin: 30px 0 30px 0;
 }
+
 .resume-seconds {
   width: 100%;
   height: auto;

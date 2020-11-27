@@ -76,7 +76,7 @@
         <div class="right">
           <div class="right-first">
             <div>系统通知</div>
-            <div style="font-size:14px">更多》</div>
+            <div style="font-size:14px"></div>
           </div>
           <div class="right-second">
             <div class="notification">
@@ -108,7 +108,7 @@
         <div class="right" style="height:180px">
           <div class="right-first">
             <div>企业摘要</div>
-            <div style="font-size:14px">更多》</div>
+            <div style="font-size:14px"></div>
           </div>
           <div class="right-second">
             <div class="enterprise">
@@ -116,7 +116,12 @@
                 <img :src="squareUrl" />
                 <div>
                   <span>企业信息完整度</span>
-                  <el-progress status="exception" :percentage="companyDetails.completedPercent"></el-progress>
+                  <!-- <el-progress
+                    :percentage="this.compPercent"
+                    class="progess"
+                    style="width:200px;padding:0 0 0 7px;height:9px"
+                  ></el-progress> -->
+                  <el-progress class="progess" :percentage="companyDetails.completedPercent"></el-progress>
                 </div>
               </div>
               <div class="enter-content">

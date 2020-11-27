@@ -120,6 +120,7 @@
                 面试体验：
                 <el-rate
                   style="margin:15px 0 0 0"
+                  disabled
                   v-model="item.interviewExperience"
                   :colors="colors"
                 ></el-rate>

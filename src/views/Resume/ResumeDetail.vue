@@ -21,12 +21,7 @@
     <div class="resume-seconds">
       <div class="resume" v-if="this.resumeDeta.base !== underfined">
         <div class="block">
-          <el-avatar
-            style="border-radius:50px"
-            shape="square"
-            :size="100"
-            :src="resumeDeta.base.avatarUrl"
-          ></el-avatar>
+          <img width="100px;height:100px" style="border-radius:50px" :src="resumeDeta.base.avatarUrl"/>
         </div>
         <div class="infor">
           <div style="font-size:20px;margin:0 0 0 10px;color:#373737">{{resumeDeta.base.fullName}}</div>

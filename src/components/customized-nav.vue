@@ -420,7 +420,7 @@ nav {
         display: flex;
         height: 100%;
         flex: 1;
-        margin: 0 0 0 50px;
+        margin: 0 0 0 20px;
         font-family: 'PingFangSC-Regular';
 
         a {
@@ -469,6 +469,7 @@ nav {
 
       .btn-set {
         margin: 0 65px 0 0;
+        
 
         button {
           cursor: pointer;
