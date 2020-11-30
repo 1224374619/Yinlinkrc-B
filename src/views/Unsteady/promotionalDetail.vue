@@ -20,7 +20,7 @@
           <div v-else>活动地址：{{this.appraiseDetails.activityAddress.detail}}</div>
           <div>报名人数：{{this.appraiseDetails.registeredNum}}/{{this.appraiseDetails.registrationNum}}</div>
           <div>
-            <button>分享活动</button>
+            <button @click="share('https://www.yinlinkrc.com/client-zh/#/appraiseDetail?id='+ id)">分享活动</button>
             <button @click="enroll(id)">报名详情</button>
           </div>
         </div>
@@ -41,6 +41,23 @@ export default {
     };
   },
   methods: {
+    //分享活动
+    share(data) {
+      console.log(data)
+      let url = data;
+      let oInput = document.createElement("input");
+      oInput.value = url;
+      document.body.appendChild(oInput);
+      oInput.select(); // 选择对象;
+      console.log(oInput.value);
+      document.execCommand("Copy"); // 执行浏览器复制命令
+      this.$notify({
+        title: "成功",
+        message: "复制带剪切板成功",
+        type: "success"
+      });
+      oInput.remove();
+    },
     //报名详情
     enroll(res) {
       this.$router.push({
