@@ -65,7 +65,7 @@ Vue.prototype.$CodeToTag = {
 let config = {
   //判断当前开发环境，切换代理配置
   // baseURL: process.env.NODE_ENV === 'production' ? '/api/v1/' : '/api/',
-  baseURL: '/api/',
+  baseURL: '/api/v3/',
   // headers: {
   //     'Auth-Token': token
   // },
@@ -165,7 +165,7 @@ _axioesq.interceptors.response.use(
 
 // /api/v1/consumer-user
 const instance = axios.create({
-  baseURL: '/api/',
+  baseURL: '/api/v3/',
   headers: {
     'Content-Type': 'application/x-www-form-urlencoded'
   },
@@ -173,7 +173,7 @@ const instance = axios.create({
 })
 Vue.prototype.$_http = instance;
 const locals = axios.create({
-  baseURL: '/api/',
+  baseURL: '/api/v3/',
   timeout: 60 * 1000, // Timeout
   withCredentials: true, // Check cross-site Access-Control
 })
