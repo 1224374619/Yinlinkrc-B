@@ -95,20 +95,20 @@
             ></el-input>
           </el-form-item>
           <el-form-item label="活动详情" prop="unsteadyDetail" class="unsteadyDetail">
-            <el-input
+            <!-- <el-input
               type="textarea"
               placeholder="请输入内容"
               v-model="unsteadyForm.unsteadyDetail"
               maxlength="2000"
               style="width:759px"
               show-word-limit
-            ></el-input>
-            <!-- <editor
+            ></el-input> -->
+            <editor
               style="border:1px solid red"
               id="tinymce"
               v-model="unsteadyForm.unsteadyDetail"
               :init="init"
-            ></editor>-->
+            ></editor>
           </el-form-item>
 
           <div class="title">
@@ -331,9 +331,9 @@ export default {
           "微软雅黑=Microsoft YaHei,Helvetica Neue,PingFang SC,sans-serif;苹果苹方=PingFang SC,Microsoft YaHei,sans-serif;宋体=simsun,serif",
         fontsize_formats:
           "12px 14px 16px 18px 20px 22px 24px 26px 28px 30px 32px 34px 36px 38px 40px 50px 60px 70px 80px 90px 100px 120px 140px 160px 180px 200px",
-        language_url: "/tinymce/langs/zh_CN.js",
+        language_url: "./tinymce/langs/zh_CN.js",
         language: "zh_CN",
-        skin_url: "/tinymce/skins/ui/oxide",
+        skin_url: "./tinymce/skins/ui/oxide",
         plugins:
           "link lists code table colorpicker textcolor wordcount contextmenu",
         // toolbar:
