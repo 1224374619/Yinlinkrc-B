@@ -61,7 +61,7 @@
               >
                 <img
                   style="width:22px;height:22px"
-                  @click="tidings"
+                  
                   :src="require('../assets/images/ling.png')"
                 />
               </el-badge>
@@ -70,8 +70,14 @@
                   style="width:412px;height:210px;border-bottom:1px solid #fafafa;cursor:default;overflow:scroll;overflow-x:hidden;"
                 >
                   <div class="badge" v-for="(item,index) in notificationlist" :key="index">
-                    <span v-if="item.title.length>22" style="color:#6C6C6C;font-size:14px;margin-left:24px;">{{item.title.substring(0,22)}}</span>
-                    <span v-else style="color:#6C6C6C;font-size:14px;margin-left:24px;">{{item.title}}</span>
+                    <span
+                      v-if="item.title.length>20"
+                      style="color:#6C6C6C;font-size:14px;margin-left:24px;"
+                    >{{item.title.substring(0,20)}}</span>
+                    <span
+                      v-else
+                      style="color:#6C6C6C;font-size:14px;margin-left:24px;"
+                    >{{item.title}}</span>
                     <span style="color:#909090;font-size:12px;margin-right:25px;">
                       <el-badge
                         :is-dot="!item.isRead"
@@ -81,9 +87,19 @@
                   </div>
                 </div>
                 <div
-                  style="border: 1px solid rgba(244, 244, 244, 1);box-shadow: 0px 2px 10px 0px rgba(245, 245, 245, 1);height:60px"
+                  style="border: 1px solid rgba(244, 244, 244, 1);box-shadow: 0px 2px 10px 0px rgba(245, 245, 245, 1);height:60px;display: flex;
+  flex-direction: row;"
                 >
-                  <el-button style="margin:7px 38%" @click="chorusle" type="primary">全部标为已读</el-button>
+                  <el-button
+                    style="margin:7px 0 0 17%;width:120px;font-size:12px;height:40px"
+                    @click="chorusle"
+                    type="primary"
+                  >全部标为已读</el-button>
+                  <el-button
+                    style="margin:7px 0 0 7%;width:120px;font-size:12px;height:40px"
+                   @click="tidings"
+                    type="primary"
+                  >查看全部</el-button>
                   <!-- <span
                     style="font-size:14px;color:#373737;margin:0 auto;line-height:50px;cursor:pointer;border:1px solid red;width:100px"
                     
@@ -185,9 +201,7 @@ export default {
           } else {
           }
         })
-        .catch(error => {
-          
-        });
+        .catch(error => {});
     },
     //退出
     detrusion() {
@@ -245,9 +259,7 @@ export default {
           } else {
           }
         })
-        .catch(error => {
-          
-        });
+        .catch(error => {});
     },
     //用户通知
     notification() {
@@ -262,7 +274,7 @@ export default {
         .get("/business-notification/message", { params: params })
         .then(res => {
           if (res.data.code == "200") {
-            let token = res.headers["auth-token"]
+            let token = res.headers["auth-token"];
             Cookies.set("Btoken", token);
             this.notificationlist = res.data.data.list;
             let notificationlist = [];
@@ -278,22 +290,7 @@ export default {
           }
         })
         .catch(error => {
-          if (error.response.status === 404) {
-            this.$notify.error({
-              title: "错误",
-              message: "页面丢失，请重新加载"
-            });
-          } else if (error.response.status === 403) {
-            this.$notify.error({
-              title: "错误",
-              message: "登陆超时，请重新登录"
-            });
-          } else {
-            this.$notify.error({
-              title: "错误",
-              message: error.response.data.message
-            });
-          }
+          
         });
     },
     //获取简历简讯
@@ -309,22 +306,6 @@ export default {
           }
         })
         .catch(error => {
-          if (error.response.status === 404) {
-            this.$notify.error({
-              title: "错误",
-              message: "页面丢失，请重新加载"
-            });
-          } else if (error.response.status === 403) {
-            this.$notify.error({
-              title: "错误",
-              message: "登陆超时，请重新登录"
-            });
-          } else {
-            this.$notify.error({
-              title: "错误",
-              message: error.response.data.message
-            });
-          }
         });
     }
   },
@@ -439,7 +420,6 @@ nav {
 
       .btn-set {
         margin: 0 65px 0 0;
-        
 
         button {
           cursor: pointer;

@@ -1538,7 +1538,7 @@ export default {
           );
           // iso8859-1的字符转换成中文
           fileName = decodeURI(escape(fileName));
-          console.log(fileName)
+          console.log(fileName);
           // 去掉双引号
           fileName = fileName.replace(/\"/g, "");
           const content = res.data;
@@ -2103,10 +2103,12 @@ export default {
           })
           .catch(error => {});
       }
+      var arr=JSON.stringify(tab)
       this.$router.push({
         path: "/resume/talent/Detail",
         query: {
           resumeId: tab.id,
+          resinfo: encodeURIComponent(arr),
           positionId: this.positionID,
           processedState: this.processedState
         }

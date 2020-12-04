@@ -143,7 +143,7 @@ export default {
         tel: [
           { required: true, message: "请输入登录手机号", trigger: "blur" },
           {
-            pattern: /^[1][35789][0-9]{9}$/,
+            pattern: /^[1][356789][0-9]{9}$/,
             message: "请输入正确的手机号",
             trigger: ["change", "blur"]
           }

@@ -111,21 +111,21 @@ _axios.interceptors.response.use(
   },
   error => {
     if (error.response.status === 404) {
-      Notification.error({
-        title: "错误",
+      Notification.info({
+        title: "消息",
         message: "页面丢失，请重新加载"
       });
     } else if (error.response.status === 403) {
       Cookies.set("Btoken", '');
-      Notification.error({
-        title: "错误",
+      Notification.info({
+        title: "消息",
         message: "登陆超时，请重新登录"
       });
       router.replace('/login');
 
     } else {
-      Notification.error({
-        title: "错误",
+      Notification.info({
+        title: "消息",
         message: error.response.data.message
       });
     }
@@ -141,21 +141,21 @@ _axioesq.interceptors.response.use(
   },
   error => {
     if (error.response.status === 404) {
-      Notification.error({
-        title: "错误",
+      Notification.info({
+        title: "消息",
         message: "页面丢失，请重新加载"
       });
     } else if (error.response.status === 403) {
       Cookies.set("Btoken", '');
-      Notification.error({
-        title: "错误",
+      Notification.info({
+        title: "消息",
         message: "登陆超时，请重新登录"
       });
       router.replace('/login');
 
     } else {
-      Notification.error({
-        title: "错误",
+      Notification.info({
+        title: "消息",
         message: error.response.data.message
       });
     }
@@ -316,7 +316,7 @@ router.beforeEach((to, from, next) => {
     if (token) { // 通过vuex state获取当前的token是否存在
       next()
     } else {
-      Notification.error({
+      Notification.info({
         title: "错误",
         message: '请先登录'
       });

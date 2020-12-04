@@ -102,7 +102,7 @@
               maxlength="2000"
               style="width:759px"
               show-word-limit
-            ></el-input> -->
+            ></el-input>-->
             <editor
               style="border:1px solid red"
               id="tinymce"
@@ -324,6 +324,10 @@ export default {
         label: "activity-poster"
       },
       init: {
+        // init_instance_callback: function(editor) {
+        //   tinyMCE.editors["tinymce"].insertContent("<img src = 'https://yinlinkrc.oss-cn-shanghai.aliyuncs.com/avatar/resume/default/2020-11-12/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20201202101612.png'>");
+        // },
+
         menubar: false, // 禁用菜单栏
         branding: false, // 隐藏右下角技术支持
         elementpath: false, // 隐藏底栏的元素路径
@@ -335,7 +339,7 @@ export default {
         language: "zh_CN",
         skin_url: "./tinymce/skins/ui/oxide",
         plugins:
-          "link lists code table colorpicker textcolor wordcount contextmenu",
+          "link lists code table colorpicker image textcolor wordcount contextmenu",
         // toolbar:
         //     `bold italic underline strikethrough | fontsizeselect | forecolor backcolor |
         //     alignleft aligncenter alignright alignjustify | bullist numlist | outdent indent blockquote |
@@ -344,14 +348,15 @@ export default {
 
         // 工具栏1
         toolbar1:
-          "bold italic underline strikethrough subscript superscript removeformat | fontselect | fontsizeselect | styleselect | forecolor backcolor | ",
+          "bold italic underline strikethrough subscript image superscript removeformat | fontselect | fontsizeselect | styleselect | forecolor backcolor | ",
         // 工具栏2
         toolbar2:
           " table | image | alignleft aligncenter alignright alignjustify | bullist numlist | outdent indent blockquote |undo redo",
         contextmenu: false, // 禁用富文本的右键菜单，使用浏览器自带的右键菜单
         height: 500,
         images_upload_handler: (blobInfo, success) => {
-          console.log(blobInfo);
+          console.log(this.unsteadyForm.unsteadyDetail);
+
           this.handleImageAdded(blobInfo, success, failure);
         },
         ...this.option
@@ -636,7 +641,7 @@ export default {
     },
     //下一步
     next(formName) {
-      console.log(this.unsteadyForm.unsteadyDetail);
+      
       this.$refs[formName].validate(valid => {
         if (valid) {
           this.unsteady = false;
@@ -657,10 +662,15 @@ export default {
   },
   computed: {
     uploadUrl() {
-      return "/api/v2/file-service/files/upload";
+      return "/api/file-service-dev/files/upload";
     }
   },
   created() {
+    window.tinymce
+      .get("tinymce")
+      .insertContent(
+        ``
+      );
     this.cityList = city.data;
   }
 };
