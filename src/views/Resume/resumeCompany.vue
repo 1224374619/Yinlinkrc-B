@@ -311,21 +311,21 @@ export default {
         .catch(error => {
           this.dialogVisible = false;
           if (error.response.status === 404) {
-            this.$notify.error({
-              title: "错误",
-              message: "页面丢失，请重新加载"
-            });
-          } else if (error.response.status === 403) {
-            this.$notify.error({
-              title: "错误",
-              message: "登陆超时，请重新登录"
-            });
-          } else {
-            this.$notify.error({
-              title: "错误",
-              message: error.response.data.message
-            });
-          }
+                this.$notify.info({
+                  title: "消息",
+                  message: "页面丢失，请重新加载"
+                });
+              } else if (error.response.status === 403) {
+                this.$notify.info({
+                  title: "消息",
+                  message: "登陆超时，请重新登录"
+                });
+              } else {
+                this.$notify.info({
+                  title: "消息",
+                  message: error.response.data.message
+                });
+              }
         });
     },
     //列表
@@ -408,22 +408,7 @@ export default {
           }
         })
         .catch(error => {
-          if (error.response.status === 404) {
-            this.$notify.error({
-              title: "错误",
-              message: "页面丢失，请重新加载"
-            });
-          } else if (error.response.status === 403) {
-            this.$notify.error({
-              title: "错误",
-              message: "登陆超时，请重新登录"
-            });
-          } else {
-            this.$notify.error({
-              title: "错误",
-              message: error.response.data.message
-            });
-          }
+          
         });
     },
     //查看

@@ -297,24 +297,24 @@ export default {
           this.dialogVisible = false;
           console.log(error.response);
           if (error.response.status === 404) {
-            this.$notify.error({
-              title: "错误",
+            this.$notify.info({
+              title: "消息",
               message: "页面丢失，请重新加载"
             });
           } else if (error.response.status === 403) {
-            this.$notify.error({
-              title: "错误",
+            this.$notify.info({
+              title: "消息",
               message: "登陆超时，请重新登录"
             });
           } else {
             if (this.multipleSelection.length === 0) {
-              this.$notify.error({
-                title: "错误",
+              this.$notify.info({
+                title: "消息",
                 message: "请选择要下载的文件"
               });
             } else {
-              this.$notify.error({
-                title: "错误",
+              this.$notify.info({
+                title: "消息",
                 message: "下载失败"
               });
             }
@@ -418,22 +418,7 @@ export default {
           }
         })
         .catch(error => {
-          if (error.response.status === 404) {
-            this.$notify.error({
-              title: "错误",
-              message: "页面丢失，请重新加载"
-            });
-          } else if (error.response.status === 403) {
-            this.$notify.error({
-              title: "错误",
-              message: "登陆超时，请重新登录"
-            });
-          } else {
-            this.$notify.error({
-              title: "错误",
-              message: error.response.data.message
-            });
-          }
+          
         });
     },
     //查看

@@ -416,22 +416,7 @@ export default {
           }
         })
         .catch(error => {
-          if (error.response.status === 404) {
-            this.$notify.error({
-              title: "错误",
-              message: "页面丢失，请重新加载"
-            });
-          } else if (error.response.status === 403) {
-            this.$notify.error({
-              title: "错误",
-              message: "登陆超时，请重新登录"
-            });
-          } else {
-            this.$notify.error({
-              title: "错误",
-              message: error.response.data.message
-            });
-          }
+          
         });
     },
     //重置
@@ -483,22 +468,7 @@ export default {
           }
         })
         .catch(error => {
-          if (error.response.status === 404) {
-            this.$notify.error({
-              title: "错误",
-              message: "页面丢失，请重新加载"
-            });
-          } else if (error.response.status === 403) {
-            this.$notify.error({
-              title: "错误",
-              message: "登陆超时，请重新登录"
-            });
-          } else {
-            this.$notify.error({
-              title: "错误",
-              message: error.response.data.message
-            });
-          }
+          
         });
     },
     //删除
@@ -512,22 +482,7 @@ export default {
           }
         })
         .catch(error => {
-          if (error.response.status === 404) {
-            this.$notify.error({
-              title: "错误",
-              message: "页面丢失，请重新加载"
-            });
-          } else if (error.response.status === 403) {
-            this.$notify.error({
-              title: "错误",
-              message: "登陆超时，请重新登录"
-            });
-          } else {
-            this.$notify.error({
-              title: "错误",
-              message: error.response.data.message
-            });
-          }
+          
         });
     },
     //下线
@@ -543,22 +498,7 @@ export default {
           }
         })
         .catch(error => {
-          if (error.response.status === 404) {
-            this.$notify.error({
-              title: "错误",
-              message: "页面丢失，请重新加载"
-            });
-          } else if (error.response.status === 403) {
-            this.$notify.error({
-              title: "错误",
-              message: "登陆超时，请重新登录"
-            });
-          } else {
-            this.$notify.error({
-              title: "错误",
-              message: error.response.data.message
-            });
-          }
+          
         });
     },
     //已上线
@@ -616,22 +556,7 @@ export default {
           }
         })
         .catch(error => {
-          if (error.response.status === 404) {
-            this.$notify.error({
-              title: "错误",
-              message: "页面丢失，请重新加载"
-            });
-          } else if (error.response.status === 403) {
-            this.$notify.error({
-              title: "错误",
-              message: "登陆超时，请重新登录"
-            });
-          } else {
-            this.$notify.error({
-              title: "错误",
-              message: error.response.data.message
-            });
-          }
+          
         });
     },
     //tab
@@ -705,22 +630,7 @@ export default {
           }
         })
         .catch(error => {
-          if (error.response.status === 404) {
-            this.$notify.error({
-              title: "错误",
-              message: "页面丢失，请重新加载"
-            });
-          } else if (error.response.status === 403) {
-            this.$notify.error({
-              title: "错误",
-              message: "登陆超时，请重新登录"
-            });
-          } else {
-            this.$notify.error({
-              title: "错误",
-              message: error.response.data.message
-            });
-          }
+          
         });
     },
     //已上线分页
@@ -745,22 +655,7 @@ export default {
           }
         })
         .catch(error => {
-          if (error.response.status === 404) {
-            this.$notify.error({
-              title: "错误",
-              message: "页面丢失，请重新加载"
-            });
-          } else if (error.response.status === 403) {
-            this.$notify.error({
-              title: "错误",
-              message: "登陆超时，请重新登录"
-            });
-          } else {
-            this.$notify.error({
-              title: "错误",
-              message: error.response.data.message
-            });
-          }
+          
         });
     },
     resumeDetail() {

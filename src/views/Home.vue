@@ -191,22 +191,7 @@ export default {
           }
         })
         .catch(error => {
-          if (error.response.status === 404) {
-            this.$notify.error({
-              title: "错误",
-              message: "页面丢失，请重新加载"
-            });
-          } else if (error.response.status === 403) {
-            this.$notify.error({
-              title: "错误",
-              message: "登陆超时，请重新登录"
-            });
-          } else {
-            this.$notify.error({
-              title: "错误",
-              message: error.response.data.message
-            });
-          }
+          
         });
     },
     //简历看板
@@ -222,22 +207,7 @@ export default {
           }
         })
         .catch(error => {
-          if (error.response.status === 404) {
-            this.$notify.error({
-              title: "错误",
-              message: "页面丢失，请重新加载"
-            });
-          } else if (error.response.status === 403) {
-            this.$notify.error({
-              title: "错误",
-              message: "登陆超时，请重新登录"
-            });
-          } else {
-            this.$notify.error({
-              title: "错误",
-              message: error.response.data.message
-            });
-          }
+          
         });
     },
     //职位看板
@@ -256,22 +226,7 @@ export default {
           }
         })
         .catch(error => {
-          if (error.response.status === 404) {
-            this.$notify.error({
-              title: "错误",
-              message: "页面丢失，请重新加载"
-            });
-          } else if (error.response.status === 403) {
-            this.$notify.error({
-              title: "错误",
-              message: "登陆超时，请重新登录"
-            });
-          } else {
-            this.$notify.error({
-              title: "错误",
-              message: error.response.data.message
-            });
-          }
+          
         });
     },
     //公司简历简讯
@@ -287,22 +242,7 @@ export default {
           }
         })
         .catch(error => {
-          if (error.response.status === 404) {
-            this.$notify.error({
-              title: "错误",
-              message: "页面丢失，请重新加载"
-            });
-          } else if (error.response.status === 403) {
-            this.$notify.error({
-              title: "错误",
-              message: "登陆超时，请重新登录"
-            });
-          } else {
-            this.$notify.error({
-              title: "错误",
-              message: error.response.data.message
-            });
-          }
+          
         });
     }
     // //公司详情
