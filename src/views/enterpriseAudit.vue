@@ -145,6 +145,8 @@
           <el-input
             type="textarea"
             style="width:500px;margin:0 0 0 0"
+            maxlength="80"
+  show-word-limit
             :rows="4"
             v-model="companyInfo.detail"
             placeholder="请输入内容"
@@ -154,6 +156,8 @@
           <el-input
             style="width:500px"
             type="textarea"
+            maxlength="300"
+  show-word-limit
             :rows="4"
             placeholder="请输入内容"
             v-model="companyInfo.description"
@@ -318,10 +322,12 @@ export default {
       ],
       companyInfoFormRules: {
         fullName: [
-          { required: true, message: "请输入公司全称", trigger: "blur" }
+          { required: true, message: "请输入公司全称", trigger: "blur" },
+          { min: 0, max: 36, message: "长度在 0 到 36 个字", trigger: "blur" }
         ],
         shortName: [
-          { required: true, message: "请输入公司简称", trigger: "blur" }
+          { required: true, message: "请输入公司简称", trigger: "blur" },
+          { min: 0, max: 5, message: "长度在 0 到 5 个字", trigger: "blur" }
         ],
         size: [{ required: true, message: "请选择企业规模", trigger: "blur" }],
         nature: [
@@ -330,9 +336,13 @@ export default {
         industry: [
           { required: true, message: "请选择所属行业", trigger: "blur" }
         ],
-        city: [{ required: true, message: "请选择企业地址", trigger: "blur" }],
+        city: [
+          { required: true, message: "请选择企业地址", trigger: "blur" },
+          { min: 0, max: 80, message: "长度在 0 到 80 个字", trigger: "blur" }
+        ],
         description: [
-          { required: true, message: "请输入企业介绍", trigger: "blur" }
+          { required: true, message: "请输入企业介绍", trigger: "blur" },
+          { min: 0, max: 300, message: "长度在 0 到 300 个字", trigger: "blur" }
         ],
         uniformSocialCreditCode: [
           {
@@ -446,24 +456,7 @@ export default {
                 });
               }
             })
-            .catch(error => {
-              if (error.response.status === 404) {
-                this.$notify.error({
-                  title: "错误",
-                  message: "页面丢失，请重新加载"
-                });
-              } else if (error.response.status === 403) {
-                this.$notify.error({
-                  title: "错误",
-                  message: "登陆超时，请重新登录"
-                });
-              } else {
-                this.$notify.error({
-                  title: "错误",
-                  message: error.response.data.message
-                });
-              }
-            });
+            .catch(error => {});
         } else {
           console.log("error submit!!");
           return false;
@@ -527,24 +520,7 @@ export default {
                 });
               }
             })
-            .catch(error => {
-              if (error.response.status === 404) {
-                this.$notify.error({
-                  title: "错误",
-                  message: "页面丢失，请重新加载"
-                });
-              } else if (error.response.status === 403) {
-                this.$notify.error({
-                  title: "错误",
-                  message: "登陆超时，请重新登录"
-                });
-              } else {
-                this.$notify.error({
-                  title: "错误",
-                  message: error.response.data.message
-                });
-              }
-            });
+            .catch(error => {});
         } else {
           console.log("error submit!!");
           return false;

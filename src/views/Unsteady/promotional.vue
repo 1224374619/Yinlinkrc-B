@@ -63,7 +63,8 @@
             ></el-date-picker>
           </el-form-item>
           <el-form-item label="报名人数" prop="unsteadyNum">
-            <el-input class="unsteadyNum" v-model="unsteadyForm.unsteadyNum"></el-input>人
+            <el-input class="unsteadyNum" maxlength="1000"
+  show-word-limit v-model="unsteadyForm.unsteadyNum"></el-input>人
           </el-form-item>
           <el-form-item label="活动方式" prop="pattern">
             <el-radio-group v-model="unsteadyForm.pattern" class="pattern">
@@ -408,7 +409,8 @@ export default {
           { required: true, message: "请选择活动时间", trigger: "blur" }
         ],
         unsteadyNum: [
-          { required: true, message: "请选择活动时间", trigger: "blur" }
+          { required: true, message: "请输入报名人数", trigger: "blur" },
+          { min: 0, max: 1000, message: "最高限制1000人", trigger: "blur" }
         ],
         pattern: [
           { required: true, message: "请选择活动方式", trigger: "blur" }
@@ -662,15 +664,10 @@ export default {
   },
   computed: {
     uploadUrl() {
-      return "/api/file-service-dev/files/upload";
+      return "/api/v2/file-service/files/upload";
     }
   },
   created() {
-    window.tinymce
-      .get("tinymce")
-      .insertContent(
-        ``
-      );
     this.cityList = city.data;
   }
 };

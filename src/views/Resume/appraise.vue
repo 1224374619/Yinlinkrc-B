@@ -44,6 +44,8 @@
               <el-input
                 type="textarea"
                 :autosize="{ minRows: 2, maxRows: 4}"
+                maxlength="300"
+  show-word-limit
                 placeholder="请输入内容"
                 v-model="textarea2"
               ></el-input>
@@ -169,6 +171,8 @@
                 type="textarea"
                 :autosize="{ minRows: 2, maxRows: 4}"
                 placeholder="请输入内容"
+                maxlength="300"
+  show-word-limit
                 v-model="textarea3"
               ></el-input>
               <div class="access-button">
