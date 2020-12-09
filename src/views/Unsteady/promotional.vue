@@ -3,6 +3,38 @@
     <div class="title">
       <div class="title-nav">基本信息</div>
       <div class="title-content" @click="attention()">发布活动须知 ></div>
+      <el-dialog title width="23%" :visible.sync="dialogDrag" style="border-radius:5px;">
+        <div>
+          <el-upload
+            class="upload-demo"
+            :action="uploadUrl"
+            style="margin:0 0 20px 0"
+            drag
+            :data="uploadfile"
+            :headers="myHeaders"
+            :show-file-list="false"
+            :on-success="handleVideoSuccess"
+          >
+            <div>
+              <i class="el-icon-upload"></i>
+              <div class="el-upload__text">
+                将文件拖到此处，或
+                <em>点击上传</em>
+                <div class="el-upload__tip" slot="tip">支持DOC、DOCX、PDF、JPG、PNG格式，文件大小需小于10M。</div>
+              </div>
+            </div>
+          </el-upload>
+          <div class="dialogResume" v-if="videoFlag == true">
+            <div>
+              <i class="el-icon-paperclip"></i>
+              <span style="margin:0 0 0 5px">123</span>
+            </div>
+            <div>
+              <i class="el-icon-delete"></i>
+            </div>
+          </div>
+        </div>
+      </el-dialog>
     </div>
     <div v-if="unsteady">
       <div class="content">
@@ -63,8 +95,12 @@
             ></el-date-picker>
           </el-form-item>
           <el-form-item label="报名人数" prop="unsteadyNum">
-            <el-input class="unsteadyNum" maxlength="1000"
-  show-word-limit v-model="unsteadyForm.unsteadyNum"></el-input>人
+            <el-input
+              class="unsteadyNum"
+              maxlength="1000"
+              show-word-limit
+              v-model="unsteadyForm.unsteadyNum"
+            ></el-input>人
           </el-form-item>
           <el-form-item label="活动方式" prop="pattern">
             <el-radio-group v-model="unsteadyForm.pattern" class="pattern">
@@ -104,6 +140,13 @@
               style="width:759px"
               show-word-limit
             ></el-input>-->
+            <!-- <div><i style="font-size:30px;position:absolute;top:40px;z-index:400;left:70px" class="el-icon-picture"></i></div> -->
+            <div @click="previews()" style="width:42px;position:absolute;top:40px;z-index:400;left:57px;">
+              <img
+                style="width:20px;margin:9px 0 0 12px"
+                src="../../assets/images/appraise-chuan.png"
+              />
+            </div>
             <editor
               style="border:1px solid red"
               id="tinymce"
@@ -312,6 +355,7 @@ export default {
   components: { Editor },
   data() {
     return {
+      dialogDrag: false,
       expireTimeOption: {
         disabledDate(date) {
           //disabledDate 文档上：设置禁用状态，参数为当前日期，要求返回 Boolean
@@ -320,18 +364,20 @@ export default {
       },
       imageUrl: "",
       file: "",
+      uploadfile: {
+        label: "activity-content-file"
+      },
       myHeaders: { "Auth-Token": window.sessionStorage.getItem("Btoken") },
       uploadData: {
         label: "activity-poster"
       },
       init: {
-        // init_instance_callback: function(editor) {
-        //   tinyMCE.editors["tinymce"].insertContent("<img src = 'https://yinlinkrc.oss-cn-shanghai.aliyuncs.com/avatar/resume/default/2020-11-12/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20201202101612.png'>");
-        // },
+        init_instance_callback: function(editor) {},
 
         menubar: false, // 禁用菜单栏
         branding: false, // 隐藏右下角技术支持
         elementpath: false, // 隐藏底栏的元素路径
+        paste_data_images: true, // 允许粘贴图像
         font_formats:
           "微软雅黑=Microsoft YaHei,Helvetica Neue,PingFang SC,sans-serif;苹果苹方=PingFang SC,Microsoft YaHei,sans-serif;宋体=simsun,serif",
         fontsize_formats:
@@ -349,17 +395,12 @@ export default {
 
         // 工具栏1
         toolbar1:
-          "bold italic underline strikethrough subscript image superscript removeformat | fontselect | fontsizeselect | styleselect | forecolor backcolor | ",
+          "bold italic underline strikethrough subscript superscript removeformat | fontselect | fontsizeselect | styleselect | forecolor backcolor | ",
         // 工具栏2
         toolbar2:
           " table | image | alignleft aligncenter alignright alignjustify | bullist numlist | outdent indent blockquote |undo redo",
         contextmenu: false, // 禁用富文本的右键菜单，使用浏览器自带的右键菜单
         height: 500,
-        images_upload_handler: (blobInfo, success) => {
-          console.log(this.unsteadyForm.unsteadyDetail);
-
-          this.handleImageAdded(blobInfo, success, failure);
-        },
         ...this.option
       },
       unsteady: true,
@@ -457,6 +498,18 @@ export default {
     tinymce.init(this.init);
   },
   methods: {
+    //图片上传
+    previews() {
+     this.dialogDrag = true
+    },
+    //上传附件简历
+    handleVideoSuccess(res, file) {
+      console.log(file.response.data.fileAccessVo.accessUrl);
+      this.dialogDrag = false;
+      tinyMCE.editors["tinymce"].insertContent(
+        '<img src = "' + file.response.data.fileAccessVo.accessUrl + '">'
+      );
+    },
     //图片上传
     dealWithUploadLicense(res, file) {
       this.imageUrl = URL.createObjectURL(file.raw);
@@ -643,7 +696,6 @@ export default {
     },
     //下一步
     next(formName) {
-      
       this.$refs[formName].validate(valid => {
         if (valid) {
           this.unsteady = false;
@@ -664,7 +716,7 @@ export default {
   },
   computed: {
     uploadUrl() {
-      return "/api/v2/file-service/files/upload";
+      return "/api/v3/file-service/files/upload";
     }
   },
   created() {

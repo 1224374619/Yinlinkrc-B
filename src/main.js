@@ -172,6 +172,7 @@ const instance = axios.create({
   transformRequest: [(data) => queryString.stringify(data)]
 })
 Vue.prototype.$_http = instance;
+
 const locals = axios.create({
   baseURL: '/api/v3/',
   timeout: 60 * 1000, // Timeout

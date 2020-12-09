@@ -358,10 +358,10 @@ export default {
   },
   computed: {
     uploadUrl() {
-      return "/api/v2/business-user/account/avatar";
+      return "/api/v3/business-user/account/avatar";
     },
     uploadCompanyFile() {
-      return "/api/v2/file-service/files/upload";
+      return "/api/v3/file-service/files/upload";
     }
   }
 };
