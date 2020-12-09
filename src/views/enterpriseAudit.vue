@@ -141,7 +141,7 @@
             :options="cityList"
           ></el-cascader>
         </el-form-item>
-        <el-form-item label="企业详细地址" prop="city">
+        <el-form-item label="企业详细地址" prop="detail">
           <el-input
             type="textarea"
             style="width:500px;margin:0 0 0 0"
@@ -338,6 +338,9 @@ export default {
         ],
         city: [
           { required: true, message: "请选择企业地址", trigger: "blur" },
+        ],
+        detail: [
+          { required: true, message: "请填写企业详细地址", trigger: "blur" },
           { min: 0, max: 80, message: "长度在 0 到 80 个字", trigger: "blur" }
         ],
         description: [
