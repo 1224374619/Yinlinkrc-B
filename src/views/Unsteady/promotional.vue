@@ -350,7 +350,6 @@ import "tinymce/plugins/wordcount";
 import Cookies from "js-cookie";
 import { CodeToTag } from "../../cookie.js";
 let token = Cookies.get("Btoken");
-let Base64 = require("js-base64").Base64;
 export default {
   components: { Editor },
   data() {
@@ -432,7 +431,6 @@ export default {
       },
       cityList: [],
       content: null,
-      editorOption: {},
       props: {
         value: "code",
         label: "tag",
@@ -482,7 +480,6 @@ export default {
           }
         ]
       },
-      tinymceHtml: "",
       formAttributeBodies: [
         {
           chineseName: "",
@@ -716,7 +713,7 @@ export default {
   },
   computed: {
     uploadUrl() {
-      return "/api/v3/file-service/files/upload";
+      return "/api/v2/file-service/files/upload";
     }
   },
   created() {

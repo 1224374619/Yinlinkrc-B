@@ -138,6 +138,17 @@
         </div>
       </el-dialog>
     </div>
+    <div class="personal-offer">
+      <el-dialog title="发送Offer" :visible.sync="dialogVisibleoffer" width="50%">
+        <div>
+          <editor  v-model="formInline.user" id="tinymces" :init="init"></editor>
+        </div>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="dialogVisibleoffer = false">取 消</el-button>
+          <el-button type="primary" @click="dialogVisibleoffer = false">确 定</el-button>
+        </span>
+      </el-dialog>
+    </div>
     <el-dialog title="发送面试邀请" :visible.sync="centerDialogVisibles" width="44%" center>
       <div style="margin:30px 0 0 0">
         <el-form
@@ -227,6 +238,7 @@
       <div style="width:150px;">{{positionDetail.positionName.substring(0,7)}}</div>
       <div style="margin:0 0 0 20px;width:100%;">{{positionDetail.description.substring(0,60)}}</div>
     </div>
+
     <div class="resume-seconds">
       <div class="demo-form">
         <el-form :inline="true" :model="formInline" class="demo-form-inline">
@@ -770,6 +782,12 @@
                   type="text"
                   size="small"
                 >确认入职</el-button>
+                <el-button
+                  style="color:#FF7152"
+                  @click="offer(scope.row)"
+                  type="text"
+                  size="small"
+                >发送offer</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -874,13 +892,61 @@
 </template>
 
 <script>
+import tinymce from "tinymce";
+import Editor from "@tinymce/tinymce-vue";
+import "tinymce/icons/default/icons.min.js";
+import "tinymce/themes/silver/theme";
+import "tinymce/plugins/textcolor";
+import "tinymce/plugins/advlist";
+import "tinymce/plugins/table";
+import "tinymce/plugins/lists";
+import "tinymce/plugins/paste";
+import "tinymce/plugins/preview";
+import "tinymce/plugins/fullscreen";
+import "tinymce/plugins/anchor";
+import "tinymce/plugins/autolink";
+import "tinymce/plugins/autosave";
+import "tinymce/plugins/code";
+import "tinymce/plugins/codesample";
+import "tinymce/plugins/colorpicker";
+import "tinymce/plugins/contextmenu";
+import "tinymce/plugins/directionality";
+import "tinymce/plugins/emoticons";
+import "tinymce/plugins/emoticons/js/emojis.min";
+import "tinymce/plugins/image";
+import "tinymce/plugins/hr";
+import "tinymce/plugins/imagetools";
+import "tinymce/plugins/insertdatetime";
+import "tinymce/plugins/link";
+import "tinymce/plugins/media";
+import "tinymce/plugins/nonbreaking";
+import "tinymce/plugins/noneditable";
+import "tinymce/plugins/pagebreak";
+import "tinymce/plugins/print";
+import "tinymce/plugins/save";
+import "tinymce/plugins/searchreplace";
+import "tinymce/plugins/spellchecker";
+import "tinymce/plugins/tabfocus";
+import "tinymce/plugins/template";
+import "tinymce/plugins/textpattern";
+import "tinymce/plugins/visualblocks";
+import "tinymce/plugins/visualchars";
+import "tinymce/plugins/wordcount";
 import citys from "../../assets/city.json";
 import qs from "qs";
+
 export default {
   name: "home",
+  components: { Editor },
   data() {
     return {
+      formInline: {
+        user: "",
+        region: ""
+      },
+      unsteadyDetail: "",
       ms: false,
+      dialogVisibleoffer: false,
       linktitle: "复制链接",
       textlink: "service@163.com",
       ruleFormQuiz: {
@@ -902,6 +968,38 @@ export default {
         user: "",
         phone: "",
         desc: ""
+      },
+      init: {
+        init_instance_callback: function(editor) {},
+
+        menubar: false, // 禁用菜单栏
+        branding: false, // 隐藏右下角技术支持
+        elementpath: false, // 隐藏底栏的元素路径
+        paste_data_images: true, // 允许粘贴图像
+        font_formats:
+          "微软雅黑=Microsoft YaHei,Helvetica Neue,PingFang SC,sans-serif;苹果苹方=PingFang SC,Microsoft YaHei,sans-serif;宋体=simsun,serif",
+        fontsize_formats:
+          "12px 14px 16px 18px 20px 22px 24px 26px 28px 30px 32px 34px 36px 38px 40px 50px 60px 70px 80px 90px 100px 120px 140px 160px 180px 200px",
+        language_url: "./tinymce/langs/zh_CN.js",
+        language: "zh_CN",
+        skin_url: "./tinymce/skins/ui/oxide",
+        plugins:
+          "link lists code table colorpicker image textcolor wordcount contextmenu",
+        // toolbar:
+        //     `bold italic underline strikethrough | fontsizeselect | forecolor backcolor |
+        //     alignleft aligncenter alignright alignjustify | bullist numlist | outdent indent blockquote |
+        //     undo redo | link unlink image code | removeformat`,
+        // toolbar: 'bold italic underline strikethrough subscript superscript removeformat | fontselect | fontsizeselect | styleselect | forecolor backcolor | table | image |alignleft aligncenter alignright alignjustify | bullist numlist | outdent indent blockquote |undo redo | ',
+
+        // 工具栏1
+        toolbar1:
+          "bold italic underline strikethrough subscript superscript removeformat | fontselect | fontsizeselect | styleselect | forecolor backcolor | ",
+        // 工具栏2
+        toolbar2:
+          " table | image | alignleft aligncenter alignright alignjustify | bullist numlist | outdent indent blockquote |undo redo",
+        contextmenu: false, // 禁用富文本的右键菜单，使用浏览器自带的右键菜单
+        height: 500,
+        ...this.option
       },
       rulesQuiz: {
         oralTime: [
@@ -1050,7 +1148,12 @@ export default {
       companyAddress: ""
     };
   },
+  mounted() {
+    tinymce.init(this.init);
+  },
   methods: {
+    //发送offer
+    offer() {},
     selectStyle() {
       if (this.processedState === "INTERVIEW") {
         this.ms = true;
@@ -2103,7 +2206,7 @@ export default {
           })
           .catch(error => {});
       }
-      var arr=JSON.stringify(tab)
+      var arr = JSON.stringify(tab);
       this.$router.push({
         path: "/resume/talent/Detail",
         query: {
@@ -3696,6 +3799,7 @@ export default {
         });
     }
   },
+
   created() {
     this.city = citys.data;
     this.positionID = this.$route.query.positionId;
@@ -3809,6 +3913,23 @@ export default {
     content: '\e6db';
     font-size: 30px;
     line-height: 20px;
+  }
+}
+
+.personal-offer {
+  .el-dialog__title {
+    font-size: 20px;
+    line-height: 25px;
+    margin: 0 0 0 380px;
+
+    .tox-tinymce-aux {
+      z-index: 5000 !important;
+    }
+  }
+
+  .el-icon-close:before {
+    content: '\e6db';
+    font-size: 20px;
   }
 }
 
