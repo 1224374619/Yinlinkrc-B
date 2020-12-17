@@ -361,7 +361,7 @@ export default {
       return "/api/v3/business-user/account/avatar";
     },
     uploadCompanyFile() {
-      return "/api/v2/file-service/files/upload";
+      return "/api/v3/file-service/files/upload";
     }
   }
 };
@@ -421,7 +421,7 @@ export default {
   margin: 0 0 0 230px;
 }
 .avatar-uploader .el-upload:hover {
-  border-color: #409eff;
+  border-color: #02B9B8;
 }
 .avatar-uploader-icon {
   font-size: 28px;

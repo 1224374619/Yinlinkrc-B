@@ -1535,7 +1535,7 @@ export default {
         color: #272822;
         background-color: #fff;
         border-color: #dee1e6;
-        box-shadow: -1px 0 0 0 #409eff;
+        box-shadow: -1px 0 0 0 #02B9B8;
       }
     }
 

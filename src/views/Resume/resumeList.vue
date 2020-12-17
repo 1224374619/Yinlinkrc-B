@@ -1,75 +1,5 @@
 <template>
   <div style="margin:96px 0 0 0;">
-    <!-- <el-dialog title="发送面试邀请" :visible.sync="centerDialogVisible" width="40%" center>
-      <div
-        style=" display: flex;flex-direction: row;font-family: PingFangSC-Medium;color: #5C5C5C 100%;font-size:20px"
-      >
-        <div style="margin:0 0 0 30px">姓名：zadqqeqw</div>
-        <div style="margin:0 0 0 30px">面试岗位：qeeqeqe</div>
-      </div>
-      <div style="margin:30px 0 0 0">
-        <el-form
-          :model="ruleFormQuiz"
-          :rules="rulesQuiz"
-          ref="ruleForm"
-          :inline="true"
-          label-width="100px"
-          class="demo-ruleForm"
-        >
-          <el-form-item label="面试次数" prop="num">
-            <el-select style="width:234px" v-model="ruleFormQuiz.num" placeholder="请选择">
-              <el-option
-                v-for="item in options"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              ></el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item label="面试时间" prop="time">
-            <el-date-picker
-              style="width:234px"
-              v-model="ruleFormQuiz.time"
-              type="date"
-              placeholder="选择日期"
-            ></el-date-picker>
-          </el-form-item>
-          <el-form-item label="面试地址" prop="city">
-            <el-select style="width:580px" v-model="ruleFormQuiz.city" placeholder="请选择">
-              <el-option
-                v-for="item in cities"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              >
-                <span style="float: left">{{ item.label }}</span>
-                <span class="span-hover" style="float: right; color: #8492a6; font-size: 13px">删除</span>
-                <span
-                  class="span-hover"
-                  style="float: right; color: #8492a6; font-size: 13px;margin:0 10px 0 0"
-                >编辑</span>
-              </el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item label="联系人" prop="region">
-            <el-input style="width:234px" v-model="ruleFormQuiz.user" placeholder="联系人"></el-input>
-          </el-form-item>
-          <el-form-item label="联系电话">
-            <el-input style="width:234px" v-model="ruleFormQuiz.phone" placeholder="联系电话"></el-input>
-          </el-form-item>
-          <el-form-item label="联系邮箱" prop="email">
-            <el-input style="width:580px" v-model="ruleFormQuiz.email" placeholder="联系邮箱"></el-input>
-          </el-form-item>
-          <el-form-item label="备注">
-            <el-input type="textarea" style="width:580px" v-model="ruleFormQuiz.desc" placeholder></el-input>
-          </el-form-item>
-          <el-form-item style="margin:0 0 0 40%">
-            <el-button plain>取消</el-button>
-            <el-button @click="submitForm('ruleForm')" type="primary">发送</el-button>
-          </el-form-item>
-        </el-form>
-      </div>
-    </el-dialog>-->
     <el-dialog
       title
       :visible.sync="centerDialogVisible"
@@ -87,6 +17,24 @@
       </div>
       <div style="height:35px"></div>
     </el-dialog>
+    <el-dialog
+      title
+      :visible.sync="DialogVisibleOffer"
+      width="23%"
+      center
+      :show-close="false"
+      style="margin:100px 0 0 0"
+    >
+      <div
+        style="text-align:center;font-family: PingFangSC-Medium;color: #111111;font-size:20px"
+      >确定发送Offer ？</div>
+      <div style="margin:50px 0 0 21%">
+        <el-button @click="DialogVisibleOffer = false">取 消</el-button>
+        <el-button style="margin:0 0 0 40px" type="primary" @click="transmitOffer()">确 定</el-button>
+      </div>
+      <div style="height:35px"></div>
+    </el-dialog>
+
     <div class="personal-title">
       <el-dialog title="面试邀请预览" :visible.sync="dialogVisibledit" width="32%" center>
         <div style="margin:0 0 0 20px">
@@ -141,11 +89,36 @@
     <div class="personal-offer">
       <el-dialog title="发送Offer" :visible.sync="dialogVisibleoffer" width="50%">
         <div>
-          <editor  v-model="formInline.user" id="tinymces" :init="init"></editor>
+          <editor v-model="detailOffer" id="tinymces" :init="init"></editor>
+        </div>
+        <div class="annex">
+          <div>上传Offer附件(选填<10mb)：</div>
+          <div style="margin:-5px 0 0 0">
+            <el-upload
+              class="upload-demo"
+              :action="uploadUrl"
+              :data="uploadDatas"
+              :headers="myHeaders"
+              :show-file-list="false"
+              :on-success="handleAvatarSuccess"
+              :on-error="handleAvatarError"
+            >
+              <el-button size="small" plain type="primary">添加文件</el-button>
+            </el-upload>
+          </div>
         </div>
         <span slot="footer" class="dialog-footer">
-          <el-button @click="dialogVisibleoffer = false">取 消</el-button>
-          <el-button type="primary" @click="dialogVisibleoffer = false">确 定</el-button>
+          <el-button @click="previewOffer">预 览</el-button>
+          <el-button type="primary" @click="keepReqOffer()">发 送</el-button>
+        </span>
+      </el-dialog>
+      <el-dialog title="预览Offer" :visible.sync="dialogVisiblepreviewOffer" width="50%">
+        <div style="width:100%;border: 1px solid rgba(210,210,210,1);border-radius:5px">
+          <div style="margin:0 20px" v-html="this.detailOffer"></div>
+        </div>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="dialogVisiblepreviewOffer = false">返 回</el-button>
+          <el-button type="primary" @click="keepReqOffer()">发 送</el-button>
         </span>
       </el-dialog>
     </div>
@@ -392,8 +365,8 @@
             </el-table-column>
           </el-table>
           <el-pagination
-            @size-change="handleSizeChangeFirst"
-            @current-change="handleCurrentChangeFirst"
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
             :current-page="page.current"
             class="pagination"
             :page-sizes="page.pageSizeOpts"
@@ -437,14 +410,14 @@
             </el-table-column>
           </el-table>
           <el-pagination
-            @size-change="handleSizeChangeThird"
-            @current-change="handleCurrentChangeThird"
-            :current-page="page2.current"
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page="page.current"
             class="pagination"
-            :page-sizes="page2.pageSizeOpts"
-            :page-size="page2.pageSize"
+            :page-sizes="page.pageSizeOpts"
+            :page-size="page.pageSize"
             layout="total, sizes, prev, pager, next, jumper"
-            :total="page2.total"
+            :total="page.total"
           ></el-pagination>
         </el-tab-pane>
         <el-tab-pane label="不合格" name="third">
@@ -482,14 +455,14 @@
             </el-table-column>
           </el-table>
           <el-pagination
-            @size-change="handleSizeChangeFourth"
-            @current-change="handleCurrentChangeFourth"
-            :current-page="page3.current"
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page="page.current"
             class="pagination"
-            :page-sizes="page3.pageSizeOpts"
-            :page-size="page3.pageSize"
+            :page-sizes="page.pageSizeOpts"
+            :page-size="page.pageSize"
             layout="total, sizes, prev, pager, next, jumper"
-            :total="page3.total"
+            :total="page.total"
           ></el-pagination>
         </el-tab-pane>
         <el-tab-pane label="已入职" name="fourth">
@@ -521,14 +494,14 @@
             </el-table-column>
           </el-table>
           <el-pagination
-            @size-change="handleSizeChangeFifth"
-            @current-change="handleCurrentChangeFifth"
-            :current-page="page4.current"
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page="page.current"
             class="pagination"
-            :page-sizes="page4.pageSizeOpts"
-            :page-size="page4.pageSize"
+            :page-sizes="page.pageSizeOpts"
+            :page-size="page.pageSize"
             layout="total, sizes, prev, pager, next, jumper"
-            :total="page4.total"
+            :total="page.total"
           ></el-pagination>
         </el-tab-pane>
       </el-tabs>
@@ -580,8 +553,8 @@
             </el-table-column>
           </el-table>
           <el-pagination
-            @size-change="handleSizeChangeFirst"
-            @current-change="handleCurrentChangeFirst"
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
             :current-page="page.current"
             class="pagination"
             :page-sizes="page.pageSizeOpts"
@@ -631,14 +604,14 @@
             </el-table-column>
           </el-table>
           <el-pagination
-            @size-change="handleSizeChangeSecond"
-            @current-change="handleCurrentChangeSecond"
-            :current-page="page1.current"
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page="page.current"
             class="pagination"
-            :page-sizes="page1.pageSizeOpts"
-            :page-size="page1.pageSize"
+            :page-sizes="page.pageSizeOpts"
+            :page-size="page.pageSize"
             layout="total, sizes, prev, pager, next, jumper"
-            :total="page1.total"
+            :total="page.total"
           ></el-pagination>
         </el-tab-pane>
         <el-tab-pane name="second">
@@ -735,14 +708,14 @@
             </el-table-column>
           </el-table>
           <el-pagination
-            @size-change="handleSizeChangesixth"
-            @current-change="handleCurrentChangesixth"
-            :current-page="page5.current"
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page="page.current"
             class="pagination"
-            :page-sizes="page5.pageSizeOpts"
-            :page-size="page5.pageSize"
+            :page-sizes="page.pageSizeOpts"
+            :page-size="page.pageSize"
             layout="total, sizes, prev, pager, next, jumper"
-            :total="page5.total"
+            :total="page.total"
           ></el-pagination>
         </el-tab-pane>
         <el-tab-pane label="录用" name="third">
@@ -784,7 +757,7 @@
                 >确认入职</el-button>
                 <el-button
                   style="color:#FF7152"
-                  @click="offer(scope.row)"
+                  @click="reqOffer(scope.row)"
                   type="text"
                   size="small"
                 >发送offer</el-button>
@@ -792,14 +765,14 @@
             </el-table-column>
           </el-table>
           <el-pagination
-            @size-change="handleSizeChangeThird"
-            @current-change="handleCurrentChangeThird"
-            :current-page="page2.current"
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page="page.current"
             class="pagination"
-            :page-sizes="page2.pageSizeOpts"
-            :page-size="page2.pageSize"
+            :page-sizes="page.pageSizeOpts"
+            :page-size="page.pageSize"
             layout="total, sizes, prev, pager, next, jumper"
-            :total="page2.total"
+            :total="page.total"
           ></el-pagination>
         </el-tab-pane>
         <el-tab-pane label="已入职" name="fifth">
@@ -831,14 +804,14 @@
             </el-table-column>
           </el-table>
           <el-pagination
-            @size-change="handleSizeChangeFifth"
-            @current-change="handleCurrentChangeFifth"
-            :current-page="page4.current"
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page="page.current"
             class="pagination"
-            :page-sizes="page4.pageSizeOpts"
-            :page-size="page4.pageSize"
+            :page-sizes="page.pageSizeOpts"
+            :page-size="page.pageSize"
             layout="total, sizes, prev, pager, next, jumper"
-            :total="page4.total"
+            :total="page.total"
           ></el-pagination>
         </el-tab-pane>
         <el-tab-pane label="不合格" name="fourth">
@@ -876,14 +849,14 @@
             </el-table-column>
           </el-table>
           <el-pagination
-            @size-change="handleSizeChangeFourth"
-            @current-change="handleCurrentChangeFourth"
-            :current-page="page3.current"
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page="page.current"
             class="pagination"
-            :page-sizes="page3.pageSizeOpts"
-            :page-size="page3.pageSize"
+            :page-sizes="page.pageSizeOpts"
+            :page-size="page.pageSize"
             layout="total, sizes, prev, pager, next, jumper"
-            :total="page3.total"
+            :total="page.total"
           ></el-pagination>
         </el-tab-pane>
       </el-tabs>
@@ -892,6 +865,8 @@
 </template>
 
 <script>
+import Cookies from "js-cookie";
+let token = Cookies.get("Btoken");
 import tinymce from "tinymce";
 import Editor from "@tinymce/tinymce-vue";
 import "tinymce/icons/default/icons.min.js";
@@ -940,13 +915,52 @@ export default {
   components: { Editor },
   data() {
     return {
-      formInline: {
-        user: "",
-        region: ""
-      },
-      unsteadyDetail: "",
+      detailOffer: `<p class="MsoNormal" style="mso-add-space: auto; text-align: center; line-height: 150%;" align="center"><strong><span style="font-family: 微软雅黑; line-height: 150%; font-size: 18pt;"><span style="font-family: 微软雅黑;">录</span> <span style="font-family: 微软雅黑;">用</span> <span style="font-family: 微软雅黑;">通</span> <span style="font-family: 微软雅黑;">知</span> <span style="font-family: 微软雅黑;">书</span></span></strong></p>
+<p class="MsoNormal" style="mso-add-space: auto; line-height: 150%;"><strong><span style="font-family: 微软雅黑; line-height: 150%; font-size: 14pt;"><span style="font-family: 微软雅黑;">尊敬的</span></span></strong><strong><u><span style="font-family: 微软雅黑; line-height: 150%; font-size: 14pt;">&nbsp;</span></u></strong><strong><u><span style="font-family: 微软雅黑; line-height: 150%; font-size: 14pt;"><span style="font-family: 微软雅黑;">张三</span></span></u></strong><strong><u><span style="font-family: 微软雅黑; line-height: 150%; font-size: 14pt;">&nbsp;</span></u></strong><strong><span style="font-family: 微软雅黑; line-height: 150%; font-size: 14pt;"><span style="font-family: 微软雅黑;">先生：</span></span></strong></p>
+<p class="MsoNormal" style="mso-add-space: auto; text-indent: 21.0000pt; line-height: 150%;"><span style="mso-spacerun: 'yes'; font-family: 微软雅黑; line-height: 150%; font-size: 10.5000pt; mso-font-kerning: 1.0000pt;"><span style="font-family: 微软雅黑;">我代表</span></span><u><span style="font-family: 微软雅黑; line-height: 150%; font-size: 10.5pt;">XXXX</span></u><u><span style="font-family: 微软雅黑; line-height: 150%; font-size: 10.5pt;"><span style="font-family: 微软雅黑;">有限公司</span></span></u><span style="mso-spacerun: 'yes'; font-family: 微软雅黑; line-height: 150%; font-size: 10.5000pt; mso-font-kerning: 1.0000pt;"><span style="font-family: 微软雅黑;">很高兴地通知您，您已经通过了公司的面试考核，公司拟录用您为正式员工并拟与您签订正式劳动合同。欢迎您加入公司</span></span><u><span style="font-family: 微软雅黑; line-height: 150%; font-size: 10.5pt;">&nbsp;&nbsp;<span style="font-family: 微软雅黑;">市场</span> &nbsp;</span></u><span style="mso-spacerun: 'yes'; font-family: 微软雅黑; line-height: 150%; font-size: 10.5000pt; mso-font-kerning: 1.0000pt;"><span style="font-family: 微软雅黑;">部</span></span><strong><span style="font-family: 微软雅黑; line-height: 150%; font-size: 10.5pt;">&nbsp;</span></strong><span style="mso-spacerun: 'yes'; font-family: 微软雅黑; line-height: 150%; font-size: 10.5000pt; mso-font-kerning: 1.0000pt;"><span style="font-family: 微软雅黑;">，任</span></span><u><span style="font-family: 微软雅黑; line-height: 150%; font-size: 10.5pt;">&nbsp;&nbsp;<span style="font-family: 微软雅黑;">市场经理</span> &nbsp;</span></u><span style="mso-spacerun: 'yes'; font-family: 微软雅黑; line-height: 150%; font-size: 10.5000pt; mso-font-kerning: 1.0000pt;"><span style="font-family: 微软雅黑;">职位，目前您的汇报对象是</span></span><u><span style="font-family: 微软雅黑; line-height: 150%; font-size: 10.5pt;">&nbsp;&nbsp;<span style="font-family: 微软雅黑;">总</span></span></u><u><span style="font-family: 微软雅黑; line-height: 150%; font-size: 10.5pt;"><span style="font-family: 微软雅黑;">经理</span></span></u><u><span style="font-family: 微软雅黑; line-height: 150%; font-size: 10.5pt;"><span style="font-family: 微软雅黑;">：</span></span></u><u><span style="font-family: 微软雅黑; line-height: 150%; font-size: 10.5pt;"><span style="font-family: 微软雅黑;">李四</span></span></u><strong><u><span style="font-family: 微软雅黑; line-height: 150%; font-size: 12pt;">&nbsp;</span></u></strong><u><span style="font-family: 微软雅黑; line-height: 150%; font-size: 10.5pt;"><span style="font-family: 微软雅黑;">先生</span> &nbsp;</span></u><span style="mso-spacerun: 'yes'; font-family: 微软雅黑; line-height: 150%; font-size: 10.5000pt; mso-font-kerning: 1.0000pt;"><span style="font-family: 微软雅黑;">。您入职后</span></span><span style="mso-spacerun: 'yes'; font-family: 微软雅黑; line-height: 150%; font-size: 10.5000pt; mso-font-kerning: 1.0000pt;"><span style="font-family: 微软雅黑;">的</span></span><span style="mso-spacerun: 'yes'; font-family: 微软雅黑; line-height: 150%; font-size: 10.5000pt; mso-font-kerning: 1.0000pt;"><span style="font-family: 微软雅黑;">工作职责请与您的直属上级确认。</span></span></p>
+<p class="MsoNormal" style="mso-add-space: auto; line-height: 150%;"><strong><span style="font-family: 微软雅黑; line-height: 150%; font-size: 11pt;"><span style="font-family: 微软雅黑;">您入职后</span></span></strong><strong><span style="font-family: 微软雅黑; line-height: 150%; font-size: 11pt;"><span style="font-family: 微软雅黑;">的薪酬待遇</span></span></strong><strong><span style="font-family: 微软雅黑; line-height: 150%; font-size: 11pt;"><span style="font-family: 微软雅黑;">：</span></span></strong></p>
+<p class="MsoNormal" style="mso-add-space: auto; line-height: 150%;"><span style="mso-spacerun: 'yes'; font-family: 微软雅黑; line-height: 150%; font-size: 10.5000pt; mso-font-kerning: 1.0000pt;">1．您转正后的税前月固定工资是人民币</span><u><span style="font-family: 微软雅黑; line-height: 150%; font-size: 10.5pt;">&nbsp;</span></u><u><span style="font-family: Arial; line-height: 150%; font-size: 10.5pt;">&yen;</span></u><u><span style="font-family: 微软雅黑; line-height: 150%; font-size: 10.5pt;">XXXXX</span></u><u><span style="font-family: 微软雅黑; line-height: 150%; font-size: 10.5pt;">&nbsp;</span></u><span style="mso-spacerun: 'yes'; font-family: 微软雅黑; line-height: 150%; font-size: 10.5000pt; mso-font-kerning: 1.0000pt;"><span style="font-family: 微软雅黑;">元，包含</span></span><span style="mso-spacerun: 'yes'; font-family: 微软雅黑; line-height: 150%; font-size: 10.5000pt; mso-font-kerning: 1.0000pt;"><span style="font-family: 微软雅黑;">相关补贴，</span></span><span style="mso-spacerun: 'yes'; font-family: 微软雅黑; line-height: 150%; font-size: 10.5000pt; mso-font-kerning: 1.0000pt;"><span style="font-family: 微软雅黑;">全年</span></span><u><span style="font-family: 微软雅黑; line-height: 150%; font-size: 10.5pt;">&nbsp;&nbsp;12 &nbsp;</span></u><span style="mso-spacerun: 'yes'; font-family: 微软雅黑; line-height: 150%; font-size: 10.5000pt; mso-font-kerning: 1.0000pt;"><span style="font-family: 微软雅黑;">个月薪资，转</span></span><span style="mso-spacerun: 'yes'; font-family: 微软雅黑; line-height: 150%; font-size: 10.5000pt; mso-font-kerning: 1.0000pt;"><span style="font-family: 微软雅黑;">正</span></span><span style="mso-spacerun: 'yes'; font-family: 微软雅黑; line-height: 150%; font-size: 10.5000pt; mso-font-kerning: 1.0000pt;"><span style="font-family: 微软雅黑;">后</span></span><span style="mso-spacerun: 'yes'; font-family: 微软雅黑; line-height: 150%; font-size: 10.5000pt; mso-font-kerning: 1.0000pt;"><span style="font-family: 微软雅黑;">工资</span></span><span style="mso-spacerun: 'yes'; font-family: 微软雅黑; line-height: 150%; font-size: 10.5000pt; mso-font-kerning: 1.0000pt;"><span style="font-family: 微软雅黑;">不一</span></span><span style="mso-spacerun: 'yes'; font-family: 微软雅黑; line-height: 150%; font-size: 10.5000pt; mso-font-kerning: 1.0000pt;"><span style="font-family: 微软雅黑;">定是</span></span><span style="mso-spacerun: 'yes'; font-family: 微软雅黑; line-height: 150%; font-size: 10.5000pt; mso-font-kerning: 1.0000pt;"><span style="font-family: 微软雅黑;">该</span></span><span style="mso-spacerun: 'yes'; font-family: 微软雅黑; line-height: 150%; font-size: 10.5000pt; mso-font-kerning: 1.0000pt;"><span style="font-family: 微软雅黑;">薪资，会</span></span><span style="mso-spacerun: 'yes'; font-family: 微软雅黑; line-height: 150%; font-size: 10.5000pt; mso-font-kerning: 1.0000pt;"><span style="font-family: 微软雅黑;">根据</span></span><span style="mso-spacerun: 'yes'; font-family: 微软雅黑; line-height: 150%; font-size: 10.5000pt; mso-font-kerning: 1.0000pt;"><span style="font-family: 微软雅黑;">试用期表现</span></span><span style="mso-spacerun: 'yes'; font-family: 微软雅黑; line-height: 150%; font-size: 10.5000pt; mso-font-kerning: 1.0000pt;"><span style="font-family: 微软雅黑;">和业绩</span></span><span style="mso-spacerun: 'yes'; font-family: 微软雅黑; line-height: 150%; font-size: 10.5000pt; mso-font-kerning: 1.0000pt;"><span style="font-family: 微软雅黑;">情况</span></span><span style="mso-spacerun: 'yes'; font-family: 微软雅黑; line-height: 150%; font-size: 10.5000pt; mso-font-kerning: 1.0000pt;"><span style="font-family: 微软雅黑;">可能</span></span><span style="mso-spacerun: 'yes'; font-family: 微软雅黑; line-height: 150%; font-size: 10.5000pt; mso-font-kerning: 1.0000pt;"><span style="font-family: 微软雅黑;">进行调整</span></span><span style="mso-spacerun: 'yes'; font-family: 微软雅黑; line-height: 150%; font-size: 10.5000pt; mso-font-kerning: 1.0000pt;"><span style="font-family: 微软雅黑;">，最终以</span></span><span style="mso-spacerun: 'yes'; font-family: 微软雅黑; line-height: 150%; font-size: 10.5000pt; mso-font-kerning: 1.0000pt;"><span style="font-family: 微软雅黑;">实际发放工资为</span></span><span style="mso-spacerun: 'yes'; font-family: 微软雅黑; line-height: 150%; font-size: 10.5000pt; mso-font-kerning: 1.0000pt;"><span style="font-family: 微软雅黑;">准。</span></span></p>
+<p class="MsoNormal" style="mso-add-space: auto; line-height: 150%;"><span style="mso-spacerun: 'yes'; font-family: 微软雅黑; line-height: 150%; font-size: 10.5000pt; mso-font-kerning: 1.0000pt;">2．试用期薪资按80%</span><span style="mso-spacerun: 'yes'; font-family: 微软雅黑; line-height: 150%; font-size: 10.5000pt; mso-font-kerning: 1.0000pt;"><span style="font-family: 微软雅黑;">发放，即</span></span><u><span style="font-family: 微软雅黑; line-height: 150%; font-size: 10.5pt;">&nbsp;</span></u><u><span style="font-family: Arial; line-height: 150%; font-size: 10.5pt;">&yen;</span></u><u><span style="font-family: 微软雅黑; line-height: 150%; font-size: 10.5pt;">XXXXX</span></u><u><span style="font-family: 微软雅黑; line-height: 150%; font-size: 10.5pt;">&nbsp;</span></u><span style="mso-spacerun: 'yes'; font-family: 微软雅黑; line-height: 150%; font-size: 10.5000pt; mso-font-kerning: 1.0000pt;"><span style="font-family: 微软雅黑;">元整，试用期</span> </span><u><span style="font-family: 微软雅黑; line-height: 150%; font-size: 10.5pt;">&nbsp;</span></u><u><span style="font-family: 微软雅黑; line-height: 150%; font-size: 10.5pt;">X</span></u><u><span style="font-family: 微软雅黑; line-height: 150%; font-size: 10.5pt;">&nbsp;</span></u><span style="mso-spacerun: 'yes'; font-family: 微软雅黑; line-height: 150%; font-size: 10.5000pt; mso-font-kerning: 1.0000pt;"><span style="font-family: 微软雅黑;">个月，</span></span><span style="mso-spacerun: 'yes'; font-family: 微软雅黑; line-height: 150%; font-size: 10.5000pt; mso-font-kerning: 1.0000pt;"><span style="font-family: 微软雅黑;">全勤</span></span><span style="mso-spacerun: 'yes'; font-family: 微软雅黑; line-height: 150%; font-size: 10.5000pt; mso-font-kerning: 1.0000pt;"><span style="font-family: 微软雅黑;">补贴</span></span><span style="mso-spacerun: 'yes'; font-family: 微软雅黑; line-height: 150%; font-size: 10.5000pt; mso-font-kerning: 1.0000pt;"><span style="font-family: 微软雅黑;">除外。</span></span></p>
+<p class="MsoNormal" style="mso-add-space: auto; line-height: 150%;"><span style="mso-spacerun: 'yes'; font-family: 微软雅黑; line-height: 150%; font-size: 10.5000pt; mso-font-kerning: 1.0000pt;">3</span><span style="mso-spacerun: 'yes'; font-family: 微软雅黑; line-height: 150%; font-size: 10.5000pt; mso-font-kerning: 1.0000pt;"><span style="font-family: 微软雅黑;">．</span></span><span style="mso-spacerun: 'yes'; font-family: 微软雅黑; line-height: 150%; font-size: 10.5000pt; mso-font-kerning: 1.0000pt;"><span style="font-family: 微软雅黑;">培训期包含在试用期内</span></span><span style="mso-spacerun: 'yes'; font-family: 微软雅黑; line-height: 150%; font-size: 10.5000pt; mso-font-kerning: 1.0000pt;"><span style="font-family: 微软雅黑;">，</span></span><span style="mso-spacerun: 'yes'; font-family: 微软雅黑; line-height: 150%; font-size: 10.5000pt; mso-font-kerning: 1.0000pt;"><span style="font-family: 微软雅黑;">培训期限为</span></span><span style="mso-spacerun: 'yes'; font-family: 微软雅黑; line-height: 150%; font-size: 10.5000pt; mso-font-kerning: 1.0000pt;"><span style="font-family: 微软雅黑;">：</span></span><u><span style="font-family: 微软雅黑; line-height: 150%; font-size: 10.5pt;">X</span></u><u><span style="font-family: 微软雅黑; line-height: 150%; font-size: 10.5pt;"><span style="font-family: 微软雅黑;">个工作日</span></span></u><span style="mso-spacerun: 'yes'; font-family: 微软雅黑; line-height: 150%; font-size: 10.5000pt; mso-font-kerning: 1.0000pt;"><span style="font-family: 微软雅黑;">，若您通过了培训期，则培训期工资与试用期工资相同；若未能通过培训期，则仅发放基本工资：</span></span><u><span style="font-family: 微软雅黑; line-height: 150%; font-size: 10.5pt;">&nbsp;</span></u><u><span style="font-family: Arial; line-height: 150%; font-size: 10.5pt;">&yen;</span></u><u><span style="font-family: 微软雅黑; line-height: 150%; font-size: 10.5pt;">XX</span></u><u><span style="font-family: 微软雅黑; line-height: 150%; font-size: 10.5pt;"><span style="font-family: 微软雅黑;">元</span>/天 </span></u><span style="mso-spacerun: 'yes'; font-family: 微软雅黑; line-height: 150%; font-size: 10.5000pt; mso-font-kerning: 1.0000pt;"><span style="font-family: 微软雅黑;">。</span></span></p>
+<p class="MsoNormal" style="mso-add-space: auto; line-height: 150%;"><span style="mso-spacerun: 'yes'; font-family: 微软雅黑; line-height: 150%; font-size: 10.5000pt; mso-font-kerning: 1.0000pt;">4</span><span style="mso-spacerun: 'yes'; font-family: 微软雅黑; line-height: 150%; font-size: 10.5000pt; mso-font-kerning: 1.0000pt;"><span style="font-family: 微软雅黑;">．</span></span><span style="mso-spacerun: 'yes'; font-family: 微软雅黑; line-height: 150%; font-size: 10.5000pt; mso-font-kerning: 1.0000pt;"><span style="font-family: 微软雅黑;">入职</span></span><span style="mso-spacerun: 'yes'; font-family: 微软雅黑; line-height: 150%; font-size: 10.5000pt; mso-font-kerning: 1.0000pt;"><span style="font-family: 微软雅黑;">后开始办理社保（五险），公司将从您的月工资中按国家劳动法规定代扣您个人所得税的个人缴纳部分。</span></span></p>
+<p class="MsoNormal" style="mso-add-space: auto; line-height: 150%;"><strong><span style="font-family: 微软雅黑; line-height: 150%; font-size: 11pt;"><span style="font-family: 微软雅黑;">您入职后的福利待遇：</span></span></strong></p>
+<p class="MsoNormal" style="mso-add-space: auto; line-height: 150%;"><span style="mso-spacerun: 'yes'; font-family: 微软雅黑; line-height: 150%; font-size: 10.5000pt; mso-font-kerning: 1.0000pt;">1．社会福利：按照国家及地方政府规定缴纳的养老保险、失业保险、基本医疗保险、工伤保险、生育保险，公司将从您的月工资中代扣个人应缴部分；</span></p>
+<p class="MsoNormal" style="mso-add-space: auto; line-height: 150%;"><span style="mso-spacerun: 'yes'; font-family: 微软雅黑; line-height: 150%; font-size: 10.5000pt; mso-font-kerning: 1.0000pt;">2．公司福利：带薪休假、</span><span style="mso-spacerun: 'yes'; font-family: 微软雅黑; line-height: 150%; font-size: 10.5000pt; mso-font-kerning: 1.0000pt;"><span style="font-family: 微软雅黑;">绩效奖金、年终奖、</span></span><span style="mso-spacerun: 'yes'; font-family: 微软雅黑; line-height: 150%; font-size: 10.5000pt; mso-font-kerning: 1.0000pt;"><span style="font-family: 微软雅黑;">年度体检、生日礼物等。</span></span></p>
+<p class="MsoNormal" style="mso-add-space: auto; line-height: 150%;"><strong><span style="font-family: 微软雅黑; line-height: 150%; font-size: 11pt;"><span style="font-family: 微软雅黑;">您入职后的</span></span></strong><strong><span style="font-family: 微软雅黑; line-height: 150%; font-size: 11pt;"><span style="font-family: 微软雅黑;">年度薪酬调整</span></span></strong><strong><span style="font-family: 微软雅黑; line-height: 150%; font-size: 11pt;"><span style="font-family: 微软雅黑;">：</span></span></strong></p>
+<p class="MsoNormal" style="mso-add-space: auto; line-height: 150%;"><span style="mso-spacerun: 'yes'; font-family: 微软雅黑; line-height: 150%; font-size: 10.5000pt; mso-font-kerning: 1.0000pt;"><span style="font-family: 微软雅黑;">公司每年将结合市场薪酬水平、岗位调整、个人绩效</span></span><span style="mso-spacerun: 'yes'; font-family: 微软雅黑; line-height: 150%; font-size: 10.5000pt; mso-font-kerning: 1.0000pt;"><span style="font-family: 微软雅黑;">考核</span></span><span style="mso-spacerun: 'yes'; font-family: 微软雅黑; line-height: 150%; font-size: 10.5000pt; mso-font-kerning: 1.0000pt;"><span style="font-family: 微软雅黑;">的结果进行薪酬调整</span></span><span style="mso-spacerun: 'yes'; font-family: 微软雅黑; line-height: 150%; font-size: 10.5000pt; mso-font-kerning: 1.0000pt;"><span style="font-family: 微软雅黑;">。</span></span></p>
+<p class="MsoNormal" style="mso-add-space: auto; line-height: 150%;"><strong><span style="font-family: 微软雅黑; line-height: 150%; font-size: 11pt;"><span style="font-family: 微软雅黑;">本通知书</span></span></strong><strong><span style="font-family: 微软雅黑; line-height: 150%; font-size: 11pt;"><span style="font-family: 微软雅黑;">的</span></span></strong><strong><span style="font-family: 微软雅黑; line-height: 150%; font-size: 11pt;"><span style="font-family: 微软雅黑;">确认及报到</span></span></strong></p>
+<p class="MsoNormal" style="mso-add-space: auto; text-indent: 21.0000pt; mso-layout-grid-align: none; line-height: 150%;"><span style="mso-spacerun: 'yes'; font-family: 微软雅黑; line-height: 150%; font-size: 10.5000pt; mso-font-kerning: 1.0000pt;"><span style="font-family: 微软雅黑;">请您于</span> </span><u><span style="font-family: 微软雅黑; line-height: 150%; font-size: 10.5pt;">201</span></u><u><span style="font-family: 微软雅黑; line-height: 150%; font-size: 10.5pt;">8</span></u><u><span style="font-family: 微软雅黑; line-height: 150%; font-size: 10.5pt;">&nbsp;<span style="font-family: 微软雅黑;">年</span> </span></u><u><span style="font-family: 微软雅黑; line-height: 150%; font-size: 10.5pt;">XX</span></u><u><span style="font-family: 微软雅黑; line-height: 150%; font-size: 10.5pt;">&nbsp;<span style="font-family: 微软雅黑;">月</span> </span></u><u><span style="font-family: 微软雅黑; line-height: 150%; font-size: 10.5pt;">XX</span></u><u><span style="font-family: 微软雅黑; line-height: 150%; font-size: 10.5pt;"><span style="font-family: 微软雅黑;">日</span></span></u><strong><u><span style="font-family: 微软雅黑; line-height: 150%; font-size: 10.5pt;"><span style="font-family: 微软雅黑;">前</span></span></u></strong><span style="mso-spacerun: 'yes'; font-family: 微软雅黑; line-height: 150%; font-size: 10.5000pt; mso-font-kerning: 1.0000pt;"><span style="font-family: 微软雅黑;">回复</span> <span style="font-family: 微软雅黑;">确认接受此录用通知书并于</span></span><u><span style="font-family: 微软雅黑; line-height: 150%; font-size: 10.5pt;">&nbsp;201</span></u><u><span style="font-family: 微软雅黑; line-height: 150%; font-size: 10.5pt;">8</span></u><u><span style="font-family: 微软雅黑; line-height: 150%; font-size: 10.5pt;">&nbsp;<span style="font-family: 微软雅黑;">年</span> </span></u><u><span style="font-family: 微软雅黑; line-height: 150%; font-size: 10.5pt;">XX</span></u><u><span style="font-family: 微软雅黑; line-height: 150%; font-size: 10.5pt;"><span style="font-family: 微软雅黑;">月</span> </span></u><u><span style="font-family: 微软雅黑; line-height: 150%; font-size: 10.5pt;">XX</span></u><u><span style="font-family: 微软雅黑; line-height: 150%; font-size: 10.5pt;"><span style="font-family: 微软雅黑;">日</span></span></u><span style="mso-spacerun: 'yes'; font-family: 微软雅黑; line-height: 150%; font-size: 10.5000pt; mso-font-kerning: 1.0000pt;"><span style="font-family: 微软雅黑;">携带已签字确认的录用通知书到公司报到。第一天入职时，您需要携带以下文件：</span> &nbsp;&nbsp;</span><span style="mso-spacerun: 'yes'; font-family: 微软雅黑; line-height: 150%; font-size: 10.5000pt; mso-font-kerning: 1.0000pt;">&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="mso-spacerun: 'yes'; font-family: 微软雅黑; line-height: 150%; font-size: 10.5000pt; mso-font-kerning: 1.0000pt;">1. &nbsp;离职证明原件（由您工作过的最近一家单位人事部门开具，需加盖人事部门章或者公司公章，</span><span style="mso-spacerun: 'yes'; font-family: 微软雅黑; line-height: 150%; font-size: 10.5000pt; mso-font-kerning: 1.0000pt;"><span style="font-family: 微软雅黑;">无法提供，</span></span><span style="mso-spacerun: 'yes'; font-family: 微软雅黑; line-height: 150%; font-size: 10.5000pt; mso-font-kerning: 1.0000pt;"><span style="font-family: 微软雅黑;">请</span></span><span style="mso-spacerun: 'yes'; font-family: 微软雅黑; line-height: 150%; font-size: 10.5000pt; mso-font-kerning: 1.0000pt;"><span style="font-family: 微软雅黑;">与人事部沟通</span></span><span style="mso-spacerun: 'yes'; font-family: 微软雅黑; line-height: 150%; font-size: 10.5000pt; mso-font-kerning: 1.0000pt;"><span style="font-family: 微软雅黑;">）</span></span></p>
+<p class="MsoNormal" style="mso-add-space: auto; line-height: 150%;"><span style="mso-spacerun: 'yes'; font-family: 微软雅黑; line-height: 150%; font-size: 10.5000pt; mso-font-kerning: 1.0000pt;">2. &nbsp;</span><span style="mso-spacerun: 'yes'; font-family: 微软雅黑; line-height: 150%; font-size: 10.5000pt; mso-font-kerning: 1.0000pt;"><span style="font-family: 微软雅黑;">个人简历</span></span><span style="mso-spacerun: 'yes'; font-family: 微软雅黑; line-height: 150%; font-size: 10.5000pt; mso-font-kerning: 1.0000pt;"><span style="font-family: 微软雅黑;">（原件）</span></span></p>
+<p class="MsoNormal" style="mso-add-space: auto; line-height: 150%;"><span style="mso-spacerun: 'yes'; font-family: 微软雅黑; line-height: 150%; font-size: 10.5000pt; mso-font-kerning: 1.0000pt;">3. &nbsp;一寸照片（</span><span style="mso-spacerun: 'yes'; font-family: 微软雅黑; line-height: 150%; font-size: 10.5000pt; mso-font-kerning: 1.0000pt;">1</span><span style="mso-spacerun: 'yes'; font-family: 微软雅黑; line-height: 150%; font-size: 10.5000pt; mso-font-kerning: 1.0000pt;"><span style="font-family: 微软雅黑;">张）：近期免冠蓝底彩色照片</span></span></p>
+<p class="MsoNormal" style="mso-add-space: auto; text-indent: 15.7500pt; mso-char-indent-count: 1.5000; line-height: 150%;"><span style="mso-spacerun: 'yes'; font-family: 微软雅黑; line-height: 150%; font-size: 10.5000pt; mso-font-kerning: 1.0000pt;"><span style="font-family: 微软雅黑;">逾期未确认接受此录用通知书或逾期未报到，以及报到时不能提供上述真实有效文件的，本通知书自始不发生法律效力。</span></span></p>
+<p class="MsoNormal" style="mso-add-space: auto; line-height: 150%;"><strong><span style="font-family: 微软雅黑; line-height: 150%; font-size: 12pt;">其他说明：</span></strong></p>
+<p class="MsoNormal" style="margin-left: 21.2500pt; mso-add-space: auto; text-indent: -21.2500pt; line-height: 150%; mso-list: l0 level1 lfo1;"><!-- [if !supportLists]--><span style="font-family: 微软雅黑; font-size: 10.5000pt; mso-font-kerning: 1.0000pt;">1.&nbsp;</span><!--[endif]--><span style="mso-spacerun: 'yes'; font-family: 微软雅黑; line-height: 150%; font-size: 10.5000pt; mso-font-kerning: 1.0000pt;"><span style="font-family: 微软雅黑;">工作时间：公司的工作时间为早晨</span> </span><span style="mso-spacerun: 'yes'; font-family: 微软雅黑; line-height: 150%; font-size: 10.5000pt; mso-font-kerning: 1.0000pt;">8</span><span style="mso-spacerun: 'yes'; font-family: 微软雅黑; line-height: 150%; font-size: 10.5000pt; mso-font-kerning: 1.0000pt;"><span style="font-family: 微软雅黑;">：</span> </span><span style="mso-spacerun: 'yes'; font-family: 微软雅黑; line-height: 150%; font-size: 10.5000pt; mso-font-kerning: 1.0000pt;">3</span><span style="mso-spacerun: 'yes'; font-family: 微软雅黑; line-height: 150%; font-size: 10.5000pt; mso-font-kerning: 1.0000pt;">0至下午1</span><span style="mso-spacerun: 'yes'; font-family: 微软雅黑; line-height: 150%; font-size: 10.5000pt; mso-font-kerning: 1.0000pt;">7</span><span style="mso-spacerun: 'yes'; font-family: 微软雅黑; line-height: 150%; font-size: 10.5000pt; mso-font-kerning: 1.0000pt;">&nbsp;<span style="font-family: 微软雅黑;">：</span></span><span style="mso-spacerun: 'yes'; font-family: 微软雅黑; line-height: 150%; font-size: 10.5000pt; mso-font-kerning: 1.0000pt;">3</span><span style="mso-spacerun: 'yes'; font-family: 微软雅黑; line-height: 150%; font-size: 10.5000pt; mso-font-kerning: 1.0000pt;">0。</span></p>
+<p class="MsoNormal" style="margin-left: 21.2500pt; mso-add-space: auto; line-height: 150%;"><span style="mso-spacerun: 'yes'; font-family: 微软雅黑; line-height: 150%; font-size: 10.5000pt; mso-font-kerning: 1.0000pt;"><span style="font-family: 微软雅黑;">中午</span> 12 ：00 至 13 ： 30为午餐及休息时间。</span></p>
+<p class="MsoNormal" style="margin-left: 21.2500pt; mso-add-space: auto; line-height: 150%;"><span style="mso-spacerun: 'yes'; font-family: 微软雅黑; line-height: 150%; font-size: 10.5000pt; mso-font-kerning: 1.0000pt;"><span style="font-family: 微软雅黑;">第一天入职时间是</span></span><strong><u><span style="font-family: 微软雅黑; line-height: 150%; font-size: 10.5pt;">&nbsp;9 ：00 </span></u></strong><span style="mso-spacerun: 'yes'; font-family: 微软雅黑; line-height: 150%; font-size: 10.5000pt; mso-font-kerning: 1.0000pt;"><span style="font-family: 微软雅黑;">。</span></span></p>
+<p class="MsoNormal" style="margin-left: 21.2500pt; mso-add-space: auto; text-indent: -21.2500pt; line-height: 150%; mso-list: l0 level1 lfo1;"><!-- [if !supportLists]--><span style="font-family: 微软雅黑; font-size: 10.5pt;">2.&nbsp;</span><!--[endif]--><span style="font-family: 微软雅黑; line-height: 150%; font-size: 10.5pt;"><span style="font-family: 微软雅黑;">办公地点：</span></span><u><span style="font-family: 微软雅黑; line-height: 150%; font-size: 10.5pt;">&nbsp;</span></u><u><span style="font-family: 微软雅黑; line-height: 150%; font-size: 10.5pt;">XX省</span></u><u><span style="font-family: 微软雅黑; line-height: 150%; font-size: 10.5pt;"><span style="font-family: 微软雅黑;">，</span></span></u><u><span style="font-family: 微软雅黑; line-height: 150%; font-size: 10.5pt;">XX市XX</span></u><u><span style="font-family: 微软雅黑; line-height: 150%; font-size: 10.5pt;"><span style="font-family: 微软雅黑;">区，</span></span></u><u><span style="font-family: 微软雅黑; line-height: 150%; font-size: 10.5pt;">XX路XX号XX</span></u><u><span style="font-family: 微软雅黑; line-height: 150%; font-size: 10.5pt;"><span style="font-family: 微软雅黑;">室。</span></span></u></p>
+<p class="MsoNormal" style="margin-left: 21.2500pt; mso-add-space: auto; text-indent: -21.2500pt; line-height: 150%; mso-list: l0 level1 lfo1;"><!-- [if !supportLists]--><span style="font-family: 微软雅黑; font-size: 10.5000pt; mso-font-kerning: 1.0000pt;">3.&nbsp;</span><!--[endif]--><span style="mso-spacerun: 'yes'; font-family: 微软雅黑; line-height: 150%; font-size: 10.5000pt; mso-font-kerning: 1.0000pt;"><span style="font-family: 微软雅黑;">如您接受本聘书，请</span> <span style="font-family: 微软雅黑;">回复本邮件，以方便公司尽快为您做入职准备。</span></span></p>
+<p class="MsoNormal" style="mso-add-space: auto; line-height: 150%;"><strong><span style="font-family: 微软雅黑; line-height: 150%; font-size: 12pt;">特别提示：</span></strong></p>
+<p class="MsoNormal" style="mso-add-space: auto; text-indent: 21.0000pt; line-height: 150%;"><span style="mso-spacerun: 'yes'; font-family: 微软雅黑; line-height: 150%; font-size: 10.5000pt; mso-font-kerning: 1.0000pt;"><span style="font-family: 微软雅黑;">本通知书的生效是以您向我公司提供的信息全面、真实为前提。您对本通知书的确认并不表示双方劳动关系的建立，只有在您按照本通知书的要求报道、提供的上述材料真实有效的前提下，才具备签订劳动合同的条件，双方劳动关系的建立以及具体的权利义务最终将以我公司与您签订的书面劳动合同为准。如果您向我公司提供的学历、工作经历等信息不真实，或向我公司隐瞒了以前的不良记录（包括但不限于信用记录、违法记录等），或未向我公司披露与其他雇主尚未解除的劳动关系，或对前雇主仍然负有竞业限制等义务，本通知书自始不发生法律效力且公司有权立即解除与您的劳动合同。</span></span></p>
+<p class="MsoNormal" style="mso-add-space: auto; text-indent: 21.0000pt; line-height: 150%;"><span style="mso-spacerun: 'yes'; font-family: 微软雅黑; line-height: 150%; font-size: 10.5000pt; mso-font-kerning: 1.0000pt;"><span style="font-family: 微软雅黑;">我们真诚</span></span><span style="mso-spacerun: 'yes'; font-family: 微软雅黑; line-height: 150%; font-size: 10.5000pt; mso-font-kerning: 1.0000pt;"><span style="font-family: 微软雅黑;">欢迎您的</span></span><span style="mso-spacerun: 'yes'; font-family: 微软雅黑; line-height: 150%; font-size: 10.5000pt; mso-font-kerning: 1.0000pt;"><span style="font-family: 微软雅黑;">加入，我们期待与</span></span><span style="mso-spacerun: 'yes'; font-family: 微软雅黑; line-height: 150%; font-size: 10.5000pt; mso-font-kerning: 1.0000pt;"><span style="font-family: 微软雅黑;">您</span></span><span style="mso-spacerun: 'yes'; font-family: 微软雅黑; line-height: 150%; font-size: 10.5000pt; mso-font-kerning: 1.0000pt;"><span style="font-family: 微软雅黑;">共同成长</span></span><span style="mso-spacerun: 'yes'; font-family: 微软雅黑; line-height: 150%; font-size: 10.5000pt; mso-font-kerning: 1.0000pt;"><span style="font-family: 微软雅黑;">。</span></span></p>
+<p class="MsoNormal" style="mso-add-space: auto; text-indent: 21.0000pt; line-height: 150%;"><span style="mso-spacerun: 'yes'; font-family: 微软雅黑; line-height: 150%; font-size: 10.5000pt; mso-font-kerning: 1.0000pt;"><span style="font-family: 微软雅黑;">若有任何疑问，请随时来电或发送邮件提出。</span></span></p>
+<p class="MsoNormal" style="mso-add-space: auto; text-indent: 21.0000pt; line-height: 150%;"><span style="font-family: 微软雅黑; line-height: 150%; font-size: 10.5pt;">&nbsp;</span></p>
+<p class="MsoNormal" style="mso-add-space: auto; text-indent: 21.0000pt; line-height: 150%;"><span style="font-family: 微软雅黑; line-height: 150%; font-size: 10.5pt;">Tel</span><span style="font-family: 微软雅黑; line-height: 150%; font-size: 10.5pt;"><span style="font-family: 微软雅黑;">：</span> 0</span><span style="font-family: 微软雅黑; line-height: 150%; font-size: 10.5pt;">XX</span><span style="font-family: 微软雅黑; line-height: 150%; font-size: 10.5pt;">-</span><span style="mso-spacerun: 'yes'; font-family: Calibri; font-size: 10.5000pt; mso-font-kerning: 1.0000pt;">&nbsp;</span><span style="mso-spacerun: 'yes'; font-family: 宋体; font-size: 10.5000pt; mso-font-kerning: 1.0000pt;">12345678</span><span style="font-family: 微软雅黑; line-height: 150%; font-size: 10.5pt;"><span style="font-family: 微软雅黑;">（公司固话）</span></span></p>
+<p class="MsoNormal" style="mso-add-space: auto; text-indent: 21.0000pt; line-height: 150%;"><span style="font-family: 微软雅黑; line-height: 150%; font-size: 10.5pt;">Mobile： </span><span style="font-family: 微软雅黑; line-height: 150%; font-size: 10.5pt;">12345678910</span><span style="font-family: 微软雅黑; line-height: 150%; font-size: 10.5pt;"><span style="font-family: 微软雅黑;">（</span>H</span><span style="font-family: 微软雅黑; line-height: 150%; font-size: 10.5pt;">R</span><span style="font-family: 微软雅黑; line-height: 150%; font-size: 10.5pt;"><span style="font-family: 微软雅黑;">，</span></span><span style="font-family: 微软雅黑; line-height: 150%; font-size: 10.5pt;">XXX</span><span style="font-family: 微软雅黑; line-height: 150%; font-size: 10.5pt;"><span style="font-family: 微软雅黑;">女士）</span></span></p>
+<p class="MsoNormal" style="mso-add-space: auto; text-indent: 21.0000pt; line-height: 150%;"><span style="font-family: 微软雅黑; line-height: 150%; font-size: 10.5pt;">Email</span><span style="font-family: 微软雅黑; line-height: 150%; font-size: 10.5pt;"><span style="font-family: 微软雅黑;">：</span> </span><span style="font-family: 微软雅黑; line-height: 150%; font-size: 10.5pt;">xxxx123</span><span style="font-family: Verdana; line-height: 150%; font-size: 10.5pt; background: #ffffff;">@</span><span style="font-family: 宋体; line-height: 150%; font-size: 10.5pt; background: #ffffff;">qq</span><span style="font-family: Verdana; line-height: 150%; font-size: 10.5pt; background: #ffffff;">.com</span><span style="font-family: 宋体; line-height: 150%; font-size: 10.5pt; background: #ffffff;"><span style="font-family: 宋体;">（</span></span><span style="font-family: 宋体; line-height: 150%; font-size: 10.5pt; background: #ffffff;">H</span><span style="font-family: Verdana; line-height: 150%; font-size: 10.5pt; background: #ffffff;">R</span><span style="font-family: 宋体; line-height: 150%; font-size: 10.5pt; background: #ffffff;"><span style="font-family: 宋体;">企业邮箱</span></span><span style="font-family: 宋体; line-height: 150%; font-size: 10.5pt; background: #ffffff;"><span style="font-family: 宋体;">）</span></span></p>
+<p class="MsoNormal" style="mso-add-space: auto; text-indent: 21.0000pt; line-height: 150%;"><span style="font-family: 微软雅黑; line-height: 150%; font-size: 10.5pt;">&nbsp;</span></p>
+<p class="MsoNormal" style="mso-add-space: auto; text-indent: 21.0000pt; line-height: 150%;"><span style="font-family: 微软雅黑; line-height: 150%; font-size: 10.5pt;">&nbsp;</span></p>
+<p class="MsoNormal" style="mso-add-space: auto; text-align: right; line-height: 150%;" align="right"><span style="font-family: 微软雅黑; line-height: 150%; font-size: 10.5pt;">XXXXXX</span><span style="font-family: 微软雅黑; line-height: 150%; font-size: 10.5pt;"><span style="font-family: 微软雅黑;">有限</span></span><span style="font-family: 微软雅黑; line-height: 150%; font-size: 10.5pt;"><span style="font-family: 微软雅黑;">公司</span></span><span style="font-family: 微软雅黑; line-height: 150%; font-size: 10.5pt;">&nbsp;</span></p>
+<p class="MsoNormal" style="mso-add-space: auto; text-align: right; line-height: 150%;" align="right"><span style="mso-spacerun: 'yes'; font-family: 微软雅黑; line-height: 150%; font-size: 10.5000pt; mso-font-kerning: 1.0000pt;"><span style="font-family: 微软雅黑;">日期</span></span><span style="mso-spacerun: 'yes'; font-family: 微软雅黑; line-height: 150%; font-size: 10.5000pt; mso-font-kerning: 1.0000pt;"><span style="font-family: 微软雅黑;">：</span></span><u><span style="font-family: 微软雅黑; line-height: 150%; font-size: 10.5pt;">&nbsp;20</span></u><u><span style="font-family: 微软雅黑; line-height: 150%; font-size: 10.5pt;">20</span></u><u><span style="font-family: 微软雅黑; line-height: 150%; font-size: 10.5pt;">&nbsp;</span></u><span style="mso-spacerun: 'yes'; font-family: 微软雅黑; line-height: 150%; font-size: 10.5000pt; mso-font-kerning: 1.0000pt;"><span style="font-family: 微软雅黑;">年</span></span><u><span style="font-family: 微软雅黑; line-height: 150%; font-size: 10.5pt;">&nbsp;</span></u><u><span style="font-family: 微软雅黑; line-height: 150%; font-size: 10.5pt;">XX</span></u><u><span style="font-family: 微软雅黑; line-height: 150%; font-size: 10.5pt;">&nbsp;</span></u><span style="mso-spacerun: 'yes'; font-family: 微软雅黑; line-height: 150%; font-size: 10.5000pt; mso-font-kerning: 1.0000pt;"><span style="font-family: 微软雅黑;">月</span></span><u><span style="font-family: 微软雅黑; line-height: 150%; font-size: 10.5pt;">&nbsp;</span></u><u><span style="font-family: 微软雅黑; line-height: 150%; font-size: 10.5pt;">XX</span></u><u><span style="font-family: 微软雅黑; line-height: 150%; font-size: 10.5pt;">&nbsp;</span></u><span style="mso-spacerun: 'yes'; font-family: 微软雅黑; line-height: 150%; font-size: 10.5000pt; mso-font-kerning: 1.0000pt;"><span style="font-family: 微软雅黑;">日</span></span></p>
+<p class="MsoNormal" style="mso-add-space: auto; mso-pagination: widow-orphan; line-height: 150%;"><span style="mso-spacerun: 'yes'; font-family: 微软雅黑; line-height: 150%; font-size: 10.5000pt; mso-font-kerning: 1.0000pt;">&nbsp;</span></p>
+<p class="MsoNormal"><span style="mso-spacerun: 'yes'; font-family: Calibri; font-size: 10.5000pt; mso-font-kerning: 1.0000pt;">&nbsp;</span></p>`,
       ms: false,
       dialogVisibleoffer: false,
+      DialogVisibleOffer: false,
+      dialogVisiblepreviewOffer: false,
+      myHeaders: { "Auth-Token": token },
+      uploadDatas: {
+        label: "offer-attachment"
+      },
       linktitle: "复制链接",
       textlink: "service@163.com",
       ruleFormQuiz: {
@@ -996,7 +1010,7 @@ export default {
           "bold italic underline strikethrough subscript superscript removeformat | fontselect | fontsizeselect | styleselect | forecolor backcolor | ",
         // 工具栏2
         toolbar2:
-          " table | image | alignleft aligncenter alignright alignjustify | bullist numlist | outdent indent blockquote |undo redo",
+          " table  | alignleft aligncenter alignright alignjustify | bullist numlist | outdent indent blockquote |undo redo",
         contextmenu: false, // 禁用富文本的右键菜单，使用浏览器自带的右键菜单
         height: 500,
         ...this.option
@@ -1021,36 +1035,6 @@ export default {
         ]
       },
       page: {
-        total: 0,
-        pageSize: 10,
-        current: 1,
-        pageSizeOpts: [10, 20, 30]
-      },
-      page1: {
-        total: 0,
-        pageSize: 10,
-        current: 1,
-        pageSizeOpts: [10, 20, 30]
-      },
-      page2: {
-        total: 0,
-        pageSize: 10,
-        current: 1,
-        pageSizeOpts: [10, 20, 30]
-      },
-      page3: {
-        total: 0,
-        pageSize: 10,
-        current: 1,
-        pageSizeOpts: [10, 20, 30]
-      },
-      page4: {
-        total: 0,
-        pageSize: 10,
-        current: 1,
-        pageSizeOpts: [10, 20, 30]
-      },
-      page5: {
         total: 0,
         pageSize: 10,
         current: 1,
@@ -1136,7 +1120,7 @@ export default {
       showForm: false,
       startTime: "",
       endTime: "",
-      processedState: "",
+      processedState: "TO_PROCESS",
       multipleSelection: [],
       arrResume: [],
       arrPosition: [],
@@ -1145,15 +1129,68 @@ export default {
       addressList: [],
       transId: "",
       interviewStates: null,
-      companyAddress: ""
+      companyAddress: "",
+      file: "",
+      offerList: {},
+      completedPercentMax: "",
+      completedPercentMin: ""
     };
   },
   mounted() {
     tinymce.init(this.init);
   },
+  computed: {
+    uploadUrl() {
+      return "/api/v3/file-service/files/upload";
+    }
+  },
   methods: {
+    //预览
+    previewOffer() {
+      this.dialogVisiblepreviewOffer = true;
+    },
+    //图片上传
+    handleAvatarSuccess(res, file) {
+      this.file = res.data;
+      this.$notify({
+              title: "消息",
+              message: "附件上传成功",
+              type: "success"
+            });
+    },
     //发送offer
-    offer() {},
+    reqOffer(res) {
+      this.dialogVisibleoffer = true;
+      this.offerList = res;
+    },
+    //确定发送offer
+    transmitOffer() {
+      let params = {
+        attachment: this.file ? this.file : null,
+        content: this.detailOffer,
+        positionId: this.offerList.positionId,
+        resumeId: this.offerList.id
+      };
+      this.$http
+        .post(`/business-core/offer`, params)
+        .then(res => {
+          if (res.data.code == "200") {
+          } else {
+            this.dialogVisibleoffer = false;
+            this.DialogVisibleOffer = false;
+            this.$notify({
+        title: "消息",
+        message: "Offer发送成功",
+        type: "success"
+      });
+            
+          }
+        })
+        .catch(error => {});
+    },
+    keepReqOffer() {
+      this.DialogVisibleOffer = true;
+    },
     selectStyle() {
       if (this.processedState === "INTERVIEW") {
         this.ms = true;
@@ -1174,86 +1211,7 @@ export default {
         .put(`/business-core/interview/cancel/${list.interviewId}`, params)
         .then(res => {
           if (res.data.code == "200") {
-            let completedPercentMax;
-            let completedPercentMin;
-            switch (this.form.completedPercent) {
-              case "1":
-                completedPercentMin = 90;
-                completedPercentMax = null;
-                break;
-              case "2":
-                completedPercentMin = 80;
-                completedPercentMax = 90;
-                break;
-              case "3":
-                completedPercentMin = 70;
-                completedPercentMax = 80;
-                break;
-              case "4":
-                completedPercentMin = 60;
-                completedPercentMax = 70;
-                break;
-              case "5":
-                completedPercentMin = 50;
-                completedPercentMax = 60;
-                break;
-              case "6":
-                completedPercentMin = null;
-                completedPercentMax = 50;
-                break;
-              default:
-                completedPercentMin = null;
-                completedPercentMax = null;
-                break;
-            }
-            if (this.form.time.length !== 0) {
-              this.startTime = this.form.time[0].getTime();
-              this.endTime = this.form.time[1].getTime();
-            } else {
-              this.startTime = null;
-              this.endTime = null;
-            }
-            this.params = {
-              city: this.form.city[1] ? this.form.city[1] : null,
-              completedPercentMax: completedPercentMax,
-              completedPercentMin: completedPercentMin,
-              jobSearchStatusCode:
-                this.formInline.state === ""
-                  ? null
-                  : Number(this.formInline.state),
-              pageNum: 1,
-              pageSize: 10,
-              district: this.form.city[2] ? this.form.city[2] : null,
-              interviewState: this.interviewStates,
-              processedState: this.processedState,
-              province: this.form.city[0] ? this.form.city[0] : null,
-              sortBy: null,
-              sortOrder: null,
-              submittedTimeEnd: this.endTime,
-              submittedTimeStart: this.startTime
-            };
-            this.$http
-              .post(
-                `/business-core/position/${this.positionID}/resumes/list`,
-                this.params
-              )
-              .then(res => {
-                let response = res.data.data.list;
-                if (res.data.code == "200") {
-                  this.tableData = response;
-                  if (this.processedState === "TO_PROCESS") {
-                    this.page.total = res.data.data.total;
-                  } else if (this.processedState === "PROCESSING") {
-                    this.page1.total = res.data.data.total;
-                  } else if (this.processedState === "OFFERED") {
-                    this.page2.total = res.data.data.total;
-                  } else {
-                    this.page3.total = res.data.data.total;
-                  }
-                } else {
-                }
-              })
-              .catch(error => {});
+            this.process();
           } else {
           }
         })
@@ -1265,86 +1223,7 @@ export default {
         .put(`/business-core/interview/completed/${list.interviewId}`)
         .then(res => {
           if (res.data.code == "200") {
-            let completedPercentMax;
-            let completedPercentMin;
-            switch (this.form.completedPercent) {
-              case "1":
-                completedPercentMin = 90;
-                completedPercentMax = null;
-                break;
-              case "2":
-                completedPercentMin = 80;
-                completedPercentMax = 90;
-                break;
-              case "3":
-                completedPercentMin = 70;
-                completedPercentMax = 80;
-                break;
-              case "4":
-                completedPercentMin = 60;
-                completedPercentMax = 70;
-                break;
-              case "5":
-                completedPercentMin = 50;
-                completedPercentMax = 60;
-                break;
-              case "6":
-                completedPercentMin = null;
-                completedPercentMax = 50;
-                break;
-              default:
-                completedPercentMin = null;
-                completedPercentMax = null;
-                break;
-            }
-            if (this.form.time.length !== 0) {
-              this.startTime = this.form.time[0].getTime();
-              this.endTime = this.form.time[1].getTime();
-            } else {
-              this.startTime = null;
-              this.endTime = null;
-            }
-            this.params = {
-              city: this.form.city[1] ? this.form.city[1] : null,
-              completedPercentMax: completedPercentMax,
-              completedPercentMin: completedPercentMin,
-              jobSearchStatusCode:
-                this.formInline.state === ""
-                  ? null
-                  : Number(this.formInline.state),
-              pageNum: 1,
-              pageSize: 10,
-              district: this.form.city[2] ? this.form.city[2] : null,
-              interviewState: this.interviewStates,
-              processedState: this.processedState,
-              province: this.form.city[0] ? this.form.city[0] : null,
-              sortBy: null,
-              sortOrder: null,
-              submittedTimeEnd: this.endTime,
-              submittedTimeStart: this.startTime
-            };
-            this.$http
-              .post(
-                `/business-core/position/${this.positionID}/resumes/list`,
-                this.params
-              )
-              .then(res => {
-                let response = res.data.data.list;
-                if (res.data.code == "200") {
-                  this.tableData = response;
-                  if (this.processedState === "TO_PROCESS") {
-                    this.page.total = res.data.data.total;
-                  } else if (this.processedState === "PROCESSING") {
-                    this.page1.total = res.data.data.total;
-                  } else if (this.processedState === "OFFERED") {
-                    this.page2.total = res.data.data.total;
-                  } else {
-                    this.page3.total = res.data.data.total;
-                  }
-                } else {
-                }
-              })
-              .catch(error => {});
+            this.process();
           } else {
           }
         })
@@ -1366,85 +1245,7 @@ export default {
       } else {
         this.interviewStates = "HAS_BEEN_EFFECTIVE";
       }
-      let completedPercentMax;
-      let completedPercentMin;
-      switch (this.form.completedPercent) {
-        case "1":
-          completedPercentMin = 90;
-          completedPercentMax = null;
-          break;
-        case "2":
-          completedPercentMin = 80;
-          completedPercentMax = 90;
-          break;
-        case "3":
-          completedPercentMin = 70;
-          completedPercentMax = 80;
-          break;
-        case "4":
-          completedPercentMin = 60;
-          completedPercentMax = 70;
-          break;
-        case "5":
-          completedPercentMin = 50;
-          completedPercentMax = 60;
-          break;
-        case "6":
-          completedPercentMin = null;
-          completedPercentMax = 50;
-          break;
-        default:
-          completedPercentMin = null;
-          completedPercentMax = null;
-          break;
-      }
-      if (this.form.time.length !== 0) {
-        this.startTime = this.form.time[0].getTime();
-        this.endTime = this.form.time[1].getTime();
-      } else {
-        this.startTime = null;
-        this.endTime = null;
-      }
-      this.params = {
-        city: this.form.city[1] ? this.form.city[1] : null,
-        completedPercentMax: completedPercentMax,
-        completedPercentMin: completedPercentMin,
-        jobSearchStatusCode:
-          this.formInline.state === "" ? null : Number(this.formInline.state),
-        pageNum: 1,
-        pageSize: 10,
-        district: this.form.city[2] ? this.form.city[2] : null,
-        interviewState: this.interviewStates,
-        processedState: this.processedState,
-        province: this.form.city[0] ? this.form.city[0] : null,
-        sortBy: null,
-        sortOrder: null,
-        submittedTimeEnd: this.endTime,
-        submittedTimeStart: this.startTime
-      };
-      this.$http
-        .post(
-          `/business-core/position/${this.positionID}/resumes/list`,
-          this.params
-        )
-        .then(res => {
-          let response = res.data.data.list;
-          if (res.data.code == "200") {
-            this.ms = false;
-            this.tableData = response;
-            if (this.processedState === "TO_PROCESS") {
-              this.page.total = res.data.data.total;
-            } else if (this.processedState === "PROCESSING") {
-              this.page1.total = res.data.data.total;
-            } else if (this.processedState === "OFFERED") {
-              this.page2.total = res.data.data.total;
-            } else {
-              this.page3.total = res.data.data.total;
-            }
-          } else {
-          }
-        })
-        .catch(error => {});
+      this.process();
     },
     copy() {
       var clipboard = new Clipboard(".tabs-read");
@@ -1483,84 +1284,7 @@ export default {
           if (res.data.code === "200") {
             this.centerDialogVisibles = false;
             this.centerDialogVisible = false;
-            let completedPercentMax;
-            let completedPercentMin;
-            switch (this.form.completedPercent) {
-              case "1":
-                completedPercentMin = 90;
-                completedPercentMax = null;
-                break;
-              case "2":
-                completedPercentMin = 80;
-                completedPercentMax = 90;
-                break;
-              case "3":
-                completedPercentMin = 70;
-                completedPercentMax = 80;
-                break;
-              case "4":
-                completedPercentMin = 60;
-                completedPercentMax = 70;
-                break;
-              case "5":
-                completedPercentMin = 50;
-                completedPercentMax = 60;
-                break;
-              case "6":
-                completedPercentMin = null;
-                completedPercentMax = 50;
-                break;
-              default:
-                completedPercentMin = null;
-                completedPercentMax = null;
-                break;
-            }
-            if (this.form.time.length !== 0) {
-              this.startTime = this.form.time[0].getTime();
-              this.endTime = this.form.time[1].getTime();
-            } else {
-              this.startTime = null;
-              this.endTime = null;
-            }
-            this.params = {
-              city: this.form.city[0] ? this.form.city[0] : null,
-              completedPercentMax: completedPercentMax,
-              completedPercentMin: completedPercentMin,
-              jobSearchStatusCode:
-                this.formInline.state === ""
-                  ? null
-                  : Number(this.formInline.state),
-              pageNum: 1,
-              pageSize: 10,
-              processedState: this.processedState,
-              province: this.form.city[1] ? this.form.city[1] : null,
-              sortBy: null,
-              sortOrder: null,
-              submittedTimeEnd: this.endTime,
-              submittedTimeStart: this.startTime
-            };
-            this.$http
-              .post(
-                `/business-core/position/${this.positionID}/resumes/list`,
-                this.params
-              )
-              .then(res => {
-                let response = res.data.data.list;
-                if (res.data.code == "200") {
-                  this.tableData = response;
-                  if (this.processedState === "TO_PROCESS") {
-                    this.page.total = res.data.data.total;
-                  } else if (this.processedState === "PROCESSING") {
-                    this.page1.total = res.data.data.total;
-                  } else if (this.processedState === "OFFERED") {
-                    this.page2.total = res.data.data.total;
-                  } else {
-                    this.page3.total = res.data.data.total;
-                  }
-                } else {
-                }
-              })
-              .catch(error => {});
+            this.process();
           } else {
           }
         })
@@ -1665,18 +1389,18 @@ export default {
         .catch(error => {
           this.dialogVisible = false;
           if (error.response.status === 404) {
-            this.$notify.error({
-              title: "错误",
+            this.$notify.info({
+              title: "消息",
               message: "页面丢失，请重新加载"
             });
           } else if (error.response.status === 403) {
-            this.$notify.error({
-              title: "错误",
+            this.$notify.info({
+              title: "消息",
               message: "登陆超时，请重新登录"
             });
           } else {
-            this.$notify.error({
-              title: "错误",
+            this.$notify.info({
+              title: "消息",
               message: error.response.data.message
             });
           }
@@ -1684,255 +1408,31 @@ export default {
     },
     //不合格
     unfit(tab) {
-      let completedPercentMax;
-      let completedPercentMin;
-      switch (this.form.completedPercent) {
-        case "1":
-          completedPercentMin = 90;
-          completedPercentMax = null;
-          break;
-        case "2":
-          completedPercentMin = 80;
-          completedPercentMax = 90;
-          break;
-        case "3":
-          completedPercentMin = 70;
-          completedPercentMax = 80;
-          break;
-        case "4":
-          completedPercentMin = 60;
-          completedPercentMax = 70;
-          break;
-        case "5":
-          completedPercentMin = 50;
-          completedPercentMax = 60;
-          break;
-        case "6":
-          completedPercentMin = null;
-          completedPercentMax = 50;
-          break;
-        default:
-          completedPercentMin = null;
-          completedPercentMax = null;
-          break;
-      }
-      if (this.form.time.length !== 0) {
-        this.startTime = this.form.time[0].getTime();
-        this.endTime = this.form.time[1].getTime();
-      } else {
-        this.startTime = null;
-        this.endTime = null;
-      }
       this.$http
         .put(
           `/business-core/position/${this.positionID}/resumes/${tab.id}/unfit`
         )
         .then(res => {
-          let response = res.data.data;
           if (res.data.code == "200") {
-            this.params = {
-              city: this.form.city[0] ? this.form.city[0] : null,
-              completedPercentMax: completedPercentMax,
-              completedPercentMin: completedPercentMin,
-              jobSearchStatusCode:
-                this.formInline.state === ""
-                  ? null
-                  : Number(this.formInline.state),
-              pageNum: 1,
-              pageSize: 10,
-              processedState: this.processedState,
-              province: this.form.city[1] ? this.form.city[1] : null,
-              sortBy: null,
-              sortOrder: null,
-              submittedTimeEnd: this.endTime,
-              submittedTimeStart: this.startTime
-            };
-            this.$http
-              .post(
-                `/business-core/position/${this.positionID}/resumes/list`,
-                this.params
-              )
-              .then(res => {
-                let response = res.data.data.list;
-                if (res.data.code == "200") {
-                  this.tableData = response;
-                  if (this.processedState === "TO_PROCESS") {
-                    this.page.total = res.data.data.total;
-                  } else if (this.processedState === "PROCESSING") {
-                    this.page1.total = res.data.data.total;
-                  } else if (this.processedState === "OFFERED") {
-                    this.page2.total = res.data.data.total;
-                  } else {
-                    this.page3.total = res.data.data.total;
-                  }
-                } else {
-                }
-              })
-              .catch(error => {
-                if (error.response.status === 404) {
-                  this.$notify.error({
-                    title: "错误",
-                    message: "页面丢失，请重新加载"
-                  });
-                } else if (error.response.status === 403) {
-                  this.$notify.error({
-                    title: "错误",
-                    message: "登陆超时，请重新登录"
-                  });
-                } else {
-                  this.$notify.error({
-                    title: "错误",
-                    message: error.response.data.message
-                  });
-                }
-              });
+            this.process();
           } else {
           }
         })
-        .catch(error => {
-          if (error.response.status === 404) {
-            this.$notify.error({
-              title: "错误",
-              message: "页面丢失，请重新加载"
-            });
-          } else if (error.response.status === 403) {
-            this.$notify.error({
-              title: "错误",
-              message: "登陆超时，请重新登录"
-            });
-          } else {
-            this.$notify.error({
-              title: "错误",
-              message: error.response.data.message
-            });
-          }
-        });
+        .catch(error => {});
     },
     //录用
     offer(tab) {
-      let completedPercentMax;
-      let completedPercentMin;
-      switch (this.form.completedPercent) {
-        case "1":
-          completedPercentMin = 90;
-          completedPercentMax = null;
-          break;
-        case "2":
-          completedPercentMin = 80;
-          completedPercentMax = 90;
-          break;
-        case "3":
-          completedPercentMin = 70;
-          completedPercentMax = 80;
-          break;
-        case "4":
-          completedPercentMin = 60;
-          completedPercentMax = 70;
-          break;
-        case "5":
-          completedPercentMin = 50;
-          completedPercentMax = 60;
-          break;
-        case "6":
-          completedPercentMin = null;
-          completedPercentMax = 50;
-          break;
-        default:
-          completedPercentMin = null;
-          completedPercentMax = null;
-          break;
-      }
-      if (this.form.time.length !== 0) {
-        this.startTime = this.form.time[0].getTime();
-        this.endTime = this.form.time[1].getTime();
-      } else {
-        this.startTime = null;
-        this.endTime = null;
-      }
       this.$http
         .put(
           `/business-core/position/${this.positionID}/resumes/${tab.id}/offer`
         )
         .then(res => {
-          let response = res.data.data;
           if (res.data.code == "200") {
-            this.params = {
-              city: this.form.city[0] ? this.form.city[0] : null,
-              completedPercentMax: completedPercentMax,
-              completedPercentMin: completedPercentMin,
-              jobSearchStatusCode:
-                this.formInline.state === ""
-                  ? null
-                  : Number(this.formInline.state),
-              pageNum: 1,
-              pageSize: 10,
-              processedState: this.processedState,
-              province: this.form.city[1] ? this.form.city[1] : null,
-              sortBy: null,
-              sortOrder: null,
-              submittedTimeEnd: this.endTime,
-              submittedTimeStart: this.startTime
-            };
-            this.$http
-              .post(
-                `/business-core/position/${this.positionID}/resumes/list`,
-                this.params
-              )
-              .then(res => {
-                let response = res.data.data.list;
-                if (res.data.code == "200") {
-                  this.tableData = response;
-                  if (this.processedState === "TO_PROCESS") {
-                    this.page.total = res.data.data.total;
-                  } else if (this.processedState === "PROCESSING") {
-                    this.page1.total = res.data.data.total;
-                  } else if (this.processedState === "OFFERED") {
-                    this.page2.total = res.data.data.total;
-                  } else {
-                    this.page3.total = res.data.data.total;
-                  }
-                } else {
-                }
-              })
-              .catch(error => {
-                if (error.response.status === 404) {
-                  this.$notify.error({
-                    title: "错误",
-                    message: "页面丢失，请重新加载"
-                  });
-                } else if (error.response.status === 403) {
-                  this.$notify.error({
-                    title: "错误",
-                    message: "登陆超时，请重新登录"
-                  });
-                } else {
-                  this.$notify.error({
-                    title: "错误",
-                    message: error.response.data.message
-                  });
-                }
-              });
+            this.process();
           } else {
           }
         })
-        .catch(error => {
-          if (error.response.status === 404) {
-            this.$notify.error({
-              title: "错误",
-              message: "页面丢失，请重新加载"
-            });
-          } else if (error.response.status === 403) {
-            this.$notify.error({
-              title: "错误",
-              message: "登陆超时，请重新登录"
-            });
-          } else {
-            this.$notify.error({
-              title: "错误",
-              message: error.response.data.message
-            });
-          }
-        });
+        .catch(error => {});
     },
     //通知面试/笔试
     info(tab) {
@@ -1942,169 +1442,9 @@ export default {
       this.ruleForm.positions = tab.positionName;
       this.ruleForm.dalary = tab.salary;
       this.transId = tab.id;
-      // let completedPercentMax;
-      // let completedPercentMin;
-      // switch (this.form.completedPercent) {
-      //   case "1":
-      //     completedPercentMin = 90;
-      //     completedPercentMax = null;
-      //     break;
-      //   case "2":
-      //     completedPercentMin = 80;
-      //     completedPercentMax = 90;
-      //     break;
-      //   case "3":
-      //     completedPercentMin = 70;
-      //     completedPercentMax = 80;
-      //     break;
-      //   case "4":
-      //     completedPercentMin = 60;
-      //     completedPercentMax = 70;
-      //     break;
-      //   case "5":
-      //     completedPercentMin = 50;
-      //     completedPercentMax = 60;
-      //     break;
-      //   case "6":
-      //     completedPercentMin = null;
-      //     completedPercentMax = 50;
-      //     break;
-      //   default:
-      //     completedPercentMin = null;
-      //     completedPercentMax = null;
-      //     break;
-      // }
-      // if (this.form.time.length !== 0) {
-      //   this.startTime = this.form.time[0].getTime();
-      //   this.endTime = this.form.time[1].getTime();
-      // } else {
-      //   this.startTime = null;
-      //   this.endTime = null;
-      // }
-      // this.$http
-      //   .put(
-      //     `/business-core/position/${this.positionID}/resumes/${tab.id}/info`
-      //   )
-      //   .then(res => {
-      //     let response = res.data.data;
-      //     // this.processedState = response.processedState;
-      //     if (res.data.code == "200") {
-      //       this.params = {
-      //         city: this.form.city[0] ? this.form.city[0] : null,
-      //         completedPercentMax: completedPercentMax,
-      //         completedPercentMin: completedPercentMin,
-      //         jobSearchStatusCode: Number(this.formInline.state),
-      //         pageNum: 1,
-      //         pageSize: 10,
-      //         processedState: this.processedState,
-      //         province: this.form.city[1] ? this.form.city[1] : null,
-      //         sortBy: null,
-      //         sortOrder: null,
-      //         submittedTimeEnd: this.endTime,
-      //         submittedTimeStart: this.startTime
-      //       };
-      //       this.$http
-      //         .post(
-      //           `/business-core/position/${this.positionID}/resumes/list`,
-      //           this.params
-      //         )
-      //         .then(res => {
-      //           let response = res.data.data.list;
-      //           if (res.data.code == "200") {
-      //             this.tableData = response;
-      //             if (this.processedState === "TO_PROCESS") {
-      //               this.page.total = res.data.data.total;
-      //             } else if (this.processedState === "PROCESSING") {
-      //               this.page1.total = res.data.data.total;
-      //             } else if (this.processedState === "OFFERED") {
-      //               this.page2.total = res.data.data.total;
-      //             } else {
-      //               this.page3.total = res.data.data.total;
-      //             }
-      //           } else {
-      //           }
-      //         })
-      //         .catch(error => {
-      //           if (error.response.status === 404) {
-      //             this.$notify.error({
-      //               title: "错误",
-      //               message: "页面丢失，请重新加载"
-      //             });
-      //           } else if (error.response.status === 403) {
-      //             this.$notify.error({
-      //               title: "错误",
-      //               message: "登陆超时，请重新登录"
-      //             });
-      //           } else {
-      //             this.$notify.error({
-      //               title: "错误",
-      //               message: error.response.data.message
-      //             });
-      //           }
-      //         });
-      //     } else {
-      //     }
-      //   })
-      //   .catch(error => {
-      //     if (error.response.status === 404) {
-      //       this.$notify.error({
-      //         title: "错误",
-      //         message: "页面丢失，请重新加载"
-      //       });
-      //     } else if (error.response.status === 403) {
-      //       this.$notify.error({
-      //         title: "错误",
-      //         message: "登陆超时，请重新登录"
-      //       });
-      //     } else {
-      //       this.$notify.error({
-      //         title: "错误",
-      //         message: error.response.data.message
-      //       });
-      //     }
-      //   });
     },
     //确认入职
     employed(tab) {
-      let completedPercentMax;
-      let completedPercentMin;
-      switch (this.form.completedPercent) {
-        case "1":
-          completedPercentMin = 90;
-          completedPercentMax = null;
-          break;
-        case "2":
-          completedPercentMin = 80;
-          completedPercentMax = 90;
-          break;
-        case "3":
-          completedPercentMin = 70;
-          completedPercentMax = 80;
-          break;
-        case "4":
-          completedPercentMin = 60;
-          completedPercentMax = 70;
-          break;
-        case "5":
-          completedPercentMin = 50;
-          completedPercentMax = 60;
-          break;
-        case "6":
-          completedPercentMin = null;
-          completedPercentMax = 50;
-          break;
-        default:
-          completedPercentMin = null;
-          completedPercentMax = null;
-          break;
-      }
-      if (this.form.time.length !== 0) {
-        this.startTime = this.form.time[0].getTime();
-        this.endTime = this.form.time[1].getTime();
-      } else {
-        this.startTime = null;
-        this.endTime = null;
-      }
       this.$http
         .put(
           `/business-core/position/${this.positionID}/resumes/${tab.id}/employed`
@@ -2112,83 +1452,11 @@ export default {
         .then(res => {
           let response = res.data.data;
           if (res.data.code == "200") {
-            this.params = {
-              city: this.form.city[0] ? this.form.city[0] : null,
-              completedPercentMax: completedPercentMax,
-              completedPercentMin: completedPercentMin,
-              jobSearchStatusCode:
-                this.formInline.state === ""
-                  ? null
-                  : Number(this.formInline.state),
-              pageNum: 1,
-              pageSize: 10,
-              processedState: this.processedState,
-              province: this.form.city[1] ? this.form.city[1] : null,
-              sortBy: null,
-              sortOrder: null,
-              submittedTimeEnd: this.endTime,
-              submittedTimeStart: this.startTime
-            };
-            this.$http
-              .post(
-                `/business-core/position/${this.positionID}/resumes/list`,
-                this.params
-              )
-              .then(res => {
-                let response = res.data.data.list;
-                if (res.data.code == "200") {
-                  this.tableData = response;
-                  if (this.processedState === "TO_PROCESS") {
-                    this.page.total = res.data.data.total;
-                  } else if (this.processedState === "PROCESSING") {
-                    this.page1.total = res.data.data.total;
-                  } else if (this.processedState === "OFFERED") {
-                    this.page2.total = res.data.data.total;
-                  } else {
-                    this.page3.total = res.data.data.total;
-                  }
-                } else {
-                }
-              })
-              .catch(error => {
-                if (error.response.status === 404) {
-                  this.$notify.error({
-                    title: "错误",
-                    message: "页面丢失，请重新加载"
-                  });
-                } else if (error.response.status === 403) {
-                  this.$notify.error({
-                    title: "错误",
-                    message: "登陆超时，请重新登录"
-                  });
-                } else {
-                  this.$notify.error({
-                    title: "错误",
-                    message: error.response.data.message
-                  });
-                }
-              });
+            this.process();
           } else {
           }
         })
-        .catch(error => {
-          if (error.response.status === 404) {
-            this.$notify.error({
-              title: "错误",
-              message: "页面丢失，请重新加载"
-            });
-          } else if (error.response.status === 403) {
-            this.$notify.error({
-              title: "错误",
-              message: "登陆超时，请重新登录"
-            });
-          } else {
-            this.$notify.error({
-              title: "错误",
-              message: error.response.data.message
-            });
-          }
-        });
+        .catch(error => {});
     },
     //查看
     examing(tab) {
@@ -2228,100 +1496,7 @@ export default {
     },
     //查询
     onSubmit() {
-      console.log(this.form.time);
-      let completedPercentMax;
-      let completedPercentMin;
-      switch (this.form.completedPercent) {
-        case "1":
-          completedPercentMin = 90;
-          completedPercentMax = null;
-          break;
-        case "2":
-          completedPercentMin = 80;
-          completedPercentMax = 90;
-          break;
-        case "3":
-          completedPercentMin = 70;
-          completedPercentMax = 80;
-          break;
-        case "4":
-          completedPercentMin = 60;
-          completedPercentMax = 70;
-          break;
-        case "5":
-          completedPercentMin = 50;
-          completedPercentMax = 60;
-          break;
-        case "6":
-          completedPercentMin = null;
-          completedPercentMax = 50;
-          break;
-        default:
-          completedPercentMin = null;
-          completedPercentMax = null;
-          break;
-      }
-      if (this.form.time.length !== 0) {
-        this.startTime = this.form.time[0].getTime();
-        this.endTime = this.form.time[1].getTime();
-      } else {
-        this.startTime = null;
-        this.endTime = null;
-      }
-
-      let params = {
-        city: this.form.city[1] ? this.form.city[1] : null,
-        completedPercentMax: completedPercentMax,
-        completedPercentMin: completedPercentMin,
-        jobSearchStatusCode:
-          this.formInline.state === "" ? null : Number(this.formInline.state),
-        pageNum: 1,
-        pageSize: 10,
-        district: this.form.city[2] ? this.form.city[2] : null,
-        interviewState: this.interviewStates,
-        processedState: this.processedState,
-        province: this.form.city[0] ? this.form.city[0] : null,
-        sortBy: null,
-        sortOrder: null,
-        submittedTimeEnd: this.endTime,
-        submittedTimeStart: this.startTime
-      };
-      this.$http
-        .post(`/business-core/position/${this.positionID}/resumes/list`, params)
-        .then(res => {
-          let response = res.data.data.list;
-          if (res.data.code == "200") {
-            this.tableData = response;
-            if (this.processedState === "TO_PROCESS") {
-              this.page.total = res.data.data.total;
-            } else if (this.processedState === "PROCESSING") {
-              this.page1.total = res.data.data.total;
-            } else if (this.processedState === "OFFERED") {
-              this.page2.total = res.data.data.total;
-            } else {
-              this.page3.total = res.data.data.total;
-            }
-          } else {
-          }
-        })
-        .catch(error => {
-          if (error.response.status === 404) {
-            this.$notify.error({
-              title: "错误",
-              message: "页面丢失，请重新加载"
-            });
-          } else if (error.response.status === 403) {
-            this.$notify.error({
-              title: "错误",
-              message: "登陆超时，请重新登录"
-            });
-          } else {
-            this.$notify.error({
-              title: "错误",
-              message: error.response.data.message
-            });
-          }
-        });
+      this.process();
     },
     //职位详情
     position() {
@@ -2334,41 +1509,62 @@ export default {
           } else {
           }
         })
-        .catch(error => {
-          if (error.response.status === 404) {
-            this.$notify.error({
-              title: "错误",
-              message: "页面丢失，请重新加载"
-            });
-          } else if (error.response.status === 403) {
-            this.$notify.error({
-              title: "错误",
-              message: "登陆超时，请重新登录"
-            });
-          } else {
-            this.$notify.error({
-              title: "错误",
-              message: error.response.data.message
-            });
-          }
-        });
+        .catch(error => {});
     },
     //待处理
     process() {
-      this.processedState = "TO_PROCESS";
+      switch (this.form.completedPercent) {
+        case "1":
+          this.completedPercentMin = 90;
+          this.completedPercentMax = null;
+          break;
+        case "2":
+          this.completedPercentMin = 80;
+          this.completedPercentMax = 90;
+          break;
+        case "3":
+          this.completedPercentMin = 70;
+          this.completedPercentMax = 80;
+          break;
+        case "4":
+          this.completedPercentMin = 60;
+          this.completedPercentMax = 70;
+          break;
+        case "5":
+          this.completedPercentMin = 50;
+          this.completedPercentMax = 60;
+          break;
+        case "6":
+          this.completedPercentMin = null;
+          this.completedPercentMax = 50;
+          break;
+        default:
+          this.completedPercentMin = null;
+          this.completedPercentMax = null;
+          break;
+      }
+      if (this.form.time.length !== 0) {
+        this.startTime = this.form.time[0].getTime();
+        this.endTime = this.form.time[1].getTime();
+      } else {
+        this.startTime = null;
+        this.endTime = null;
+      }
       let params = {
-        city: null,
-        completedPercentMax: null,
-        completedPercentMin: null,
-        jobSearchStatusCode: null,
-        pageNum: 1,
-        pageSize: 10,
-        processedState: "TO_PROCESS",
-        province: null,
+        city: this.form.city[1] ? this.form.city[1] : null,
+        completedPercentMax: this.completedPercentMax,
+        completedPercentMin: this.completedPercentMin,
+        jobSearchStatusCode:
+          this.formInline.state === "" ? null : Number(this.formInline.state),
+        pageNum: this.page.current,
+        pageSize: this.page.pageSize,
+        processedState: this.processedState,
+        interviewState: this.interviewStates,
+        province: this.form.city[0] ? this.form.city[0] : null,
         sortBy: null,
         sortOrder: null,
-        submittedTimeEnd: null,
-        submittedTimeStart: null
+        submittedTimeEnd: this.endTime,
+        submittedTimeStart: this.startTime
       };
       this.$http
         .post(`/business-core/position/${this.positionID}/resumes/list`, params)
@@ -2380,1423 +1576,57 @@ export default {
           } else {
           }
         })
-        .catch(error => {
-          if (error.response.status === 404) {
-            this.$notify.error({
-              title: "错误",
-              message: "页面丢失，请重新加载"
-            });
-          } else if (error.response.status === 403) {
-            this.$notify.error({
-              title: "错误",
-              message: "登陆超时，请重新登录"
-            });
-          } else {
-            this.$notify.error({
-              title: "错误",
-              message: error.response.data.message
-            });
-          }
-        });
+        .catch(error => {});
     },
     //tab
     mss() {},
     handleClick(tab) {
-      let completedPercentMax;
-      let completedPercentMin;
-      switch (this.form.completedPercent) {
-        case "1":
-          completedPercentMin = 90;
-          completedPercentMax = null;
-          break;
-        case "2":
-          completedPercentMin = 80;
-          completedPercentMax = 90;
-          break;
-        case "3":
-          completedPercentMin = 70;
-          completedPercentMax = 80;
-          break;
-        case "4":
-          completedPercentMin = 60;
-          completedPercentMax = 70;
-          break;
-        case "5":
-          completedPercentMin = 50;
-          completedPercentMax = 60;
-          break;
-        case "6":
-          completedPercentMin = null;
-          completedPercentMax = 50;
-          break;
-        default:
-          completedPercentMin = null;
-          completedPercentMax = null;
-          break;
-      }
-      if (this.form.time.length !== 0) {
-        this.startTime = this.form.time[0].getTime();
-        this.endTime = this.form.time[1].getTime();
-      } else {
-        this.startTime = null;
-        this.endTime = null;
-      }
       if (tab.paneName === "first") {
         this.ms = false;
         this.processedState = "TO_PROCESS";
-        this.params = {
-          city: this.form.city[0] ? this.form.city[0] : null,
-          completedPercentMax: completedPercentMax,
-          completedPercentMin: completedPercentMin,
-          jobSearchStatusCode:
-            this.formInline.state === "" ? null : Number(this.formInline.state),
-          pageNum: 1,
-          pageSize: 10,
-          processedState: this.processedState,
-          province: this.form.city[1] ? this.form.city[1] : null,
-          sortBy: null,
-          sortOrder: null,
-          submittedTimeEnd: this.endTime,
-          submittedTimeStart: this.startTime
-        };
       } else if (tab.paneName === "second") {
         this.ms = true;
         this.processedState = "INTERVIEW";
-        this.params = {
-          city: this.form.city[1] ? this.form.city[1] : null,
-          completedPercentMax: completedPercentMax,
-          completedPercentMin: completedPercentMin,
-          jobSearchStatusCode:
-            this.formInline.state === "" ? null : Number(this.formInline.state),
-          pageNum: 1,
-          district: this.form.city[2] ? this.form.city[2] : null,
-          interviewState: this.interviewStates,
-          pageSize: 10,
-          processedState: this.processedState,
-          province: this.form.city[0] ? this.form.city[0] : null,
-          sortBy: null,
-          sortOrder: null,
-          submittedTimeEnd: this.endTime,
-          submittedTimeStart: this.startTime
-        };
       } else if (tab.paneName === "third") {
         this.ms = false;
         this.processedState = "OFFERED";
-        this.params = {
-          city: this.form.city[1] ? this.form.city[1] : null,
-          completedPercentMax: completedPercentMax,
-          completedPercentMin: completedPercentMin,
-          jobSearchStatusCode:
-            this.formInline.state === "" ? null : Number(this.formInline.state),
-          pageNum: 1,
-          district: this.form.city[2] ? this.form.city[2] : null,
-          interviewState: null,
-          pageSize: 10,
-          processedState: this.processedState,
-          province: this.form.city[0] ? this.form.city[0] : null,
-          sortBy: null,
-          sortOrder: null,
-          submittedTimeEnd: this.endTime,
-          submittedTimeStart: this.startTime
-        };
       } else if (tab.paneName === "fourth") {
         this.ms = false;
         this.processedState = "UNFIT";
-        this.params = {
-          city: this.form.city[1] ? this.form.city[1] : null,
-          completedPercentMax: completedPercentMax,
-          completedPercentMin: completedPercentMin,
-          jobSearchStatusCode:
-            this.formInline.state === "" ? null : Number(this.formInline.state),
-          pageNum: 1,
-          district: this.form.city[2] ? this.form.city[2] : null,
-          interviewState: null,
-          pageSize: 10,
-          processedState: this.processedState,
-          province: this.form.city[0] ? this.form.city[0] : null,
-          sortBy: null,
-          sortOrder: null,
-          submittedTimeEnd: this.endTime,
-          submittedTimeStart: this.startTime
-        };
       } else if (tab.paneName === "fifth") {
         this.ms = false;
         this.processedState = "EMPLOYED";
-        this.params = {
-          city: this.form.city[1] ? this.form.city[1] : null,
-          completedPercentMax: completedPercentMax,
-          completedPercentMin: completedPercentMin,
-          jobSearchStatusCode:
-            this.formInline.state === "" ? null : Number(this.formInline.state),
-          pageNum: 1,
-          district: this.form.city[2] ? this.form.city[2] : null,
-          interviewState: null,
-          pageSize: 10,
-          processedState: this.processedState,
-          province: this.form.city[0] ? this.form.city[0] : null,
-          sortBy: null,
-          sortOrder: null,
-          submittedTimeEnd: this.endTime,
-          submittedTimeStart: this.startTime
-        };
       } else {
         this.ms = false;
         this.processedState = "PROCESSING";
-        this.params = {
-          city: this.form.city[1] ? this.form.city[1] : null,
-          completedPercentMax: completedPercentMax,
-          completedPercentMin: completedPercentMin,
-          jobSearchStatusCode:
-            this.formInline.state === "" ? null : Number(this.formInline.state),
-          pageNum: 1,
-          district: this.form.city[2] ? this.form.city[2] : null,
-          interviewState: null,
-          pageSize: 10,
-          processedState: this.processedState,
-          province: this.form.city[0] ? this.form.city[0] : null,
-          sortBy: null,
-          sortOrder: null,
-          submittedTimeEnd: this.endTime,
-          submittedTimeStart: this.startTime
-        };
       }
-      this.$http
-        .post(
-          `/business-core/position/${this.positionID}/resumes/list`,
-          this.params
-        )
-        .then(res => {
-          let response = res.data.data.list;
-          if (res.data.code == "200") {
-            this.tableData = response;
-            if (this.processedState === "TO_PROCESS") {
-              this.page.total = res.data.data.total;
-            } else if (this.processedState === "PROCESSING") {
-              this.page1.total = res.data.data.total;
-            } else if (this.processedState === "OFFERED") {
-              this.page2.total = res.data.data.total;
-            } else if (this.processedState === "EMPLOYED") {
-              this.page4.total = res.data.data.total;
-            } else if (this.processedState === "INTERVIEW") {
-              this.page5.total = res.data.data.total;
-            } else {
-              this.page3.total = res.data.data.total;
-            }
-          } else {
-          }
-        })
-        .catch(error => {
-          if (error.response.status === 404) {
-            this.$notify.error({
-              title: "错误",
-              message: "页面丢失，请重新加载"
-            });
-          } else if (error.response.status === 403) {
-            this.$notify.error({
-              title: "错误",
-              message: "登陆超时，请重新登录"
-            });
-          } else {
-            this.$notify.error({
-              title: "错误",
-              message: error.response.data.message
-            });
-          }
-        });
+      this.process();
     },
     //tab 下线
     handleClicks(tab) {
-      let completedPercentMax;
-      let completedPercentMin;
-      switch (this.form.completedPercent) {
-        case "1":
-          completedPercentMin = 90;
-          completedPercentMax = null;
-          break;
-        case "2":
-          completedPercentMin = 80;
-          completedPercentMax = 90;
-          break;
-        case "3":
-          completedPercentMin = 70;
-          completedPercentMax = 80;
-          break;
-        case "4":
-          completedPercentMin = 60;
-          completedPercentMax = 70;
-          break;
-        case "5":
-          completedPercentMin = 50;
-          completedPercentMax = 60;
-          break;
-        case "6":
-          completedPercentMin = null;
-          completedPercentMax = 50;
-          break;
-        default:
-          completedPercentMin = null;
-          completedPercentMax = null;
-          break;
-      }
-      if (this.form.time.length !== 0) {
-        this.startTime = this.form.time[0].getTime();
-        this.endTime = this.form.time[1].getTime();
-      } else {
-        this.startTime = null;
-        this.endTime = null;
-      }
       if (tab.paneName === "first") {
         this.processedState = "TO_PROCESS";
-        this.params = {
-          city: this.form.city[1] ? this.form.city[1] : null,
-          completedPercentMax: completedPercentMax,
-          completedPercentMin: completedPercentMin,
-          jobSearchStatusCode:
-            this.formInline.state === "" ? null : Number(this.formInline.state),
-          pageNum: 1,
-          district: this.form.city[2] ? this.form.city[2] : null,
-          interviewState: null,
-          pageSize: 10,
-          processedState: this.processedState,
-          province: this.form.city[0] ? this.form.city[0] : null,
-          sortBy: null,
-          sortOrder: null,
-          submittedTimeEnd: this.endTime,
-          submittedTimeStart: this.startTime
-        };
       } else if (tab.paneName === "second") {
         this.processedState = "OFFERED";
-        this.params = {
-          city: this.form.city[1] ? this.form.city[1] : null,
-          completedPercentMax: completedPercentMax,
-          completedPercentMin: completedPercentMin,
-          jobSearchStatusCode:
-            this.formInline.state === "" ? null : Number(this.formInline.state),
-          pageNum: 1,
-          district: this.form.city[2] ? this.form.city[2] : null,
-          interviewState: null,
-          pageSize: 10,
-          processedState: this.processedState,
-          province: this.form.city[0] ? this.form.city[0] : null,
-          sortBy: null,
-          sortOrder: null,
-          submittedTimeEnd: this.endTime,
-          submittedTimeStart: this.startTime
-        };
       } else if (tab.paneName === "third") {
         this.processedState = "UNFIT";
-        this.params = {
-          city: this.form.city[1] ? this.form.city[1] : null,
-          completedPercentMax: completedPercentMax,
-          completedPercentMin: completedPercentMin,
-          jobSearchStatusCode:
-            this.formInline.state === "" ? null : Number(this.formInline.state),
-          pageNum: 1,
-          district: this.form.city[2] ? this.form.city[2] : null,
-          interviewState: null,
-          pageSize: 10,
-          processedState: this.processedState,
-          province: this.form.city[0] ? this.form.city[0] : null,
-          sortBy: null,
-          sortOrder: null,
-          submittedTimeEnd: this.endTime,
-          submittedTimeStart: this.startTime
-        };
       } else {
         this.processedState = "EMPLOYED";
-        this.params = {
-          city: this.form.city[1] ? this.form.city[1] : null,
-          completedPercentMax: completedPercentMax,
-          completedPercentMin: completedPercentMin,
-          jobSearchStatusCode:
-            this.formInline.state === "" ? null : Number(this.formInline.state),
-          pageNum: 1,
-          district: this.form.city[2] ? this.form.city[2] : null,
-          interviewState: null,
-          pageSize: 10,
-          processedState: this.processedState,
-          province: this.form.city[0] ? this.form.city[0] : null,
-          sortBy: null,
-          sortOrder: null,
-          submittedTimeEnd: this.endTime,
-          submittedTimeStart: this.startTime
-        };
       }
-      this.$http
-        .post(
-          `/business-core/position/${this.positionID}/resumes/list`,
-          this.params
-        )
-        .then(res => {
-          let response = res.data.data.list;
-          if (res.data.code == "200") {
-            this.tableData = response;
-            if (this.processedState === "TO_PROCESS") {
-              this.page.total = res.data.data.total;
-            } else if (this.processedState === "OFFERED") {
-              this.page2.total = res.data.data.total;
-            } else if (this.processedState === "EMPLOYED") {
-              this.page4.total = res.data.data.total;
-            } else {
-              this.page3.total = res.data.data.total;
-            }
-          } else {
-          }
-        })
-        .catch(error => {
-          if (error.response.status === 404) {
-            this.$notify.error({
-              title: "错误",
-              message: "页面丢失，请重新加载"
-            });
-          } else if (error.response.status === 403) {
-            this.$notify.error({
-              title: "错误",
-              message: "登陆超时，请重新登录"
-            });
-          } else {
-            this.$notify.error({
-              title: "错误",
-              message: error.response.data.message
-            });
-          }
-        });
+      this.process();
     },
     checkForm() {
       this.showForm = !this.showForm;
     },
     //未处理分页
-    handleSizeChangeFirst(val) {
+    handleSizeChange(val) {
       this.page.pageSize = val;
       this.page.current = 1;
-      let completedPercentMax;
-      let completedPercentMin;
-      switch (this.form.completedPercent) {
-        case "1":
-          completedPercentMin = 90;
-          completedPercentMax = null;
-          break;
-        case "2":
-          completedPercentMin = 80;
-          completedPercentMax = 90;
-          break;
-        case "3":
-          completedPercentMin = 70;
-          completedPercentMax = 80;
-          break;
-        case "4":
-          completedPercentMin = 60;
-          completedPercentMax = 70;
-          break;
-        case "5":
-          completedPercentMin = 50;
-          completedPercentMax = 60;
-          break;
-        case "6":
-          completedPercentMin = null;
-          completedPercentMax = 50;
-          break;
-        default:
-          completedPercentMin = null;
-          completedPercentMax = null;
-          break;
-      }
-      if (this.form.time.length !== 0) {
-        this.startTime = this.form.time[0].getTime();
-        this.endTime = this.form.time[1].getTime();
-      } else {
-        this.startTime = null;
-        this.endTime = null;
-      }
-      let params = {
-        city: this.form.city[0] ? this.form.city[0] : null,
-        completedPercentMax: completedPercentMax,
-        completedPercentMin: completedPercentMin,
-        jobSearchStatusCode:
-          this.formInline.state === "" ? null : Number(this.formInline.state),
-        pageNum: this.page.current,
-        pageSize: this.page.pageSize,
-        processedState: "TO_PROCESS",
-        province: this.form.city[1] ? this.form.city[1] : null,
-        sortBy: null,
-        sortOrder: null,
-        submittedTimeEnd: this.endTime,
-        submittedTimeStart: this.startTime
-      };
-      this.$http
-        .post(`/business-core/position/${this.positionID}/resumes/list`, params)
-        .then(res => {
-          let response = res.data.data.list;
-          if (res.data.code == "200") {
-            this.tableData = response;
-            this.page.total = res.data.data.total;
-          } else {
-          }
-        })
-        .catch(error => {
-          if (error.response.status === 404) {
-            this.$notify.error({
-              title: "错误",
-              message: "页面丢失，请重新加载"
-            });
-          } else if (error.response.status === 403) {
-            this.$notify.error({
-              title: "错误",
-              message: "登陆超时，请重新登录"
-            });
-          } else {
-            this.$notify.error({
-              title: "错误",
-              message: error.response.data.message
-            });
-          }
-        });
+      this.process();
     },
-    handleCurrentChangeFirst(val) {
+    handleCurrentChange(val) {
       this.page.current = val;
-      let completedPercentMax;
-      let completedPercentMin;
-      switch (this.form.completedPercent) {
-        case "1":
-          completedPercentMin = 90;
-          completedPercentMax = null;
-          break;
-        case "2":
-          completedPercentMin = 80;
-          completedPercentMax = 90;
-          break;
-        case "3":
-          completedPercentMin = 70;
-          completedPercentMax = 80;
-          break;
-        case "4":
-          completedPercentMin = 60;
-          completedPercentMax = 70;
-          break;
-        case "5":
-          completedPercentMin = 50;
-          completedPercentMax = 60;
-          break;
-        case "6":
-          completedPercentMin = null;
-          completedPercentMax = 50;
-          break;
-        default:
-          completedPercentMin = null;
-          completedPercentMax = null;
-          break;
-      }
-      if (this.form.time.length !== 0) {
-        this.startTime = this.form.time[0].getTime();
-        this.endTime = this.form.time[1].getTime();
-      } else {
-        this.startTime = null;
-        this.endTime = null;
-      }
-      let params = {
-        city: this.form.city[0] ? this.form.city[0] : null,
-        completedPercentMax: completedPercentMax,
-        completedPercentMin: completedPercentMin,
-        jobSearchStatusCode:
-          this.formInline.state === "" ? null : Number(this.formInline.state),
-        pageNum: this.page.current,
-        pageSize: 10,
-        processedState: "TO_PROCESS",
-        province: this.form.city[1] ? this.form.city[1] : null,
-        sortBy: null,
-        sortOrder: null,
-        submittedTimeEnd: this.endTime,
-        submittedTimeStart: this.startTime
-      };
-      this.$http
-        .post(`/business-core/position/${this.positionID}/resumes/list`, params)
-        .then(res => {
-          let response = res.data.data.list;
-          if (res.data.code == "200") {
-            this.tableData = response;
-            this.page.total = res.data.data.total;
-          } else {
-          }
-        })
-        .catch(error => {
-          if (error.response.status === 404) {
-            this.$notify.error({
-              title: "错误",
-              message: "页面丢失，请重新加载"
-            });
-          } else if (error.response.status === 403) {
-            this.$notify.error({
-              title: "错误",
-              message: "登陆超时，请重新登录"
-            });
-          } else {
-            this.$notify.error({
-              title: "错误",
-              message: error.response.data.message
-            });
-          }
-        });
-    },
-    //处理中分页
-    handleSizeChangeSecond(val) {
-      this.page1.pageSize = val;
-      this.page1.current = 1;
-      let completedPercentMax;
-      let completedPercentMin;
-      switch (this.form.completedPercent) {
-        case "1":
-          completedPercentMin = 90;
-          completedPercentMax = null;
-          break;
-        case "2":
-          completedPercentMin = 80;
-          completedPercentMax = 90;
-          break;
-        case "3":
-          completedPercentMin = 70;
-          completedPercentMax = 80;
-          break;
-        case "4":
-          completedPercentMin = 60;
-          completedPercentMax = 70;
-          break;
-        case "5":
-          completedPercentMin = 50;
-          completedPercentMax = 60;
-          break;
-        case "6":
-          completedPercentMin = null;
-          completedPercentMax = 50;
-          break;
-        default:
-          completedPercentMin = null;
-          completedPercentMax = null;
-          break;
-      }
-      if (this.form.time.length !== 0) {
-        this.startTime = this.form.time[0].getTime();
-        this.endTime = this.form.time[1].getTime();
-      } else {
-        this.startTime = null;
-        this.endTime = null;
-      }
-      let params = {
-        city: this.form.city[0] ? this.form.city[0] : null,
-        completedPercentMax: completedPercentMax,
-        completedPercentMin: completedPercentMin,
-        jobSearchStatusCode:
-          this.formInline.state === "" ? null : Number(this.formInline.state),
-        pageNum: this.page1.current,
-        pageSize: this.page1.pageSize,
-        processedState: "PROCESSING",
-        province: this.form.city[1] ? this.form.city[1] : null,
-        sortBy: null,
-        sortOrder: null,
-        submittedTimeEnd: this.endTime,
-        submittedTimeStart: this.startTime
-      };
-      this.$http
-        .post(`/business-core/position/${this.positionID}/resumes/list`, params)
-        .then(res => {
-          let response = res.data.data.list;
-          if (res.data.code == "200") {
-            this.tableData = response;
-            this.page1.total = res.data.data.total;
-          } else {
-          }
-        })
-        .catch(error => {
-          if (error.response.status === 404) {
-            this.$notify.error({
-              title: "错误",
-              message: "页面丢失，请重新加载"
-            });
-          } else if (error.response.status === 403) {
-            this.$notify.error({
-              title: "错误",
-              message: "登陆超时，请重新登录"
-            });
-          } else {
-            this.$notify.error({
-              title: "错误",
-              message: error.response.data.message
-            });
-          }
-        });
-    },
-    handleCurrentChangeSecond(val) {
-      this.page1.current = val;
-      let completedPercentMax;
-      let completedPercentMin;
-      switch (this.form.completedPercent) {
-        case "1":
-          completedPercentMin = 90;
-          completedPercentMax = null;
-          break;
-        case "2":
-          completedPercentMin = 80;
-          completedPercentMax = 90;
-          break;
-        case "3":
-          completedPercentMin = 70;
-          completedPercentMax = 80;
-          break;
-        case "4":
-          completedPercentMin = 60;
-          completedPercentMax = 70;
-          break;
-        case "5":
-          completedPercentMin = 50;
-          completedPercentMax = 60;
-          break;
-        case "6":
-          completedPercentMin = null;
-          completedPercentMax = 50;
-          break;
-        default:
-          completedPercentMin = null;
-          completedPercentMax = null;
-          break;
-      }
-      if (this.form.time.length !== 0) {
-        this.startTime = this.form.time[0].getTime();
-        this.endTime = this.form.time[1].getTime();
-      } else {
-        this.startTime = null;
-        this.endTime = null;
-      }
-      let params = {
-        city: this.form.city[0] ? this.form.city[0] : null,
-        completedPercentMax: completedPercentMax,
-        completedPercentMin: completedPercentMin,
-        jobSearchStatusCode:
-          this.formInline.state === "" ? null : Number(this.formInline.state),
-        pageNum: this.page1.current,
-        pageSize: 10,
-        processedState: "PROCESSING",
-        province: this.form.city[1] ? this.form.city[1] : null,
-        sortBy: null,
-        sortOrder: null,
-        submittedTimeEnd: this.endTime,
-        submittedTimeStart: this.startTime
-      };
-      this.$http
-        .post(`/business-core/position/${this.positionID}/resumes/list`, params)
-        .then(res => {
-          let response = res.data.data.list;
-          if (res.data.code == "200") {
-            this.tableData = response;
-            this.page1.total = res.data.data.total;
-          } else {
-          }
-        })
-        .catch(error => {
-          if (error.response.status === 404) {
-            this.$notify.error({
-              title: "错误",
-              message: "页面丢失，请重新加载"
-            });
-          } else if (error.response.status === 403) {
-            this.$notify.error({
-              title: "错误",
-              message: "登陆超时，请重新登录"
-            });
-          } else {
-            this.$notify.error({
-              title: "错误",
-              message: error.response.data.message
-            });
-          }
-        });
-    },
-    //录用分页
-    handleSizeChangeThird(val) {
-      this.page2.pageSize = val;
-      this.page2.current = 1;
-      let completedPercentMax;
-      let completedPercentMin;
-      switch (this.form.completedPercent) {
-        case "1":
-          completedPercentMin = 90;
-          completedPercentMax = null;
-          break;
-        case "2":
-          completedPercentMin = 80;
-          completedPercentMax = 90;
-          break;
-        case "3":
-          completedPercentMin = 70;
-          completedPercentMax = 80;
-          break;
-        case "4":
-          completedPercentMin = 60;
-          completedPercentMax = 70;
-          break;
-        case "5":
-          completedPercentMin = 50;
-          completedPercentMax = 60;
-          break;
-        case "6":
-          completedPercentMin = null;
-          completedPercentMax = 50;
-          break;
-        default:
-          completedPercentMin = null;
-          completedPercentMax = null;
-          break;
-      }
-      if (this.form.time.length !== 0) {
-        this.startTime = this.form.time[0].getTime();
-        this.endTime = this.form.time[1].getTime();
-      } else {
-        this.startTime = null;
-        this.endTime = null;
-      }
-      let params = {
-        city: this.form.city[0] ? this.form.city[0] : null,
-        completedPercentMax: completedPercentMax,
-        completedPercentMin: completedPercentMin,
-        jobSearchStatusCode:
-          this.formInline.state === "" ? null : Number(this.formInline.state),
-        pageNum: this.page2.current,
-        pageSize: this.page2.pageSize,
-        processedState: "OFFERED",
-        province: this.form.city[1] ? this.form.city[1] : null,
-        sortBy: null,
-        sortOrder: null,
-        submittedTimeEnd: this.endTime,
-        submittedTimeStart: this.startTime
-      };
-      this.$http
-        .post(`/business-core/position/${this.positionID}/resumes/list`, params)
-        .then(res => {
-          let response = res.data.data.list;
-          if (res.data.code == "200") {
-            this.tableData = response;
-            this.page.total = res.data.data.total;
-          } else {
-          }
-        })
-        .catch(error => {
-          if (error.response.status === 404) {
-            this.$notify.error({
-              title: "错误",
-              message: "页面丢失，请重新加载"
-            });
-          } else if (error.response.status === 403) {
-            this.$notify.error({
-              title: "错误",
-              message: "登陆超时，请重新登录"
-            });
-          } else {
-            this.$notify.error({
-              title: "错误",
-              message: error.response.data.message
-            });
-          }
-        });
-    },
-    handleCurrentChangeThird(val) {
-      this.page2.current = val;
-      let completedPercentMax;
-      let completedPercentMin;
-      switch (this.form.completedPercent) {
-        case "1":
-          completedPercentMin = 90;
-          completedPercentMax = null;
-          break;
-        case "2":
-          completedPercentMin = 80;
-          completedPercentMax = 90;
-          break;
-        case "3":
-          completedPercentMin = 70;
-          completedPercentMax = 80;
-          break;
-        case "4":
-          completedPercentMin = 60;
-          completedPercentMax = 70;
-          break;
-        case "5":
-          completedPercentMin = 50;
-          completedPercentMax = 60;
-          break;
-        case "6":
-          completedPercentMin = null;
-          completedPercentMax = 50;
-          break;
-        default:
-          completedPercentMin = null;
-          completedPercentMax = null;
-          break;
-      }
-      if (this.form.time.length !== 0) {
-        this.startTime = this.form.time[0].getTime();
-        this.endTime = this.form.time[1].getTime();
-      } else {
-        this.startTime = null;
-        this.endTime = null;
-      }
-      let params = {
-        city: this.form.city[0] ? this.form.city[0] : null,
-        completedPercentMax: completedPercentMax,
-        completedPercentMin: completedPercentMin,
-        jobSearchStatusCode:
-          this.formInline.state === "" ? null : Number(this.formInline.state),
-        pageNum: this.page2.current,
-        pageSize: 10,
-        processedState: "OFFERED",
-        province: this.form.city[1] ? this.form.city[1] : null,
-        sortBy: null,
-        sortOrder: null,
-        submittedTimeEnd: this.endTime,
-        submittedTimeStart: this.startTime
-      };
-      this.$http
-        .post(`/business-core/position/${this.positionID}/resumes/list`, params)
-        .then(res => {
-          let response = res.data.data.list;
-          if (res.data.code == "200") {
-            this.tableData = response;
-            this.page.total = res.data.data.total;
-          } else {
-          }
-        })
-        .catch(error => {
-          if (error.response.status === 404) {
-            this.$notify.error({
-              title: "错误",
-              message: "页面丢失，请重新加载"
-            });
-          } else if (error.response.status === 403) {
-            this.$notify.error({
-              title: "错误",
-              message: "登陆超时，请重新登录"
-            });
-          } else {
-            this.$notify.error({
-              title: "错误",
-              message: error.response.data.message
-            });
-          }
-        });
-    },
-    //不合格分页
-    handleSizeChangeFourth(val) {
-      this.page3.pageSize = val;
-      this.page3.current = 1;
-      let completedPercentMax;
-      let completedPercentMin;
-      switch (this.form.completedPercent) {
-        case "1":
-          completedPercentMin = 90;
-          completedPercentMax = null;
-          break;
-        case "2":
-          completedPercentMin = 80;
-          completedPercentMax = 90;
-          break;
-        case "3":
-          completedPercentMin = 70;
-          completedPercentMax = 80;
-          break;
-        case "4":
-          completedPercentMin = 60;
-          completedPercentMax = 70;
-          break;
-        case "5":
-          completedPercentMin = 50;
-          completedPercentMax = 60;
-          break;
-        case "6":
-          completedPercentMin = null;
-          completedPercentMax = 50;
-          break;
-        default:
-          completedPercentMin = null;
-          completedPercentMax = null;
-          break;
-      }
-      if (this.form.time.length !== 0) {
-        this.startTime = this.form.time[0].getTime();
-        this.endTime = this.form.time[1].getTime();
-      } else {
-        this.startTime = null;
-        this.endTime = null;
-      }
-      let params = {
-        city: this.form.city[0] ? this.form.city[0] : null,
-        completedPercentMax: completedPercentMax,
-        completedPercentMin: completedPercentMin,
-        jobSearchStatusCode:
-          this.formInline.state === "" ? null : Number(this.formInline.state),
-        pageNum: this.page3.current,
-        pageSize: this.page3.pageSize,
-        processedState: "UNFIT",
-        province: this.form.city[1] ? this.form.city[1] : null,
-        sortBy: null,
-        sortOrder: null,
-        submittedTimeEnd: this.endTime,
-        submittedTimeStart: this.startTime
-      };
-      this.$http
-        .post(`/business-core/position/${this.positionID}/resumes/list`, params)
-        .then(res => {
-          let response = res.data.data.list;
-          if (res.data.code == "200") {
-            this.tableData = response;
-            this.page1.total = res.data.data.total;
-          } else {
-          }
-        })
-        .catch(error => {
-          if (error.response.status === 404) {
-            this.$notify.error({
-              title: "错误",
-              message: "页面丢失，请重新加载"
-            });
-          } else if (error.response.status === 403) {
-            this.$notify.error({
-              title: "错误",
-              message: "登陆超时，请重新登录"
-            });
-          } else {
-            this.$notify.error({
-              title: "错误",
-              message: error.response.data.message
-            });
-          }
-        });
-    },
-    handleCurrentChangeFourth(val) {
-      this.page3.current = val;
-      let completedPercentMax;
-      let completedPercentMin;
-      switch (this.form.completedPercent) {
-        case "1":
-          completedPercentMin = 90;
-          completedPercentMax = null;
-          break;
-        case "2":
-          completedPercentMin = 80;
-          completedPercentMax = 90;
-          break;
-        case "3":
-          completedPercentMin = 70;
-          completedPercentMax = 80;
-          break;
-        case "4":
-          completedPercentMin = 60;
-          completedPercentMax = 70;
-          break;
-        case "5":
-          completedPercentMin = 50;
-          completedPercentMax = 60;
-          break;
-        case "6":
-          completedPercentMin = null;
-          completedPercentMax = 50;
-          break;
-        default:
-          completedPercentMin = null;
-          completedPercentMax = null;
-          break;
-      }
-      if (this.form.time.length !== 0) {
-        this.startTime = this.form.time[0].getTime();
-        this.endTime = this.form.time[1].getTime();
-      } else {
-        this.startTime = null;
-        this.endTime = null;
-      }
-      let params = {
-        city: this.form.city[0] ? this.form.city[0] : null,
-        completedPercentMax: completedPercentMax,
-        completedPercentMin: completedPercentMin,
-        jobSearchStatusCode:
-          this.formInline.state === "" ? null : Number(this.formInline.state),
-        pageNum: this.page3.current,
-        pageSize: 10,
-        processedState: "UNFIT",
-        province: this.form.city[1] ? this.form.city[1] : null,
-        sortBy: null,
-        sortOrder: null,
-        submittedTimeEnd: this.endTime,
-        submittedTimeStart: this.startTime
-      };
-      this.$http
-        .post(`/business-core/position/${this.positionID}/resumes/list`, params)
-        .then(res => {
-          let response = res.data.data.list;
-          if (res.data.code == "200") {
-            this.tableData = response;
-            this.page1.total = res.data.data.total;
-          } else {
-          }
-        })
-        .catch(error => {
-          if (error.response.status === 404) {
-            this.$notify.error({
-              title: "错误",
-              message: "页面丢失，请重新加载"
-            });
-          } else if (error.response.status === 403) {
-            this.$notify.error({
-              title: "错误",
-              message: "登陆超时，请重新登录"
-            });
-          } else {
-            this.$notify.error({
-              title: "错误",
-              message: error.response.data.message
-            });
-          }
-        });
-    },
-    //已入职分页
-    handleSizeChangeFifth(val) {
-      this.page4.pageSize = val;
-      this.page4.current = 1;
-      let completedPercentMax;
-      let completedPercentMin;
-      switch (this.form.completedPercent) {
-        case "1":
-          completedPercentMin = 90;
-          completedPercentMax = null;
-          break;
-        case "2":
-          completedPercentMin = 80;
-          completedPercentMax = 90;
-          break;
-        case "3":
-          completedPercentMin = 70;
-          completedPercentMax = 80;
-          break;
-        case "4":
-          completedPercentMin = 60;
-          completedPercentMax = 70;
-          break;
-        case "5":
-          completedPercentMin = 50;
-          completedPercentMax = 60;
-          break;
-        case "6":
-          completedPercentMin = null;
-          completedPercentMax = 50;
-          break;
-        default:
-          completedPercentMin = null;
-          completedPercentMax = null;
-          break;
-      }
-      if (this.form.time.length !== 0) {
-        this.startTime = this.form.time[0].getTime();
-        this.endTime = this.form.time[1].getTime();
-      } else {
-        this.startTime = null;
-        this.endTime = null;
-      }
-      let params = {
-        city: this.form.city[0] ? this.form.city[0] : null,
-        completedPercentMax: completedPercentMax,
-        completedPercentMin: completedPercentMin,
-        jobSearchStatusCode:
-          this.formInline.state === "" ? null : Number(this.formInline.state),
-        pageNum: this.page3.current,
-        pageSize: this.page3.pageSize,
-        processedState: "EMPLOYED",
-        province: this.form.city[1] ? this.form.city[1] : null,
-        sortBy: null,
-        sortOrder: null,
-        submittedTimeEnd: this.endTime,
-        submittedTimeStart: this.startTime
-      };
-      this.$http
-        .post(`/business-core/position/${this.positionID}/resumes/list`, params)
-        .then(res => {
-          let response = res.data.data.list;
-          if (res.data.code == "200") {
-            this.tableData = response;
-            this.page4.total = res.data.data.total;
-          } else {
-          }
-        })
-        .catch(error => {
-          if (error.response.status === 404) {
-            this.$notify.error({
-              title: "错误",
-              message: "页面丢失，请重新加载"
-            });
-          } else if (error.response.status === 403) {
-            this.$notify.error({
-              title: "错误",
-              message: "登陆超时，请重新登录"
-            });
-          } else {
-            this.$notify.error({
-              title: "错误",
-              message: error.response.data.message
-            });
-          }
-        });
-    },
-    handleCurrentChangeFifth(val) {
-      this.page4.current = val;
-      let completedPercentMax;
-      let completedPercentMin;
-      switch (this.form.completedPercent) {
-        case "1":
-          completedPercentMin = 90;
-          completedPercentMax = null;
-          break;
-        case "2":
-          completedPercentMin = 80;
-          completedPercentMax = 90;
-          break;
-        case "3":
-          completedPercentMin = 70;
-          completedPercentMax = 80;
-          break;
-        case "4":
-          completedPercentMin = 60;
-          completedPercentMax = 70;
-          break;
-        case "5":
-          completedPercentMin = 50;
-          completedPercentMax = 60;
-          break;
-        case "6":
-          completedPercentMin = null;
-          completedPercentMax = 50;
-          break;
-        default:
-          completedPercentMin = null;
-          completedPercentMax = null;
-          break;
-      }
-      if (this.form.time.length !== 0) {
-        this.startTime = this.form.time[0].getTime();
-        this.endTime = this.form.time[1].getTime();
-      } else {
-        this.startTime = null;
-        this.endTime = null;
-      }
-      let params = {
-        city: this.form.city[0] ? this.form.city[0] : null,
-        completedPercentMax: completedPercentMax,
-        completedPercentMin: completedPercentMin,
-        jobSearchStatusCode:
-          this.formInline.state === "" ? null : Number(this.formInline.state),
-        pageNum: this.page3.current,
-        pageSize: 10,
-        processedState: "EMPLOYED",
-        province: this.form.city[1] ? this.form.city[1] : null,
-        sortBy: null,
-        sortOrder: null,
-        submittedTimeEnd: this.endTime,
-        submittedTimeStart: this.startTime
-      };
-      this.$http
-        .post(`/business-core/position/${this.positionID}/resumes/list`, params)
-        .then(res => {
-          let response = res.data.data.list;
-          if (res.data.code == "200") {
-            this.tableData = response;
-            this.page4.total = res.data.data.total;
-          } else {
-          }
-        })
-        .catch(error => {
-          if (error.response.status === 404) {
-            this.$message({
-              message: "页面丢失，请重新加载",
-              type: "error"
-            });
-          } else if (error.response.status === 403) {
-            this.$message({
-              message: "登陆超时，请重新登录",
-              type: "error"
-            });
-          } else {
-            this.$message({
-              message: error.response.data.message,
-              type: "error"
-            });
-          }
-        });
-    },
-
-    //面试分页
-    handleSizeChangesixth(val) {
-      this.page5.pageSize = val;
-      this.page5.current = 1;
-      let completedPercentMax;
-      let completedPercentMin;
-      switch (this.form.completedPercent) {
-        case "1":
-          completedPercentMin = 90;
-          completedPercentMax = null;
-          break;
-        case "2":
-          completedPercentMin = 80;
-          completedPercentMax = 90;
-          break;
-        case "3":
-          completedPercentMin = 70;
-          completedPercentMax = 80;
-          break;
-        case "4":
-          completedPercentMin = 60;
-          completedPercentMax = 70;
-          break;
-        case "5":
-          completedPercentMin = 50;
-          completedPercentMax = 60;
-          break;
-        case "6":
-          completedPercentMin = null;
-          completedPercentMax = 50;
-          break;
-        default:
-          completedPercentMin = null;
-          completedPercentMax = null;
-          break;
-      }
-      if (this.form.time.length !== 0) {
-        this.startTime = this.form.time[0].getTime();
-        this.endTime = this.form.time[1].getTime();
-      } else {
-        this.startTime = null;
-        this.endTime = null;
-      }
-      let params = {
-        city: this.form.city[0] ? this.form.city[0] : null,
-        completedPercentMax: completedPercentMax,
-        completedPercentMin: completedPercentMin,
-        jobSearchStatusCode:
-          this.formInline.state === "" ? null : Number(this.formInline.state),
-        pageNum: this.page3.current,
-        pageSize: this.page3.pageSize,
-        processedState: "INTERVIEW",
-        province: this.form.city[1] ? this.form.city[1] : null,
-        sortBy: null,
-        sortOrder: null,
-        submittedTimeEnd: this.endTime,
-        submittedTimeStart: this.startTime
-      };
-      this.$http
-        .post(`/business-core/position/${this.positionID}/resumes/list`, params)
-        .then(res => {
-          let response = res.data.data.list;
-          if (res.data.code == "200") {
-            this.tableData = response;
-            this.page4.total = res.data.data.total;
-          } else {
-          }
-        })
-        .catch(error => {
-          if (error.response.status === 404) {
-            this.$notify.error({
-              title: "错误",
-              message: "页面丢失，请重新加载"
-            });
-          } else if (error.response.status === 403) {
-            this.$notify.error({
-              title: "错误",
-              message: "登陆超时，请重新登录"
-            });
-          } else {
-            this.$notify.error({
-              title: "错误",
-              message: error.response.data.message
-            });
-          }
-        });
-    },
-    handleCurrentChangesixth(val) {
-      this.page5.current = val;
-      let completedPercentMax;
-      let completedPercentMin;
-      switch (this.form.completedPercent) {
-        case "1":
-          completedPercentMin = 90;
-          completedPercentMax = null;
-          break;
-        case "2":
-          completedPercentMin = 80;
-          completedPercentMax = 90;
-          break;
-        case "3":
-          completedPercentMin = 70;
-          completedPercentMax = 80;
-          break;
-        case "4":
-          completedPercentMin = 60;
-          completedPercentMax = 70;
-          break;
-        case "5":
-          completedPercentMin = 50;
-          completedPercentMax = 60;
-          break;
-        case "6":
-          completedPercentMin = null;
-          completedPercentMax = 50;
-          break;
-        default:
-          completedPercentMin = null;
-          completedPercentMax = null;
-          break;
-      }
-      if (this.form.time.length !== 0) {
-        this.startTime = this.form.time[0].getTime();
-        this.endTime = this.form.time[1].getTime();
-      } else {
-        this.startTime = null;
-        this.endTime = null;
-      }
-      let params = {
-        city: this.form.city[0] ? this.form.city[0] : null,
-        completedPercentMax: completedPercentMax,
-        completedPercentMin: completedPercentMin,
-        jobSearchStatusCode:
-          this.formInline.state === "" ? null : Number(this.formInline.state),
-        pageNum: this.page3.current,
-        pageSize: 10,
-        processedState: "INTERVIEW",
-        province: this.form.city[1] ? this.form.city[1] : null,
-        sortBy: null,
-        sortOrder: null,
-        submittedTimeEnd: this.endTime,
-        submittedTimeStart: this.startTime
-      };
-      this.$http
-        .post(`/business-core/position/${this.positionID}/resumes/list`, params)
-        .then(res => {
-          let response = res.data.data.list;
-          if (res.data.code == "200") {
-            this.tableData = response;
-            this.page4.total = res.data.data.total;
-          } else {
-          }
-        })
-        .catch(error => {
-          if (error.response.status === 404) {
-            this.$message({
-              message: "页面丢失，请重新加载",
-              type: "error"
-            });
-          } else if (error.response.status === 403) {
-            this.$message({
-              message: "登陆超时，请重新登录",
-              type: "error"
-            });
-          } else {
-            this.$message({
-              message: error.response.data.message,
-              type: "error"
-            });
-          }
-        });
+      this.process();
     }
   },
 
@@ -3921,15 +1751,34 @@ export default {
     font-size: 20px;
     line-height: 25px;
     margin: 0 0 0 380px;
-
-    .tox-tinymce-aux {
-      z-index: 5000 !important;
-    }
   }
 
   .el-icon-close:before {
     content: '\e6db';
     font-size: 20px;
+  }
+
+  .el-dialog__footer {
+    padding: 0px 20px 30px;
+    text-align: center;
+    box-sizing: border-box;
+  }
+
+  .annex {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    font-family: PingFangSC-Medium;
+    color: #5A5A5A;
+    font-size: 16px;
+    margin: 25px 0 0 0;
+
+    .el-upload-list {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: none;
+    }
   }
 }
 

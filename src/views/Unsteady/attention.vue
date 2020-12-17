@@ -26,11 +26,20 @@
         <br />7 活动内容中禁止有违反广告法等绝对化的语言文字或用语， 如最高、最大、最佳、顶级、极品、第一品牌、绝无仅有、顶尖、万能、第一、最高、唯一、国家级等；
         <br />8 活动内容属于无意义活动。
       </div>
+      <div style="text-align:center;margin:0 0 50px 0">
+        <el-button type="info" @click="back" plain>返回</el-button>
+      </div>
     </div>
   </div>
 </template>
 <script>
-export default {};
+export default {
+  methods: {
+    back() {
+      this.$router.go(-1); //返回上一层
+    }
+  }
+};
 </script>
 <style lang="stylus">
 .unsteady {
@@ -79,11 +88,12 @@ export default {};
       font-size: 16px;
       margin: 20px 0 0 20px;
     }
+
     .content-asides {
       font-family: PingFangSC-Regular;
       color: #555555;
       font-size: 16px;
-      margin: 20px 0 100px 20px;
+      margin: 20px 0 30px 20px;
     }
   }
 }

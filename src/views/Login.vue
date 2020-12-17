@@ -161,8 +161,8 @@ export default {
               }
             })
             .catch(error => {
-              this.$notify.error({
-                title: "错误",
+              this.$notify.info({
+                title: "消息",
                 message: "输入有误，请重新输入"
               });
             });

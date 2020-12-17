@@ -250,9 +250,9 @@ export default {
                 webkitTransitionDuration: "0.4s",
                 transitionDuration: "0.4s",
                 cursor: "pointer",
-                backgroundColor: "#409eff",
+                backgroundColor: "#02B9B8",
                 color: "white",
-                border: "1px solid #409eff"
+                border: "1px solid #02B9B8"
               },
               on: {
                 //鼠标移出的回调
