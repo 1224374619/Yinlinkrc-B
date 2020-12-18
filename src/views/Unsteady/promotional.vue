@@ -8,7 +8,7 @@
           <el-upload
             class="upload-demo"
             :action="uploadUrl"
-            style="margin:0 0 20px 0"
+            style="margin:0 0 20px 20px"
             drag
             :data="uploadfile"
             :headers="myHeaders"
@@ -504,7 +504,7 @@ export default {
       console.log(file.response.data.fileAccessVo.accessUrl);
       this.dialogDrag = false;
       tinyMCE.editors["tinymce"].insertContent(
-        '<img src = "' + file.response.data.fileAccessVo.accessUrl + '">'
+        '<img style="width:500px" src = "' + file.response.data.fileAccessVo.accessUrl + '">'
       );
     },
     //图片上传
