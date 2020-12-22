@@ -311,8 +311,8 @@ export default {
       this.avatar();
     },
     handleAvatarError(err, file, fileList) {
-      this.$notify.error({
-        title: "错误",
+      this.$notify.info({
+        title: "消息",
         message: "图片上传失败，请重新上传"
       });
     },

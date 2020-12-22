@@ -830,8 +830,8 @@ export default {
         }
         if (valid) {
           if (this.logoutTime < this.publishedTime) {
-            this.$notify.error({
-              title: "错误",
+            this.$notify.info({
+              title: "消息",
               message: "上线时间应该要小于下线时间"
             });
           } else {
@@ -946,8 +946,8 @@ export default {
       this.brief();
       this.positionDetail();
     } else {
-      this.$notify.error({
-        title: "错误",
+      this.$notify.info({
+        title: "消息",
         message: "登陆超时，请重新登录"
       });
       this.$router.push({ path: "/login" });

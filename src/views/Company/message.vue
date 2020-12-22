@@ -418,8 +418,8 @@ export default {
       this.file = res.data;
     },
     handleAvatarError(err, file, fileList) {
-      this.$notify.error({
-        title: "错误",
+      this.$notify.info({
+        title: "消息",
         message: "图片上传失败，请重新上传"
       });
     },
@@ -623,8 +623,8 @@ export default {
       this.companyDetail();
       this.companyVerify();
     }else {
-      this.$notify.error({
-        title: "错误",
+      this.$notify.info({
+        title: "消息",
         message: "登陆超时，请重新登录"
       });
       this.$router.push({ path: "/login" });

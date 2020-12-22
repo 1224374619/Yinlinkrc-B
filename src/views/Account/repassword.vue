@@ -134,8 +134,8 @@ export default {
           }
         })
         .catch(error => {
-          this.$notify.error({
-            title: "错误",
+          this.$notify.info({
+            title: "消息",
             message: error.response.data.message
           });
         });
