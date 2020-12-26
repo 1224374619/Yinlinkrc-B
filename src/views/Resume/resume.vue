@@ -103,7 +103,7 @@ export default {
     bottom: 0px;
     overflow: hidden;
     width: 1280px;
-    margin: 96px auto 0;
+    margin: 36px auto 0;
     aside {
       flex: 0 0 230px;
       width: 230px;

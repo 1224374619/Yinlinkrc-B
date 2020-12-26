@@ -1,27 +1,20 @@
 <template>
-  <div class="container">
-    <!-- <customized-nav class="nav" :ctlHideMenus="true" /> -->
+  <div class="containeres">
     <div class="body">
       <div class="form">
-        <div class="logo">
-          <img
-            style="height:40px;margin:57px 0 0 0"
-            @click="gotoHomeUI"
-            :src="require('../assets/images/logo.png')"
-          />
-        </div>
         <div class="photo">
-          <div style="margin:89px 0 0 174px">
-            <img style="height:392px;" :src="require('../assets/images/de.png')" />
+          <div style="margin:72px 0 0 85px">
+            <img style="height:402px;" :src="require('../assets/images/de.png')" />
           </div>
-          <div class="formlet" style="margin:0 0 0 158px">
+          <div class="formlet" style="margin:63px 0 0 104px">
             <div class="header">
-              <span class="deng">注册</span>
-              <el-button
-                style="margin:39px 0 0 0;color:#373737;font-size:16px;font-wight:500;text-align:right"
-                @click="business"
-                type="text"
-              ></el-button>
+              <div class="header-nav">
+                <div>
+                  <img src="../assets/images/register.png" />
+                </div>
+                <div style="margin:0 0 0 5px">已有银领账号，请绑定</div>
+              </div>
+              <div class="header-footer">完成绑定后可以微信账号一键登录</div>
             </div>
             <div class="formls">
               <el-form ref="form" :rules="rules" :model="form" label-width="0px">
@@ -54,38 +47,35 @@
                 <el-form-item label prop="captcha">
                   <captcha :fromData="this.form.tel" v-model="form.captcha" />
                 </el-form-item>
-                <el-form-item>
-                  <el-button
-                    style="width:270px;height:43px;margin:20px 0 0 0;background:#327cf3;color:#fff"
-                    class="full"
-                    @click="onSubmit"
-                    :disabled="!form.checkLicense"
-                  >立即注册</el-button>
-                </el-form-item>
-                <el-form-item prop="checkLicense" style="margin:-20px 0 20px 0;">
+                <!-- <el-form-item prop="checkLicense" style="margin:-15px 0 20px 5px;">
                   <el-checkbox style="margin:0 100px 20px 0;" v-model="form.checkLicense">
                     我已同意
                     <el-button
-                      style="color:#327cf3;font-size:14px;"
+                      style="color:#02B9B8;font-size:14px;"
                       type="text"
                       @click="gotoUserPrivacyLicenseUI"
                     >《用户协议及隐私策略》</el-button>
                   </el-checkbox>
+                </el-form-item>-->
+                <el-form-item>
+                  <el-button
+                    style="width:202px;height:43px;background:#02B9B8;color:#fff;border-radius:21px;margin:45px 0 0 40px"
+                    class="full"
+                    @click="onSubmit"
+                    :disabled="!form.checkLicense"
+                  >确认绑定</el-button>
                 </el-form-item>
               </el-form>
             </div>
             <div class="adjunctive">
-              <el-button
-                style="margin:5px 0 0 105px;color:#373737;font-size:16px"
-                type="text"
-                @click="gotoLoginUI"
-              >立即登录</el-button>
+              <span>没有银领账号，</span>
+              <span @click="gotoRegisterUI">立即注册</span>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <div class="successRegister" v-if="disabled">
+    <!-- <div class="successRegister" v-if="disabled">
       <div>
         <img
           style="width:172px;margin:57px 0 0 0"
@@ -99,13 +89,13 @@
       </div>
       <div>
         <el-button
-          style="width:270px;height:43px;margin:30px 0 0 0;font-size:18px"
+          style="width:270px;height:43px;margin:60px 0 0 0;font-size:18px"
           class="full"
           type="primary"
           @click="gotoLoginUI"
         >立即登录</el-button>
       </div>
-    </div>
+    </div>-->
     <!-- <customized-footer :showSimple="true" /> -->
   </div>
 </template>
@@ -114,7 +104,6 @@
 // import CustomizedFooter from 'components/customized-footer.vue';
 // import CustomizedNav from 'components/customized-nav.vue';
 import Captcha from "components/captcha.vue";
-import Cookies from "js-cookie";
 // import PasswordInput from 'components/password-input.vue';
 
 export default {
@@ -127,12 +116,14 @@ export default {
   },
   data() {
     return {
+      wxbind: "",
       form: {
         tel: "",
         password: "",
         captcha: "",
         checkLicense: false
       },
+
       show: {
         old: false,
         new: false,
@@ -164,43 +155,25 @@ export default {
     gotoHomeUI() {
       this.$router.push({ path: "/" });
     },
-    login() {
-      this.$_http
-        .post(`/business-user/login/phone-pwd`, {
-          username: this.form.tel,
-          password: this.form.password
-        })
-        .then(res => {
-          window.sessionStorage.setItem('Btoken', res.headers["auth-token"])
-          let token = res.headers["auth-token"];
-          Cookies.set("Btoken",token);
-          this.$router.push({ path: "/enterpriseAudit" });
-        })
-        .catch(error => {
-          this.$notify.info({
-            title: "消息",
-            message: "输入有误，请重新输入"
-          });
-        });
-    },
     onSubmit() {
       this.$refs["form"].validate(valid => {
         if (valid) {
-          this.$locals
-            .post("/business-user/account/register", {
-              phone: this.form.tel,
-              password: this.form.password,
-              vcode: this.form.captcha,
-              agree: true
+          this.$localo
+            .post("business-user/account/wechat/binding/login", {
+              accessTokenVO: JSON.parse(this.wxbind),
+              phoneChangeBody: {
+                phone: this.form.tel,
+                password: this.form.password,
+                vcode: this.form.captcha
+              }
             })
             .then(res => {
-              if (res.data.code == "201") {
-                // this.$store.state.phone = this.form.tel
-                // this.$store.state.pwc = this.form.password
-                Cookies.set("tel", this.form.tel);
-                Cookies.set("password", this.form.password);
-                this.open2();
-                this.login();
+              if (res.data.code == "200") {
+                let token = res.headers["auth-token"];
+                Cookies.set("token", Btoken);
+                window.sessionStorage.setItem("user", this.form.tel);
+                this.brief();
+                // this.$router.push({ path: "/login" });
               }
             })
             .catch(error => {
@@ -227,7 +200,7 @@ export default {
       });
     },
     getCaptcha() {
-      // this.$router.push({ path: "/login" });
+      this.$router.push({ path: "/login" });
       this.instance.close();
     },
     open2() {
@@ -273,8 +246,8 @@ export default {
     business() {
       window.open("http://47.102.145.186/business/#/register");
     },
-    gotoLoginUI() {
-      this.$router.push({ path: "login" });
+    gotoRegisterUI() {
+      this.$router.push({ path: "register" });
     },
     gotoUserPrivacyLicenseUI() {
       window.open(
@@ -282,31 +255,35 @@ export default {
         "_blank"
       );
     }
+  },
+  created() {
+    this.wxbind = decodeURIComponent(this.$route.query.wxlogin);
   }
 };
 </script>
 
 <style lang="stylus">
-.container {
+.containeres {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background: #327cf3;
   height: 100%;
+  background: #327cf3;
 
   .body {
     .form {
-      width: 1176px;
-      height: 684px;
       background: #FFFFFF;
-      margin: 0 auto;
-      box-shadow: 0px 2px 12px 0px rgba(55, 6, 6, 0.5);
+      width: 1040px;
+      height: 546px;
+      box-shadow: 0px 5px 44px 0px rgba(0, 128, 127, 0.5);
       border-radius: 3px;
-
-      .logo {
-        margin: 0 750px 0 50px;
-      }
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      margin: auto;
 
       .photo {
         display: flex;
@@ -319,20 +296,38 @@ export default {
 
           .header {
             display: flex;
-            flex-direction: row;
-            margin-bottom: 20px;
+            flex-direction: column;
+            margin-bottom: 0px;
             justify-content: space-between;
 
-            .deng {
+            .header-nav {
+              display: flex;
+              flex-direction: row;
+
+              img {
+                width: 18px;
+              }
+
+              div {
+                font-family: PingFangSC-Medium;
+                color: #02B9B8;
+                font-size: 18px;
+                line-height: 18px;
+              }
+            }
+
+            .header-footer {
               font-family: PingFangSC-Medium;
-              color: #327cf3;
-              font-size: 24px;
-              margin: 39px 0 0 0;
-              font-weight: 500;
+              color: #C5C5C5;
+              font-size: 13px;
+              text-align: left;
+              margin: 5px 0 0 25px;
             }
           }
 
           .formls {
+            margin: 30px 0 0 0;
+
             .el-input__inner {
               background-color: #f7f7f7;
               border: none;
@@ -348,8 +343,8 @@ export default {
             }
 
             .el-checkbox__input.is-checked .el-checkbox__inner {
-              background-color: #327cf3;
-              border-color: #327cf3;
+              background-color: #02B9B8;
+              border-color: #02B9B8;
             }
 
             .el-checkbox__inner {
@@ -357,7 +352,7 @@ export default {
             }
 
             .el-checkbox__inner:hover {
-              border: 1px solid #327cf3;
+              border: 1px solid #02B9B8;
             }
 
             .el-input__inner {
@@ -368,6 +363,18 @@ export default {
 
             .el-input__inner:focus {
               color: #373737;
+            }
+          }
+
+          .adjunctive {
+            cursor: pointer;
+            font-family: PingFangSC-Regular;
+            color: #373737;
+            font-size: 14px;
+            margin: 0 auto;
+
+            span:nth-child(2) {
+              color: #00b4b3;
             }
           }
         }

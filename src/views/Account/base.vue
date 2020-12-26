@@ -1,5 +1,20 @@
 <template>
   <div class="container" style="background:#ffffff">
+    <div class="popContainer" v-show="writeMessageShow" @click="writeMessageFun($event)">
+      <div class="messageMaskContent" ref="msk">
+        <div class="navs">微信登录</div>
+        <!-- <div >
+          <img src="../assets/images/foot-wxs.png" />
+        </div>-->
+        <div class="imgSrc" id="login_container"></div>
+        <div class="foot">
+          <button>
+            请使用微信扫描二维码登录
+            “银领人才网”
+          </button>
+        </div>
+      </div>
+    </div>
     <!-- <el-dialog title="更换头像" :visible.sync="dialogVisible" width="30%" :before-close="handleClose">
       <div style="margin:-20px 0 0 0">上传头像：</div>
       <div style="margin: 20px auto;width:100%">
@@ -20,7 +35,28 @@
         <el-button @click="dialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
       </span>
-    </el-dialog> -->
+    </el-dialog>-->
+    <el-dialog title :visible.sync="wxdialogVisible" width="25%" :show-close="false">
+      <div class="dialogTitle">
+        <span>手机号</span>
+        <span>182****7638</span>
+      </div>
+      <div class="dialogCode">
+        <span>验证码</span>
+        <span>
+          <el-input
+            style="width:150px;margin:0 20px 0 10px"
+            placeholder="请输入验证码"
+            v-model="wxCode"
+          ></el-input>
+          <el-button @click="getCaptcha" :disabled="frozen">{{ captchaStatusText }}</el-button>
+        </span>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button plain @click="wxdialogVisible = false">取 消</el-button>
+        <el-button style="margin:0 0 0 50px" type="primary" @click="wxdialogVisible = false">解 绑</el-button>
+      </span>
+    </el-dialog>
     <el-dialog
       title="更换手机号"
       :visible.sync="dialogVisiblephone"
@@ -98,7 +134,7 @@
           :on-success="handleAvatarSuccess"
           :on-error="handleAvatarError"
         >
-          <img v-if="this.imageUrl" src="this.imageUrl" class="avatar" />
+          <img v-if="this.imageUrl" :src="imageUrl" class="avatar" />
           <i v-else class="el-icon-plus avatar-uploader-icon"></i>
         </el-upload>
         <!-- <div @click="avatar" style="font-size:14px;color:#ff7152;margin:10px 0 0 65px">更换头像</div> -->
@@ -111,6 +147,10 @@
           <!-- <div>所属组织：</div> -->
           <div>手机号：</div>
           <div>邮箱：</div>
+          <div style="display: flex;flex-direction: row;">
+            <img src="../../assets/images/wx.png" style="width:20px;" />
+            <span style="margin:0 0 0 5px">微信绑定：</span>
+          </div>
         </div>
         <div>
           <!-- <div>{{formDate.phone}}</div> -->
@@ -130,6 +170,15 @@
               @click="dialogVisibleemail = true"
               style="font-size:14px;color:#ff7152;line-height:16px"
             >更换绑定邮箱</span>
+          </div>
+          <div class="elbutton">
+            <div style="padding:0 0 30px 0" v-if="this.wxState">
+              <span>二月</span>
+              <span style="font-size:16px;color:#ff7152;line-height:16px;margin:0 0 0 50px">解绑</span>
+            </div>
+            <div style="margin:-33px 0 0 0" v-else>
+              <el-button class="pributton" @click="wxLogin" plain>立即绑定</el-button>
+            </div>
           </div>
         </div>
       </div>
@@ -167,12 +216,19 @@ export default {
       uploadDatas: {
         label: "company-account-avatar"
       },
-
+      thirdPartyId: "",
+      writeMessageShow: false,
+      wxState: true,
+      code: "",
+      state: "",
       frozen: false,
+      phoneOne: "",
+      nickname: "",
       counter: countNumber,
       captchaInput: "",
       captchaStatusText: captchaLabel,
 
+      wxdialogVisible: false,
       dialogVisible: false,
       dialogVisiblephone: false,
       dialogVisibleemail: false,
@@ -214,6 +270,61 @@ export default {
     };
   },
   methods: {
+    //微信扫码
+    wxLogin() {
+      this.writeMessageShow = true;
+
+      // let redirectUrl = encodeURIComponent(window.origin + "/api/" + this.url);
+      // console.log(redirectUrl);
+      var obj = new WxLogin({
+        self_redirect: false,
+        id: "login_container",
+        appid: "wxbca1daaa5765cc51",
+        scope: "snsapi_login",
+        redirect_uri: "http://www.yinlinkrc.com/account/base",
+        state: "asdsfdfgwerwrer2345325123",
+        style: "black"
+      });
+    },
+    //绑定详情
+    bindWechat() {
+      this.$http
+        .get("business-user/binding/wechat")
+        .then(res => {
+          this.wxState = true;
+          this.thirdPartyId = res.data.data.thirdPartyId;
+          this.nickname = res.data.data.nickname;
+          this.phoneOne = res.data.data.phone;
+        })
+        .catch(error => {
+          this.wxState = false;
+        });
+    },
+    //解绑
+    Unbund() {
+      this.$http
+        .delete(`business-user/binding/${this.thirdPartyId}`)
+        .then(res => {
+          this.wxState = false;
+        })
+        .catch(error => {});
+    },
+    //绑定
+    bund() {
+      let params = {
+        code: this.code,
+        phone: this.phoneOne,
+        scode: this.wxCode,
+        state: this.state
+      };
+      this.$http
+        .post("business-user/binding/wechat", params)
+        .then(res => {
+          this.wxState = true;
+          this.bindWechat();
+        })
+        .catch(error => {});
+    },
     //验证码
     getCaptcha() {
       this.frozen = true;
@@ -247,21 +358,21 @@ export default {
         })
         .catch(error => {
           if (error.response.status === 404) {
-                this.$notify.info({
-                  title: "消息",
-                  message: "页面丢失，请重新加载"
-                });
-              } else if (error.response.status === 403) {
-                this.$notify.info({
-                  title: "消息",
-                  message: "登陆超时，请重新登录"
-                });
-              } else {
-                this.$notify.info({
-                  title: "消息",
-                  message: error.response.data.message
-                });
-              }
+            this.$notify.info({
+              title: "消息",
+              message: "页面丢失，请重新加载"
+            });
+          } else if (error.response.status === 403) {
+            this.$notify.info({
+              title: "消息",
+              message: "登陆超时，请重新登录"
+            });
+          } else {
+            this.$notify.info({
+              title: "消息",
+              message: error.response.data.message
+            });
+          }
         });
     },
     //修改手机号
@@ -280,9 +391,7 @@ export default {
           } else {
           }
         })
-        .catch(error => {
-          
-        });
+        .catch(error => {});
     },
     //修改邮箱
     updateEmail() {
@@ -299,14 +408,12 @@ export default {
           } else {
           }
         })
-        .catch(error => {
-          
-        });
+        .catch(error => {});
     },
     //图片上传
     handleAvatarSuccess(res, file) {
       this.file = res.data;
-      console.log(URL.createObjectURL(file.raw))
+      console.log(URL.createObjectURL(file.raw));
       this.imageUrl = URL.createObjectURL(file.raw);
       this.avatar();
     },
@@ -327,8 +434,7 @@ export default {
           } else {
           }
         })
-        .catch(error => {
-        });
+        .catch(error => {});
     },
     avatar() {
       let params = this.file;
@@ -339,13 +445,18 @@ export default {
           } else {
           }
         })
-        .catch(error => {
-          
-        });
+        .catch(error => {});
     }
   },
   created() {
     let token = Cookies.get("Btoken");
+    let url = window.location.href;
+    if (url.indexOf("?") != -1) {
+      var str = url.substr(1);
+      var strs = str.split("=");
+    }
+    this.code = strs[1].split("&")[0];
+    this.state = strs[2];
     if (token) {
       this.base();
     } else {
@@ -355,6 +466,7 @@ export default {
       });
       this.$router.push({ path: "/login" });
     }
+    this.bindWechat();
   },
   computed: {
     uploadUrl() {
@@ -367,7 +479,82 @@ export default {
 };
 </script>
 
-<style lang="stylus" scoped>
+<style lang="stylus" >
+.popContainer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #323232;
+  opacity: 0.9;
+  z-index: 1000;
+
+  .messageMaskContent {
+    position: relative;
+    left: 0;
+    width: 50%;
+    top: 30;
+    margin: auto;
+
+    .nav {
+      font-family: PingFangSC-Medium;
+      color: #FFFFFF;
+      font-size: 20px;
+      margin: 230px 0 0 0;
+    }
+
+    .imgSrc {
+      margin: 20px 0 0 0;
+
+      img {
+        width: 284px;
+      }
+    }
+
+    .foot {
+      button {
+        background: #222324;
+        width: 286px;
+        height: 66px;
+        font-family: PingFangSC-Medium;
+        color: #FFFFFF;
+        font-size: 16px;
+        border-radius: 33px;
+        border: 1px solid #222324;
+        padding: 0 47px;
+        margin: 10px 0 0 0;
+      }
+    }
+  }
+}
+
+.dialogTitle {
+  font-family: PingFangSC-Regular;
+  color: #373737;
+  font-size: 16px;
+  text-align: left;
+  margin: 0 0 0 55px;
+
+  span:nth-child(2) {
+    margin: 0 0 0 5px;
+  }
+}
+
+.el-dialog__footer {
+  text-align: center;
+  padding: 20px 0 60px 0;
+}
+
+.dialogCode {
+  display: flex;
+  flex-direction: row;
+  margin: 20px 0 0 55px;
+  font-family: PingFangSC-Regular;
+  color: #373737;
+  font-size: 16px;
+}
+
 .nav {
   margin: 30px 0 0 0;
   width: 960px;
@@ -400,6 +587,20 @@ export default {
     div {
       padding: 30px 0 0 0;
     }
+
+    .elbutton {
+      .el-button {
+        width: 94px;
+        height: 30px;
+        border: 0.75px solid #327cf3;
+        border-radius: 5px;
+        font-family: PingFangSC-Regular;
+        color: #327cf3;
+        font-size: 16px;
+        line-height: 0px;
+        padding: 0 1px 0 0;
+      }
+    }
   }
 }
 </style>
@@ -421,7 +622,7 @@ export default {
   margin: 0 0 0 230px;
 }
 .avatar-uploader .el-upload:hover {
-  border-color: #02B9B8;
+  border-color: #02b9b8;
 }
 .avatar-uploader-icon {
   font-size: 28px;

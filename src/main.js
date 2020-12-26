@@ -65,7 +65,7 @@ Vue.prototype.$CodeToTag = {
 let config = {
   //判断当前开发环境，切换代理配置
   // baseURL: process.env.NODE_ENV === 'production' ? '/api/v1/' : '/api/',
-  baseURL: '/api/v3/',
+  baseURL: '/api/',
   // headers: {
   //     'Auth-Token': token
   // },
@@ -165,7 +165,7 @@ _axioesq.interceptors.response.use(
 
 // /api/v1/consumer-user
 const instance = axios.create({
-  baseURL: '/api/v3/',
+  baseURL: '/api/',
   headers: {
     'Content-Type': 'application/x-www-form-urlencoded'
   },
@@ -174,7 +174,7 @@ const instance = axios.create({
 Vue.prototype.$_http = instance;
 
 const locals = axios.create({
-  baseURL: '/api/v3/',
+  baseURL: '/api/',
   timeout: 60 * 1000, // Timeout
   withCredentials: true, // Check cross-site Access-Control
 })
@@ -268,7 +268,7 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
   const token = Cookies.get('Btoken')
   const status = Cookies.get('status')
-  if (to.name === 'login' || to.name === 'register' || to.name === 'resetpassword') {
+  if (to.name === 'login' || to.name === 'register' || to.name === 'resetpassword' || to.name === 'wxbind') {
     store.state.hasLogin = false
     store.state.hasLogins = false
   } else {

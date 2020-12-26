@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="home-container">
     <div style="width:100%;height:30px;background:#f1f1f1;margin:0px 0 20px 0;">
       <div>
         <img
@@ -14,8 +14,8 @@
     <el-breadcrumb separator="/" class="breadcrumb">
       <el-breadcrumb-item>您的位置：首页</el-breadcrumb-item>
     </el-breadcrumb>
-    <div class="content">
-      <div class="nav">
+    <div class="home-content">
+      <div class="home-nav">
         <div class="left">
           <div class="left-first">
             <div>简历看板</div>
@@ -64,15 +64,62 @@
             </ul>
           </div>
         </div>
-        <!-- <div class="left">
+
+        <div class="left">
           <div class="left-first">
-            <div>企业账单</div>
+            <div>面试日历</div>
             <div style="font-size:14px">更多》</div>
           </div>
-          <div class="left-second"></div>
-        </div>-->
+          <div class="left-second">
+            <ul>
+              <li>
+                <span>待接收</span>
+                <span style="color:#FF7152;font-size:24px">{{onlineNums}}</span>
+              </li>
+              <li>
+                <span>待面试</span>
+                <span style="color:#FF7152;font-size:24px">{{editingNums}}</span>
+              </li>
+              <li>
+                <span>已完成</span>
+                <span style="color:#FF7152;font-size:24px">{{auditingNums}}</span>
+              </li>
+              <li>
+                <span>已取消</span>
+                <span style="color:#FF7152;font-size:24px">{{auditFailedNums}}</span>
+              </li>
+              <li>
+                <span>已拒绝</span>
+                <span style="color:#FF7152;font-size:24px">{{offlineNums}}</span>
+              </li>
+              <li>
+                <span>已失效</span>
+                <span style="color:#FF7152;font-size:24px">{{offlineNums}}</span>
+              </li>
+            </ul>
+          </div>
+          <div class="left-third">
+            <el-calendar style="margin:20px 35px" v-model="value"></el-calendar>
+            <div class="position">
+              <div>
+                当日面试安排
+                <span style="color: #2D72E3;">2</span> 场
+              </div>
+              <div class="position-second">
+                <div>
+                  <span>上官红豆</span>
+                  <span>|</span>
+                  <span>产品经理实习生</span>
+                  <span>|</span>
+                  <span>9-14k</span>
+                  <span style="font-family: PingFangSC-Regular;color: #3A81F3;">12:00面试</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="aside">
+      <div class="home-aside">
         <div class="right">
           <div class="right-first">
             <div>系统通知</div>
@@ -86,10 +133,7 @@
                   <el-badge style="padding:0 0 10px 0" :value="200" :max="99"></el-badge>
                 </span>
               </div>
-              <div class="noti-content">
-                敬请期待
-                <!-- <span class="more">详情 &gt;</span> -->
-              </div>
+              <div class="noti-content">敬请期待</div>
             </div>
             <div class="notification">
               <div class="noti-head">
@@ -98,10 +142,7 @@
                   <el-badge style="padding:0 0 10px 0" :value="200" :max="99"></el-badge>
                 </span>
               </div>
-              <div class="noti-content">
-                敬请期待
-                <!-- <span class="more">详情 &gt;</span> -->
-              </div>
+              <div class="noti-content">敬请期待</div>
             </div>
           </div>
         </div>
@@ -113,15 +154,10 @@
           <div class="right-second">
             <div class="enterprise">
               <div class="enter-head">
-                <img :src="squareUrl" />
+                <!-- <img :src="squareUrl" /> -->
                 <div>
                   <span>企业信息完整度</span>
-                  <!-- <el-progress
-                    :percentage="this.compPercent"
-                    class="progess"
-                    style="width:200px;padding:0 0 0 7px;height:9px"
-                  ></el-progress> -->
-                  <el-progress class="progess" :percentage="companyDetails.completedPercent"></el-progress>
+                  <!-- <el-progress class="progess" :percentage="companyDetails.completedPercent"></el-progress> -->
                 </div>
               </div>
               <div class="enter-content">
@@ -150,6 +186,7 @@ export default {
   name: "home",
   data() {
     return {
+      value: new Date(),
       incrementDailys: "",
       toProcessNums: "",
       auditFailedNums: "",
@@ -164,7 +201,7 @@ export default {
         completedPercent: "",
         logoUrl: ""
       },
-      status: "",
+      status: ""
     };
   },
   methods: {
@@ -190,9 +227,7 @@ export default {
           } else {
           }
         })
-        .catch(error => {
-          
-        });
+        .catch(error => {});
     },
     //简历看板
     resumeBoard() {
@@ -206,12 +241,11 @@ export default {
           } else {
           }
         })
-        .catch(error => {
-          
-        });
+        .catch(error => {});
     },
     //职位看板
     positionBoard() {
+      
       this.$http
         .get("/business-core/dashboard/position")
         .then(res => {
@@ -225,9 +259,7 @@ export default {
           } else {
           }
         })
-        .catch(error => {
-          
-        });
+        .catch(error => {});
     },
     //公司简历简讯
     companyBrief() {
@@ -237,13 +269,11 @@ export default {
           if (res.data.code == "200") {
             this.companyID = res.data.data.id;
             this.companyDetails = res.data.data;
-            this.squareUrl = res.data.data.logoUrl;
+            // this.squareUrl = res.data.data.logoUrl;
           } else {
           }
         })
-        .catch(error => {
-          
-        });
+        .catch(error => {});
     }
     // //公司详情
     // companyDetail() {
@@ -265,10 +295,10 @@ export default {
     // this.password = Cookies.get("password");
     // console.log(this.signId,this.tel,this.password)
     // if (this.signId == '1') {
-      
+
     // }
     let token = Cookies.get("Btoken");
-    console.log()
+    
     if (token === undefined) {
       Cookies.set("Btoken", "");
     } else if (token) {
@@ -284,30 +314,34 @@ export default {
 </script>
 
 
-<style lang="stylus" scoped>
-.container {
+<style lang="stylus">
+.home-container {
   display: flex;
   width: 1200px;
-  height: 650px;
+  height: 1150px;
   background-color: white;
   padding: 20px;
-  margin: 56px auto 0;
+  margin: 36px auto 0;
   flex-direction: column;
 
   .breadcrumb {
     width: 100%;
   }
 
-  .content {
+  .home-content {
     margin-top: 30px;
     display: flex;
     flex-direction: row;
 
-    .nav {
+    .home-nav {
       display: flex;
       flex-direction: column;
 
       .left:nth-child(2) {
+        margin: 20px 0 0 0;
+      }
+
+      .left:nth-child(3) {
         margin: 20px 0 0 0;
       }
 
@@ -328,7 +362,8 @@ export default {
           div {
             margin: 0 20px 0 20px;
             font-size: 16px;
-            color: #327cf3;
+            font-family: PingFangSC-Medium;
+            color: #222222;
           }
         }
 
@@ -365,10 +400,60 @@ export default {
             }
           }
         }
+
+        .left-third {
+          width: 900px;
+          height: 430px;
+          display: flex;
+          flex-direction: row;
+          text-align: center;
+
+          .position {
+            width: 390px;
+            height: 300px;
+            margin: 40px 0 0 0;
+
+            div:nth-child(1) {
+              font-family: PingFangSC-Regular;
+              color: #222222;
+              font-size: 16px;
+            }
+
+            .position-second {
+              margin: 30px 0 0 0;
+              font-family: PingFangSC-Regular;
+              color: #454545;
+              font-size: 14px;
+
+              span {
+                padding: 0 6px;
+              }
+            }
+          }
+
+          .el-calendar__body {
+            width: 350px;
+            height: 300px;
+          }
+
+          .el-calendar__header {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 20px;
+            border-bottom: 1px solid #ebeef5;
+            width: 350px;
+          }
+
+          .el-calendar-table .el-calendar-day {
+            box-sizing: border-box;
+            padding: 8px;
+            height: 45px;
+          }
+        }
       }
     }
 
-    .aside {
+    .home-aside {
       display: flex;
       flex-direction: column;
       margin: 0 0 0 20px;
