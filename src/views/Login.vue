@@ -167,11 +167,11 @@ export default {
     wxLogin() {
       this.writeMessageShow = true;
       window.WxLogin({
-        self_redirect: true,
+        self_redirect: false,
         id: "login_container",
         appid: "wxbca1daaa5765cc51",
         scope: "snsapi_login",
-        redirect_uri: 'https://www.yinlinkrc.com/api/v3/business-core/companyAccounts/user',
+        redirect_uri: 'https://www.yinlinkrc.com/business/#/login',
         state: "asdsfdfgwerwrer",
         style: "black"
       });
