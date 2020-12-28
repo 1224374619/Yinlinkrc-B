@@ -159,7 +159,7 @@ export default {
       this.$refs["form"].validate(valid => {
         if (valid) {
           this.$localo
-            .post("business-user/account/wechat/binding/login", {
+            .post("/business-user/account/wechat/binding/login", {
               accessTokenVO: JSON.parse(this.wxbind),
               phoneChangeBody: {
                 phone: this.form.tel,
@@ -172,8 +172,8 @@ export default {
                 let token = res.headers["auth-token"];
                 Cookies.set("token", Btoken);
                 window.sessionStorage.setItem("user", this.form.tel);
-                this.brief();
-                // this.$router.push({ path: "/login" });
+                // this.brief();
+                this.$router.push({ path: "/home" });
               }
             })
             .catch(error => {

@@ -32,7 +32,7 @@ export default {
           } else {
             let token = res.headers["auth-token"];
             Cookies.set("token", Btoken);
-            // this.brief();
+            this.$router.push({ path: "/home" });
           }
         })
         .catch(error => {});
@@ -54,8 +54,7 @@ export default {
   created() {
     
     console.log("1111111111111111");
-    this.$router.push({ path: "/home" });
-    // this.wxlogin();
+    this.wxlogin();
   }
 };
 </script>
