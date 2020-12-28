@@ -160,20 +160,21 @@ export default {
       }
     };
   },
+  mounted() {
+    var url = 'https://open.weixin.qq.com/connect/qrconnect?appid=' + wxAppId + '&scope=snsapi_login&redirect_uri=' + redirectUri + '&state=STATE&login_type=jssdk&self_redirect=true';
+    window.location.href = url
+  },
   methods: {
     ...mapMutations([DONE_LOGIN]),
     //微信扫码
     wxLogin() {
       this.writeMessageShow = true;
-      var aaa = encodeURIComponent(
-        "https://www.yinlinkrc.com/business/#/wxlogin"
-      );
       window.WxLogin({
         self_redirect: false,
         id: "login_container",
         appid: "wxbca1daaa5765cc51",
         scope: "snsapi_login",
-        redirect_uri: aaa,
+        redirect_uri: 'https://www.yinlinkrc.com/business/#/wxlogin',
         state: "asdsfdfgwerwrer",
         style: "black"
       });
