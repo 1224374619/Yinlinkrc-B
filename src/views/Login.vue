@@ -99,6 +99,7 @@
     <!-- <div><customized-footer /></div> -->
   </div>
 </template>
+<script src="http://res.wx.qq.com/connect/zh_CN/htmledition/js/wxLogin.js"></script>
 <script>
 import CustomizedFooter from "components/customized-footer.vue";
 // import CustomizedNav from "components/customized-nav.vue";
@@ -106,6 +107,7 @@ import CustomizedFooter from "components/customized-footer.vue";
 import { mapMutations } from "vuex";
 import { DONE_LOGIN } from "store/mutation-types";
 import { watch } from "fs";
+import { WxLogin } from "../../public/wxlogin";
 import Cookies from "js-cookie";
 export default {
   name: "login",
