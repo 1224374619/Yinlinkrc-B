@@ -171,7 +171,7 @@ export default {
         id: "login_container",
         appid: "wxbca1daaa5765cc51",
         scope: "snsapi_login",
-        redirect_uri: 'https://www.yinlinkrc.com/api/business-core/companyAccounts/user',
+        redirect_uri: 'https://www.yinlinkrc.com/api/v3/business-core/companyAccounts/user',
         state: "asdsfdfgwerwrer",
         style: "black"
       });
