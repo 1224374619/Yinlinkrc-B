@@ -169,7 +169,7 @@ export default {
       var aaa = encodeURIComponent(
         "https://www.yinlinkrc.com/business/#/wxlogin"
       );
-      window.WxLogin({
+      var obj = new WxLogin({
         self_redirect: false,
         id: "login_container",
         appid: "wxbca1daaa5765cc51",
