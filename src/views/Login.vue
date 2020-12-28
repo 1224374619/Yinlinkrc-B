@@ -8,6 +8,7 @@
         <!-- <div >
           <img src="../assets/images/foot-wxs.png" />
         </div>-->
+        <remotejs :loadfinish="wxLogin" src="https://res.wx.qq.com/connect/zh_CN/htmledition/js/wxLogin.js"/>
         <div class="imgSrc" id="login_container"></div>
         <div class="foot">
           <button>
@@ -99,20 +100,20 @@
     <!-- <div><customized-footer /></div> -->
   </div>
 </template>
-<script src="http://res.wx.qq.com/connect/zh_CN/htmledition/js/wxLogin.js"></script>
 <script>
 import CustomizedFooter from "components/customized-footer.vue";
+import remotejs from './RemoteJs'
 // import CustomizedNav from "components/customized-nav.vue";
 // import PasswordInput from "components/password-input.vue";
 import { mapMutations } from "vuex";
 import { DONE_LOGIN } from "store/mutation-types";
-import { watch } from "fs";
-import { WxLogin } from "../../public/wxlogin";
+import { watch } from "fs"
 import Cookies from "js-cookie";
 export default {
   name: "login",
   components: {
-    CustomizedFooter
+    CustomizedFooter,
+    remotejs
     // CustomizedNav,
     // PasswordInput
   },
@@ -162,16 +163,13 @@ export default {
     //微信扫码
     wxLogin() {
       this.writeMessageShow = true;
-
-      // let redirectUrl = encodeURIComponent(window.origin + "/api/" + this.url);
-      // console.log(redirectUrl);
       var obj = new WxLogin({
         self_redirect: false,
         id: "login_container",
         appid: "wxbca1daaa5765cc51",
         scope: "snsapi_login",
         redirect_uri: "https://www.yinlinkrc.com/business/#/wxlogin",
-        state: "asdsfdfgwerwrer2345325121113",
+        state: "asdsfdfgwerwrer",
         style: "black"
       });
     },
