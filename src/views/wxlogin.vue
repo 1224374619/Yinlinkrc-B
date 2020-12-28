@@ -54,6 +54,7 @@ export default {
   created() {
     
     console.log("1111111111111111");
+    this.$router.push({ path: "/home" });
     // this.wxlogin();
   }
 };
