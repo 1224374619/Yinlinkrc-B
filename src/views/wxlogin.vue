@@ -13,10 +13,11 @@ export default {
         var str = url.substr(1);
         var strs = str.split("=");
       }
-      let params = {
-        code: strs[1].split("&")[0],
-        state: strs[2]
-      };
+      console.log(str,strs)
+      // let params = {
+      //   code: strs[1].split("&")[0],
+      //   state: strs[2]
+      // };
       this.$localo
         .get("/business-user/wechat/account/login", { params: params })
         .then(res => {
