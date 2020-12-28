@@ -4,6 +4,7 @@ import Home from '../views/Home.vue'
 import Router from 'vue-router'
 import Vue from 'vue'
 import wxbind from '../views/Wxbind.vue'
+import wxlogin from '../views/wxlogin.vue'
 import resume from '../views/Resume/resume.vue'
 import position from '../views/Position/position.vue'
 import resumeInfo from '../views/Resume/resumeInfo.vue'
@@ -73,6 +74,12 @@ let routes = [{
         path: '/wxbind',
         component: wxbind,
         name: 'wxbind',
+        hidden: true
+    },
+    {
+        path: '/wxlogin',
+        component: wxlogin,
+        name: 'wxlogin',
         hidden: true
     },
     {

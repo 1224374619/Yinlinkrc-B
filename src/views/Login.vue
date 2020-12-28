@@ -99,7 +99,6 @@
     <!-- <div><customized-footer /></div> -->
   </div>
 </template>
-
 <script>
 import CustomizedFooter from "components/customized-footer.vue";
 // import CustomizedNav from "components/customized-nav.vue";
@@ -169,8 +168,8 @@ export default {
         id: "login_container",
         appid: "wxbca1daaa5765cc51",
         scope: "snsapi_login",
-        redirect_uri: "http://www.yinlinkrc.com/wxlogin",
-        state: "asdsfdfgwerwrer2345325123",
+        redirect_uri: "https://www.yinlinkrc.com/business/#/wxlogin",
+        state: "asdsfdfgwerwrer2345325121113",
         style: "black"
       });
     },
@@ -278,6 +277,7 @@ export default {
     }
   },
   created() {
+    
     // this.$emit('header', false);
     // this.$emit('footer', false);
   },

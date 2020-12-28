@@ -1,6 +1,7 @@
 <template></template>
 
 <script>
+import Cookies from "js-cookie";
 export default {
   data() {
     return {};
@@ -31,11 +32,11 @@ export default {
           } else {
             let token = res.headers["auth-token"];
             Cookies.set("token", Btoken);
-            this.brief();
+            // this.brief();
           }
         })
         .catch(error => {});
-    },
+    }
     // //获取简历简讯
     // brief() {
     //   this.$http
@@ -51,6 +52,8 @@ export default {
     // }
   },
   created() {
+    
+    console.log("1111111111111111");
     this.wxlogin();
   }
 };
