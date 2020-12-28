@@ -260,7 +260,7 @@ Vue.use(vuescroll, {
 });
 const router = new VueRouter({
   routes,
-  mode:'hash'
+  mode:'history'
 })
 
 

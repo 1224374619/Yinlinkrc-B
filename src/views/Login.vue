@@ -160,10 +160,6 @@ export default {
       }
     };
   },
-  mounted() {
-    var url = 'https://open.weixin.qq.com/connect/qrconnect?appid=' + 'wxbca1daaa5765cc51' + '&scope=snsapi_login&redirect_uri=' + 'https://www.yinlinkrc.com/business/#/wxlogin' + '&state=STATE&login_type=jssdk&self_redirect=true';
-    window.location.href = url
-  },
   methods: {
     ...mapMutations([DONE_LOGIN]),
     //微信扫码
