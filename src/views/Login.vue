@@ -121,6 +121,7 @@ export default {
   },
   data() {
     return {
+      // redirectUri: encodeURIComponent(window.origin + "/api/" + 'this.url'),
       form: {
         tel: "",
         password: ""
@@ -166,11 +167,11 @@ export default {
     wxLogin() {
       this.writeMessageShow = true;
       window.WxLogin({
-        self_redirect: false,
+        self_redirect: true,
         id: "login_container",
         appid: "wxbca1daaa5765cc51",
         scope: "snsapi_login",
-        redirect_uri: 'https://www.yinlinkrc.com/business/wxlogin',
+        redirect_uri: 'https://www.yinlinkrc.com/api/business-core/companyAccounts/user',
         state: "asdsfdfgwerwrer",
         style: "black"
       });
@@ -279,6 +280,7 @@ export default {
     }
   },
   created() {
+    console.log(window.origin,'111111111111111111111');
     // this.$emit('header', false);
     // this.$emit('footer', false);
   },
