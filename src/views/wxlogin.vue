@@ -55,7 +55,7 @@ export default {
   created() {
     
     console.log("1111111111111111");
-    this.wxlogin();
+    // this.wxlogin();
   }
 };
 </script>
