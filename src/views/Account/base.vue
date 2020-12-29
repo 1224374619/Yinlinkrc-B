@@ -6,6 +6,7 @@
         <!-- <div >
           <img src="../assets/images/foot-wxs.png" />
         </div>-->
+        <remotejs src="https://res.wx.qq.com/connect/zh_CN/htmledition/js/wxLogin.js" />
         <div class="imgSrc" id="login_container"></div>
         <div class="foot">
           <button>
@@ -44,11 +45,7 @@
       <div class="dialogCode">
         <span>验证码</span>
         <span>
-          <el-input
-            style="width:150px;margin:0 20px 0 10px"
-            placeholder="请输入验证码"
-            v-model="wxCode"
-          ></el-input>
+          <el-input style="width:150px;margin:0 20px 0 10px" placeholder="请输入验证码" v-model="wxCode"></el-input>
           <el-button @click="getCaptcha" :disabled="frozen">{{ captchaStatusText }}</el-button>
         </span>
       </div>
@@ -57,12 +54,7 @@
         <el-button style="margin:0 0 0 50px" type="primary" @click="wxdialogVisible = false">解 绑</el-button>
       </span>
     </el-dialog>
-    <el-dialog
-      title="更换手机号"
-      :visible.sync="dialogVisiblephone"
-      width="30%"
-      :before-close="handleClose"
-    >
+    <el-dialog title="更换手机号" :visible.sync="dialogVisiblephone" width="30%">
       <el-form
         :model="ruleForm"
         :rules="rules"
@@ -90,12 +82,7 @@
         </el-form-item>
       </el-form>
     </el-dialog>
-    <el-dialog
-      title="更换邮箱"
-      :visible.sync="dialogVisibleemail"
-      width="30%"
-      :before-close="handleClose"
-    >
+    <el-dialog title="更换邮箱" :visible.sync="dialogVisibleemail" width="30%">
       <el-form
         :model="ruleForms"
         :rules="rule"
@@ -188,10 +175,14 @@
 
 <script>
 import Cookies from "js-cookie";
+import remotejs from "../RemoteJs";
 let token = Cookies.get("Btoken");
 const captchaLabel = "获取验证码";
 const countNumber = 60;
 export default {
+  components: {
+    remotejs
+  },
   data() {
     // 手机号验证
     var checkPhone = (rule, value, callback) => {
@@ -212,6 +203,10 @@ export default {
       }, 100);
     };
     return {
+      redirectUri: encodeURIComponent(
+        "https://www.yinlinkrc.com/business/#/account/base"
+      ),
+      wxCode: "",
       myHeaders: { "Auth-Token": token },
       uploadDatas: {
         label: "company-account-avatar"
@@ -269,20 +264,21 @@ export default {
       formDate: {}
     };
   },
+  beforeRouteLeave(to, from, next) {
+    console.log(to, from, next);
+    next();
+  },
   methods: {
     //微信扫码
     wxLogin() {
       this.writeMessageShow = true;
-
-      // let redirectUrl = encodeURIComponent(window.origin + "/api/" + this.url);
-      // console.log(redirectUrl);
-      var obj = new WxLogin({
+      window.WxLogin({
         self_redirect: false,
         id: "login_container",
         appid: "wxbca1daaa5765cc51",
         scope: "snsapi_login",
-        redirect_uri: "http://www.yinlinkrc.com/account/base",
-        state: "asdsfdfgwerwrer2345325123",
+        redirect_uri: this.redirectUri,
+        state: "asdsfdfgwerwrer",
         style: "black"
       });
     },
@@ -451,12 +447,14 @@ export default {
   created() {
     let token = Cookies.get("Btoken");
     let url = window.location.href;
+    // let url = 'http://www.yinlinkrc.com/business/account/base?code=041OLJFa1cDKeA0nswGa1YTr9q0OLJFS&state=asdsfdfgwerwrer';
+
     if (url.indexOf("?") != -1) {
       var str = url.substr(1);
       var strs = str.split("=");
+      this.code = strs[1].split("&")[0];
+      this.state = strs[2];
     }
-    this.code = strs[1].split("&")[0];
-    this.state = strs[2];
     if (token) {
       this.base();
     } else {
