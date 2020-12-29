@@ -31,7 +31,7 @@
           </div>
           <div class="formlet" style="margin:30px 0 0 158px">
             <div class="header">
-              <!-- <span class="deng">登录</span> -->
+              <span class="deng">登录</span>
               <el-button
                 style="margin:39px 0 0 0;color:#373737;font-size:16px;font-wight:500;text-align:right"
                 @click="business"
