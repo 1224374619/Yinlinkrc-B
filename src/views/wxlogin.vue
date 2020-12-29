@@ -1,5 +1,5 @@
 <template>
-<div>1111111111111111111</div>
+<div></div>
 </template>
 
 <script>
@@ -12,34 +12,34 @@ export default {
     wxlogin() {
       let url = window.location.href;
       console.log(url)
-      // if (url.indexOf("?") != -1) {
-      //   var str = url.substr(1);
-      //   var strs = str.split("=");
-      // }
-      // console.log(str, strs);
-      // let params = {
-      //   code: strs[1].split("&")[0],
-      //   state: strs[2]
-      // };
-      // this.$localo
-      //   .get("/business-user/wechat/account/login", { params: params })
-      //   .then(res => {
-      //     let obj = JSON.stringify(res.data.data.accessTokenVO);
-      //     console.log(encodeURIComponent(obj));
-      //     if (res.data.code == "WE_CHAT_IS_NOT_BOUND") {
-      //       this.$router.push({
-      //         path: "/wxbind",
-      //         query: {
-      //           wxlogin: encodeURIComponent(obj)
-      //         }
-      //       });
-      //     } else {
-      //       let token = res.headers["auth-token"];
-      //       Cookies.set("token", Btoken);
-      //       this.$router.push({ path: "/home" });
-      //     }
-      //   })
-      //   .catch(error => {});
+      if (url.indexOf("?") != -1) {
+        var str = url.substr(1);
+        var strs = str.split("=");
+      }
+      console.log(str, strs);
+      let params = {
+        code: strs[1].split("&")[0],
+        state: strs[2]
+      };
+      this.$localo
+        .get("/business-user/wechat/account/login", { params: params })
+        .then(res => {
+          let obj = JSON.stringify(res.data.data.accessTokenVO);
+          console.log(encodeURIComponent(obj));
+          if (res.data.code == "WE_CHAT_IS_NOT_BOUND") {
+            this.$router.push({
+              path: "/wxbind",
+              query: {
+                wxlogin: encodeURIComponent(obj)
+              }
+            });
+          } else {
+            let token = res.headers["auth-token"];
+            Cookies.set("token", Btoken);
+            this.$router.push({ path: "/home" });
+          }
+        })
+        .catch(error => {});
     }
     // //获取简历简讯
     // brief() {
@@ -56,7 +56,6 @@ export default {
     // }
   },
   created() {
-    console.log('11111111111111111111')
     this.wxlogin();
   }
 };
