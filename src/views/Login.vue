@@ -161,12 +161,12 @@ export default {
       }
     };
   },
-  beforeRouteLeave(to, from, next) {
-    console.log('1111111111111111111111')
-    console.log(to,from,next)
-    // document.body.removeChild(wxJs);
-    // next();
-  },
+  // beforeRouteLeave(to, from, next) {
+  //   console.log('1111111111111111111111')
+  //   console.log(to,from,next)
+  //   // document.body.removeChild(wxJs);
+  //   // next();
+  // },
   // appid: "wxbca1daaa5765cc51",
   methods: {
     ...mapMutations([DONE_LOGIN]),
