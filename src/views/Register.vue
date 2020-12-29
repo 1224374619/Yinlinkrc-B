@@ -271,7 +271,7 @@ export default {
       });
     },
     business() {
-      window.open("http://47.102.145.186/business/#/register");
+      window.open("https://47.102.145.186/business/#/register");
     },
     gotoLoginUI() {
       this.$router.push({ path: "login" });

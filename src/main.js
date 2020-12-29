@@ -260,7 +260,7 @@ Vue.use(vuescroll, {
 });
 const router = new VueRouter({
   routes,
-  mode:'hash'
+  mode: 'hash'
 })
 
 
@@ -269,7 +269,7 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
   const token = Cookies.get('Btoken')
   const status = Cookies.get('status')
-  if (to.name === 'login' || to.name === 'register' || to.name === 'resetpassword' || to.name === 'wxbind') {
+  if (to.name === 'login' || to.name === 'register' || to.name === 'resetpassword' || to.name === 'wxbind' || to.name === 'wxlogin') {
     store.state.hasLogin = false
     store.state.hasLogins = false
   } else {

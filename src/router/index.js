@@ -4,7 +4,7 @@ import Home from '../views/Home.vue'
 import Router from 'vue-router'
 import Vue from 'vue'
 import wxbind from '../views/Wxbind.vue'
-import wxboolen from '../views/wxboolen.vue'
+import wxlogin from '../views/wxlogin.vue'
 import resume from '../views/Resume/resume.vue'
 import position from '../views/Position/position.vue'
 import resumeInfo from '../views/Resume/resumeInfo.vue'
@@ -77,9 +77,9 @@ let routes = [{
         hidden: true
     },
     {
-        path: '/wxboolen',
-        component: wxboolen,
-        name: 'wxboolen',
+        path: '/wxlogin',
+        component: wxlogin,
+        name: 'wxlogin',
         hidden: true
     },
     {
