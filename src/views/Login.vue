@@ -121,7 +121,7 @@ export default {
   },
   data() {
     return {
-      redirectUri: encodeURIComponent(window.origin + "/api/v3/" + 'business-user/wechat/account/login'),
+      redirectUri: encodeURIComponent('https://www.yinlinkrc.com/business/#/register'),
       form: {
         tel: "",
         password: ""
@@ -167,6 +167,7 @@ export default {
     // document.body.removeChild(wxJs);
     // next();
   },
+  // appid: "wxbca1daaa5765cc51",
   methods: {
     ...mapMutations([DONE_LOGIN]),
     //微信扫码
@@ -175,9 +176,9 @@ export default {
       window.WxLogin({
         self_redirect: false,
         id: "login_container",
-        appid: "wxbca1daaa5765cc51",
+        appid: 'appid',
         scope: "snsapi_login",
-        redirect_uri: 'https://www.yinlinkrc.com/business/#/register',
+        redirect_uri: this.redirectUri,
         state: "asdsfdfgwerwrer",
         style: "black"
       });
