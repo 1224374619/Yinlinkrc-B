@@ -9,7 +9,6 @@
           <img src="../assets/images/foot-wxs.png" />
         </div>-->
         <remotejs
-          
           src="https://res.wx.qq.com/connect/zh_CN/htmledition/js/wxLogin.js"
         />
         <div class="imgSrc" id="login_container"></div>
@@ -122,7 +121,7 @@ export default {
   },
   data() {
     return {
-      // redirectUri: encodeURIComponent(window.origin + "/api/" + 'this.url'),
+      redirectUri: encodeURIComponent(window.origin + "/api/v3/" + 'business-core/dashboard/interview'),
       form: {
         tel: "",
         password: ""
@@ -173,7 +172,7 @@ export default {
         id: "login_container",
         appid: "wxbca1daaa5765cc51",
         scope: "snsapi_login",
-        redirect_uri: "https://www.yinlinkrc.com/business/#/wxbind",
+        redirect_uri: this.redirectUri,
         state: "asdsfdfgwerwrer",
         style: "black"
       });
