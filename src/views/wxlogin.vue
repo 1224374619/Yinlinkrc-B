@@ -13,11 +13,11 @@ export default {
         var str = url.substr(1);
         var strs = str.split("=");
       }
-      console.log(str,strs)
-      // let params = {
-      //   code: strs[1].split("&")[0],
-      //   state: strs[2]
-      // };
+      console.log(str, strs);
+      let params = {
+        code: strs[1].split("&")[0],
+        state: strs[2]
+      };
       this.$localo
         .get("/business-user/wechat/account/login", { params: params })
         .then(res => {
@@ -53,8 +53,13 @@ export default {
     // }
   },
   created() {
-    
     console.log("1111111111111111");
+    let url = window.location.href;
+    if (url.indexOf("?") != -1) {
+      var str = url.substr(1);
+      var strs = str.split("=");
+    }
+    console.log(str, strs);
     // this.wxlogin();
   }
 };

@@ -74,45 +74,56 @@
             <ul>
               <li>
                 <span>待接收</span>
-                <span style="color:#FF7152;font-size:24px">{{onlineNums}}</span>
+                <span style="color:#FF7152;font-size:24px">{{interviewBoardList.toBeAcceptedNum}}</span>
               </li>
               <li>
                 <span>待面试</span>
-                <span style="color:#FF7152;font-size:24px">{{editingNums}}</span>
+                <span style="color:#FF7152;font-size:24px">{{interviewBoardList.toBeInterviewedNum}}</span>
               </li>
               <li>
                 <span>已完成</span>
-                <span style="color:#FF7152;font-size:24px">{{auditingNums}}</span>
+                <span style="color:#FF7152;font-size:24px">{{interviewBoardList.completedNum}}</span>
               </li>
               <li>
                 <span>已取消</span>
-                <span style="color:#FF7152;font-size:24px">{{auditFailedNums}}</span>
+                <span
+                  style="color:#FF7152;font-size:24px"
+                >{{interviewBoardList.toCancelTheInterviewNum}}</span>
               </li>
               <li>
                 <span>已拒绝</span>
-                <span style="color:#FF7152;font-size:24px">{{offlineNums}}</span>
+                <span style="color:#FF7152;font-size:24px">{{interviewBoardList.refusedNum}}</span>
               </li>
               <li>
                 <span>已失效</span>
-                <span style="color:#FF7152;font-size:24px">{{offlineNums}}</span>
+                <span
+                  style="color:#FF7152;font-size:24px"
+                >{{interviewBoardList.hasBeenEffectiveNum}}</span>
               </li>
             </ul>
           </div>
           <div class="left-third">
-            <el-calendar style="margin:20px 35px" v-model="value"></el-calendar>
+            <el-calendar style="margin:20px 20px 20px 35px" v-model="interviewTime"></el-calendar>
             <div class="position">
-              <div>
+              <div style="text-align:center">
                 当日面试安排
-                <span style="color: #2D72E3;">2</span> 场
+                <span style="color: #2D72E3;">{{interview.total}}</span> 场
               </div>
               <div class="position-second">
-                <div>
-                  <span>上官红豆</span>
-                  <span>|</span>
-                  <span>产品经理实习生</span>
-                  <span>|</span>
-                  <span>9-14k</span>
-                  <span style="font-family: PingFangSC-Regular;color: #3A81F3;">12:00面试</span>
+                <div v-for="(item,index) in interview.list" :key="index">
+                  <div style="font-size: 14px;text-align:right">
+                    <span>{{item.interviewee}}</span>
+                    <span>|</span>
+                    <span
+                      v-if="item.positionName.length>10"
+                    >{{item.positionName.substring(0,10)}}...</span>
+                    <span v-else>{{item.positionName}}</span>
+                    <span>|</span>
+                    <span>{{item.salaryMax}}-{{item.salaryMin}}k</span>
+                    <span
+                      style="font-family: PingFangSC-Regular;color: #3A81F3;"
+                    >{{item.interviewTime|formatDate}}</span>面试
+                  </div>
                 </div>
               </div>
             </div>
@@ -186,7 +197,9 @@ export default {
   name: "home",
   data() {
     return {
-      value: new Date(),
+      interviewTime: new Date(),
+      interviewBoardList: {},
+      interview: {},
       incrementDailys: "",
       toProcessNums: "",
       auditFailedNums: "",
@@ -229,6 +242,46 @@ export default {
         })
         .catch(error => {});
     },
+    //面试看板
+    interviewBoard() {
+      let params = {
+        interviewTime: this.interviewTime.getTime(),
+        pageNum: 1,
+        pageSize: 10,
+        sortBy: null,
+        sortOrder: null
+      };
+      this.$http
+        .post("/business-core/dashboard/interview", params)
+        .then(res => {
+          let response = res.data.data;
+          if (res.data.code == "200") {
+            this.interviewBoardList = response;
+            this.interviewListBoard();
+          } else {
+          }
+        })
+        .catch(error => {});
+    },
+    interviewListBoard() {
+      let params = {
+        interviewTime: this.interviewTime.getTime(),
+        pageNum: 1,
+        pageSize: 10,
+        sortBy: null,
+        sortOrder: null
+      };
+      this.$http
+        .post("/business-core/dashboard/interview/list", params)
+        .then(res => {
+          let response = res.data.data;
+          if (res.data.code == "200") {
+            this.interview = response;
+          } else {
+          }
+        })
+        .catch(error => {});
+    },
     //简历看板
     resumeBoard() {
       this.$http
@@ -245,7 +298,6 @@ export default {
     },
     //职位看板
     positionBoard() {
-      
       this.$http
         .get("/business-core/dashboard/position")
         .then(res => {
@@ -289,6 +341,11 @@ export default {
     //     });
     // },
   },
+  watch: {
+    interviewTime: function() {
+      this.interviewBoard();
+    }
+  },
   created() {
     // this.signId = this.$route.query.id;
     // this.tel = Cookies.get("tel");
@@ -298,13 +355,14 @@ export default {
 
     // }
     let token = Cookies.get("Btoken");
-    
+
     if (token === undefined) {
       Cookies.set("Btoken", "");
     } else if (token) {
       this.companyBrief();
       this.positionBoard();
       this.resumeBoard();
+      this.interviewBoard();
       this.state();
     } else {
       this.$router.push({ path: "/login" });
@@ -406,12 +464,12 @@ export default {
           height: 430px;
           display: flex;
           flex-direction: row;
-          text-align: center;
 
           .position {
-            width: 390px;
+            width: 420px;
             height: 300px;
-            margin: 40px 0 0 0;
+            margin: 40px 30px 0 0;
+            
 
             div:nth-child(1) {
               font-family: PingFangSC-Regular;
@@ -420,10 +478,9 @@ export default {
             }
 
             .position-second {
-              margin: 30px 0 0 0;
+              margin: 20px 0 0 0;
               font-family: PingFangSC-Regular;
               color: #454545;
-              font-size: 14px;
 
               span {
                 padding: 0 6px;
