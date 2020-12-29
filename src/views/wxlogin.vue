@@ -53,14 +53,7 @@ export default {
     // }
   },
   created() {
-    console.log("1111111111111111");
-    let url = window.location.href;
-    if (url.indexOf("?") != -1) {
-      var str = url.substr(1);
-      var strs = str.split("=");
-    }
-    console.log(str, strs);
-    // this.wxlogin();
+    this.wxlogin();
   }
 };
 </script>

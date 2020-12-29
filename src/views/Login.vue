@@ -121,7 +121,7 @@ export default {
   },
   data() {
     return {
-      redirectUri: encodeURIComponent('https://www.yinlinkrc.com/business/#/register'),
+      redirectUri: encodeURIComponent('https://www.yinlinkrc.com/business/#/wxlogin'),
       form: {
         tel: "",
         password: ""
@@ -161,13 +161,6 @@ export default {
       }
     };
   },
-  // beforeRouteLeave(to, from, next) {
-  //   console.log('1111111111111111111111')
-  //   console.log(to,from,next)
-  //   // document.body.removeChild(wxJs);
-  //   // next();
-  // },
-  // appid: "wxbca1daaa5765cc51",
   methods: {
     ...mapMutations([DONE_LOGIN]),
     //微信扫码
