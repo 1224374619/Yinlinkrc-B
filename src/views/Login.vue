@@ -161,7 +161,11 @@ export default {
       }
     };
   },
-  
+  beforeRouteLeave(to, from, next) {
+    console.log(to,from,next)
+    // document.body.removeChild(wxJs);
+    // next();
+  },
   methods: {
     ...mapMutations([DONE_LOGIN]),
     //微信扫码
