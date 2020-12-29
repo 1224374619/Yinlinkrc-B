@@ -121,7 +121,7 @@ export default {
   },
   data() {
     return {
-      redirectUri: encodeURIComponent(window.origin + "/api/v3/" + 'business-core/dashboard/interview'),
+      redirectUri: encodeURIComponent(window.origin + "/api/v3/" + 'business-user/wechat/account/login'),
       form: {
         tel: "",
         password: ""
