@@ -9,6 +9,7 @@
           <img src="../assets/images/foot-wxs.png" />
         </div>-->
         <remotejs
+          :loadfinish="wxLogin"
           src="https://res.wx.qq.com/connect/zh_CN/htmledition/js/wxLogin.js"
         />
         <div class="imgSrc" id="login_container"></div>
@@ -171,7 +172,7 @@ export default {
         id: "login_container",
         appid: "wxbca1daaa5765cc51",
         scope: "snsapi_login",
-        redirect_uri: 'https://www.yinlinkrc.com/business/#/wxbind',
+        redirect_uri: "https://www.yinlinkrc.com/business/#/wxbind",
         state: "asdsfdfgwerwrer",
         style: "black"
       });
@@ -280,7 +281,7 @@ export default {
     }
   },
   created() {
-    console.log(window.origin,'111111111111111111111');
+    console.log(window.origin, "111111111111111111111");
     // this.$emit('header', false);
     // this.$emit('footer', false);
   },
