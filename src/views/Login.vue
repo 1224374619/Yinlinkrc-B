@@ -176,7 +176,7 @@ export default {
       window.WxLogin({
         self_redirect: false,
         id: "login_container",
-        appid: 'appid',
+        appid: 'wxbca1daaa5765cc51',
         scope: "snsapi_login",
         redirect_uri: this.redirectUri,
         state: "asdsfdfgwerwrer",
