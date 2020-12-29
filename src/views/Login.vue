@@ -121,7 +121,7 @@ export default {
   },
   data() {
     return {
-      redirectUri: encodeURIComponent('https://www.yinlinkrc.com/business/#/register'),
+      redirectUri: encodeURIComponent('https://www.yinlinkrc.com/business/#/wxboolen'),
       form: {
         tel: "",
         password: ""
