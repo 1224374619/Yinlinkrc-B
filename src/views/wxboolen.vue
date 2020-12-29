@@ -1,4 +1,6 @@
-<template></template>
+<template>
+<div>1111111111111111111</div>
+</template>
 
 <script>
 import Cookies from "js-cookie";
