@@ -9,7 +9,7 @@
           <img src="../assets/images/foot-wxs.png" />
         </div>-->
         <remotejs
-          :loadfinish="wxLogin"
+          
           src="https://res.wx.qq.com/connect/zh_CN/htmledition/js/wxLogin.js"
         />
         <div class="imgSrc" id="login_container"></div>
@@ -162,6 +162,7 @@ export default {
       }
     };
   },
+  
   methods: {
     ...mapMutations([DONE_LOGIN]),
     //微信扫码
