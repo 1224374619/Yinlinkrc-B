@@ -26,6 +26,7 @@ export default {
         .then(res => {
           let obj = JSON.stringify(res.data.data.accessTokenVO);
           console.log(encodeURIComponent(obj));
+          console.log(res)
           if (res.data.code == "WE_CHAT_IS_NOT_BOUND") {
             this.$router.push({
               path: "/wxbind",
