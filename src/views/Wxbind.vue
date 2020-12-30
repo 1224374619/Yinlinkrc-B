@@ -51,7 +51,7 @@
                   <el-checkbox style="margin:0 100px 20px 0;" v-model="form.checkLicense">
                     我已同意
                     <el-button
-                      style="color:#02B9B8;font-size:14px;"
+                      style="color:#327cf3;font-size:14px;"
                       type="text"
                       @click="gotoUserPrivacyLicenseUI"
                     >《用户协议及隐私策略》</el-button>
@@ -59,7 +59,7 @@
                 </el-form-item>-->
                 <el-form-item>
                   <el-button
-                    style="width:202px;height:43px;background:#02B9B8;color:#fff;border-radius:21px;margin:45px 0 0 40px"
+                    style="width:202px;height:43px;background:#327cf3;color:#fff;border-radius:21px;margin:45px 0 0 40px"
                     class="full"
                     @click="onSubmit"
                     
@@ -223,9 +223,9 @@ export default {
                 webkitTransitionDuration: "0.4s",
                 transitionDuration: "0.4s",
                 cursor: "pointer",
-                backgroundColor: "#02B9B8",
+                backgroundColor: "#327cf3",
                 color: "white",
-                border: "1px solid #02B9B8"
+                border: "1px solid #327cf3"
               },
               on: {
                 //鼠标移出的回调
@@ -310,7 +310,7 @@ export default {
 
               div {
                 font-family: PingFangSC-Medium;
-                color: #02B9B8;
+                color: #327cf3;
                 font-size: 18px;
                 line-height: 18px;
               }
@@ -343,8 +343,8 @@ export default {
             }
 
             .el-checkbox__input.is-checked .el-checkbox__inner {
-              background-color: #02B9B8;
-              border-color: #02B9B8;
+              background-color: #327cf3;
+              border-color: #327cf3;
             }
 
             .el-checkbox__inner {
@@ -352,7 +352,7 @@ export default {
             }
 
             .el-checkbox__inner:hover {
-              border: 1px solid #02B9B8;
+              border: 1px solid #327cf3;
             }
 
             .el-input__inner {

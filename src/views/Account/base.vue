@@ -283,6 +283,16 @@ export default {
         href:
           "data:text/css;base64,LmltcG93ZXJCb3ggLnN0YXR1cyB7CiAgbWFyZ2luOiAxMHB4IDAgNjBweCAwOwogIGJhY2tncm91bmQtY29sb3I6ICNmZmZmZmY7CiAgLXdlYmtpdC1ib3JkZXItcmFkaXVzOiAxMDBweDsKICB6LWluZGV4OiA2MDA7CiAgLXdlYmtpdC1ib3gtc2hhZG93OiBpbnNldCAwIDVweCAxMHB4IC01cHggIzE5MTkxOSwgMCAxcHggMCAwICM0NDQ7CiAgYm94LXNoYWRvdzogaW5zZXQgMCA1cHggMTBweCAtNXB4ICMxOTE5MTksIDAgMXB4IDAgMCAjNDQ0Owp9"
       });
+      let url = window.location.href;
+      // let url = 'http://www.yinlinkrc.com/business/account/base?code=041OLJFa1cDKeA0nswGa1YTr9q0OLJFS&state=asdsfdfgwerwrer';
+
+      if (url.indexOf("?") != -1) {
+        var str = url.substr(1);
+        var strs = str.split("=");
+        this.code = strs[1].split("&")[0];
+        this.state = strs[2];
+      }
+      console.log(this.code,this.state)
     },
     //绑定详情
     bindWechat() {
@@ -448,15 +458,6 @@ export default {
   },
   created() {
     let token = Cookies.get("Btoken");
-    let url = window.location.href;
-    // let url = 'http://www.yinlinkrc.com/business/account/base?code=041OLJFa1cDKeA0nswGa1YTr9q0OLJFS&state=asdsfdfgwerwrer';
-
-    if (url.indexOf("?") != -1) {
-      var str = url.substr(1);
-      var strs = str.split("=");
-      this.code = strs[1].split("&")[0];
-      this.state = strs[2];
-    }
     if (token) {
       this.base();
     } else {
