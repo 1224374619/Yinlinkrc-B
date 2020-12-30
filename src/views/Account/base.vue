@@ -40,7 +40,7 @@
     <el-dialog title :visible.sync="wxdialogVisible" width="25%" :show-close="false">
       <div class="dialogTitle">
         <span>手机号</span>
-        <span>{{phoneOne}}</span>
+        <span>{{formDate.phone}}</span>
       </div>
       <div class="dialogCode">
         <span>验证码</span>
@@ -282,6 +282,12 @@ export default {
     }
   },
   methods: {
+    //遮罩层
+    writeMessageFun(ev) {
+      if (!this.$refs.msk.contains(ev.target)) {
+        this.writeMessageShow = false;
+      }
+    },
     //微信扫码
     wxLogin() {
       this.writeMessageShow = true;
@@ -324,7 +330,7 @@ export default {
     bund() {
       let params = {
         code: this.code,
-        phone: this.phoneOne,
+        phone: this.formDate.phone,
         scode: this.wxCode,
         state: this.state
       };
@@ -365,7 +371,7 @@ export default {
         }
       }, 1000);
       this.$locals.post("/business-user/account/phone/vcode", {
-        phone: this.phoneOne
+        phone: this.formDate.phone
       });
     },
     getCaptchas() {
