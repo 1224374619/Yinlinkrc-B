@@ -40,13 +40,13 @@
     <el-dialog title :visible.sync="wxdialogVisible" width="25%" :show-close="false">
       <div class="dialogTitle">
         <span>手机号</span>
-        <span>182****7638</span>
+        <span>{{phoneOne}}</span>
       </div>
       <div class="dialogCode">
         <span>验证码</span>
         <span>
           <el-input style="width:150px;margin:0 20px 0 10px" placeholder="请输入验证码" v-model="wxCode"></el-input>
-          <el-button @click="getCaptcha" :disabled="frozen">{{ captchaStatusText }}</el-button>
+          <el-button @click="getCaptchaes" :disabled="frozen">{{ captchaStatusText }}</el-button>
         </span>
       </div>
       <span slot="footer" class="dialog-footer">
@@ -350,6 +350,22 @@ export default {
       }, 1000);
       this.$locals.post("/business-user/account/phone/vcode", {
         phone: this.ruleForm.phone
+      });
+    },
+    //验证码
+    getCaptchaes() {
+      this.frozen = true;
+      const handler = setInterval(() => {
+        this.captchaStatusText = `${captchaLabel}(${--this.counter}s)`;
+        if (this.counter === 0) {
+          clearInterval(handler);
+          this.counter = countNumber;
+          this.captchaStatusText = captchaLabel;
+          this.frozen = false;
+        }
+      }, 1000);
+      this.$locals.post("/business-user/account/phone/vcode", {
+        phone: this.phoneOne
       });
     },
     getCaptchas() {
