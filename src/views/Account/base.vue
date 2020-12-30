@@ -160,8 +160,8 @@
           </div>
           <div class="elbutton">
             <div style="padding:0 0 30px 0" v-if="this.wxState">
-              <span>二月</span>
-              <span style="font-size:16px;color:#ff7152;line-height:16px;margin:0 0 0 50px">解绑</span>
+              <span>{{nickname}}</span>
+              <span @click="Unbund" style="font-size:16px;color:#ff7152;line-height:16px;margin:0 0 0 10px">解绑</span>
             </div>
             <div style="margin:-33px 0 0 0" v-else>
               <el-button class="pributton" @click="wxLogin" plain>立即绑定</el-button>
