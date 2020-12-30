@@ -177,22 +177,6 @@ export default {
               }
             })
             .catch(error => {
-              if (error.response.status === 404) {
-                this.$notify.info({
-                  title: "消息",
-                  message: "页面丢失，请重新加载"
-                });
-              } else if (error.response.status === 403) {
-                this.$notify.info({
-                  title: "消息",
-                  message: "登陆超时，请重新登录"
-                });
-              } else {
-                this.$notify.info({
-                  title: "消息",
-                  message: error.response.data.message
-                });
-              }
             });
         } else {
           return false;
@@ -374,7 +358,7 @@ export default {
             margin: 0 auto;
 
             span:nth-child(2) {
-              color: #00b4b3;
+              color: #327cf3;
             }
           }
         }

@@ -51,7 +51,7 @@
       </div>
       <span slot="footer" class="dialog-footer">
         <el-button plain @click="wxdialogVisible = false">取 消</el-button>
-        <el-button style="margin:0 0 0 50px" type="primary" @click="Unbund()">绑 定</el-button>
+        <el-button style="margin:0 0 0 50px" type="primary" @click="bund()">绑 定</el-button>
       </span>
     </el-dialog>
     <el-dialog title="更换手机号" :visible.sync="dialogVisiblephone" width="30%">
@@ -161,7 +161,10 @@
           <div class="elbutton">
             <div style="padding:0 0 30px 0" v-if="this.wxState">
               <span>{{nickname}}</span>
-              <span @click="Unbund" style="font-size:16px;color:#ff7152;line-height:16px;margin:0 0 0 10px">解绑</span>
+              <span
+                @click="Unbund"
+                style="font-size:16px;color:#ff7152;line-height:16px;margin:0 0 0 10px"
+              >解绑</span>
             </div>
             <div style="margin:-33px 0 0 0" v-else>
               <el-button class="pributton" @click="wxLogin" plain>立即绑定</el-button>
@@ -266,7 +269,6 @@ export default {
   },
   watch: {
     $route(to, from) {
-      console.log(to);
       let url = window.location.href;
       if (url.indexOf("?") != -1) {
         var str = url.substr(1);
@@ -275,6 +277,8 @@ export default {
         this.state = strs[2];
       }
       console.log(this.code, this.state);
+      this.writeMessageShow = false;
+      this.wxdialogVisible = true
     }
   },
   methods: {
@@ -587,6 +591,8 @@ export default {
     }
 
     .elbutton {
+      cursor: pointer;
+
       .el-button {
         width: 94px;
         height: 30px;
