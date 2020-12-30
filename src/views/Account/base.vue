@@ -51,7 +51,7 @@
       </div>
       <span slot="footer" class="dialog-footer">
         <el-button plain @click="wxdialogVisible = false">取 消</el-button>
-        <el-button style="margin:0 0 0 50px" type="primary" @click="bund()">绑 定</el-button>
+        <el-button style="margin:0 0 0 50px" type="primary" @click="keepUnbund()">解 绑</el-button>
       </span>
     </el-dialog>
     <el-dialog title="更换手机号" :visible.sync="dialogVisiblephone" width="30%">
@@ -278,7 +278,6 @@ export default {
       }
       console.log(this.code, this.state);
       this.writeMessageShow = false;
-      this.wxdialogVisible = true
     }
   },
   methods: {
@@ -319,8 +318,15 @@ export default {
     },
     //解绑
     Unbund() {
+      this.wxdialogVisible = true;
+    },
+    keepUnbund() {
+      let params = {
+        phone: this.formDate.phone,
+        scode: this.wxCode,
+      };
       this.$http
-        .delete(`business-user/binding/${this.thirdPartyId}`)
+        .post(`business-user/binding/wechat/unbind`, params)
         .then(res => {
           this.wxState = false;
         })
@@ -330,8 +336,6 @@ export default {
     bund() {
       let params = {
         code: this.code,
-        phone: this.formDate.phone,
-        scode: this.wxCode,
         state: this.state
       };
       this.$http
