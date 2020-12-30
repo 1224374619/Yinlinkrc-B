@@ -35,12 +35,9 @@ export default {
               }
             });
           } else {
-            console.log('111111')
             let token = res.headers["auth-token"];
-            console.log(token)
-            Cookies.set("token", Btoken);
+            Cookies.set("Btoken", token);
             this.$router.push({ path: "/home" });
-            console.log('2222222222')
           }
         })
         .catch(error => {});
