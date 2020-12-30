@@ -62,7 +62,7 @@
                     style="width:202px;height:43px;background:#02B9B8;color:#fff;border-radius:21px;margin:45px 0 0 40px"
                     class="full"
                     @click="onSubmit"
-                    :disabled="!form.checkLicense"
+                    
                   >确认绑定</el-button>
                 </el-form-item>
               </el-form>
