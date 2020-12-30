@@ -8,12 +8,12 @@
         </div>-->
         <remotejs src="https://res.wx.qq.com/connect/zh_CN/htmledition/js/wxLogin.js" />
         <div class="imgSrc" id="login_container"></div>
-        <div class="foot">
+        <!-- <div class="foot">
           <button>
             请使用微信扫描二维码登录
             “银领人才网”
           </button>
-        </div>
+        </div>-->
       </div>
     </div>
     <!-- <el-dialog title="更换头像" :visible.sync="dialogVisible" width="30%" :before-close="handleClose">
@@ -279,7 +279,9 @@ export default {
         scope: "snsapi_login",
         redirect_uri: this.redirectUri,
         state: "asdsfdfgwerwrer",
-        style: "black"
+        style: "black",
+        href:
+          "data:text/css;base64,LmltcG93ZXJCb3ggLnN0YXR1cyB7CiAgbWFyZ2luOiAxMHB4IDAgNjBweCAwOwogIGJhY2tncm91bmQtY29sb3I6ICNmZmZmZmY7CiAgLXdlYmtpdC1ib3JkZXItcmFkaXVzOiAxMDBweDsKICB6LWluZGV4OiA2MDA7CiAgLXdlYmtpdC1ib3gtc2hhZG93OiBpbnNldCAwIDVweCAxMHB4IC01cHggIzE5MTkxOSwgMCAxcHggMCAwICM0NDQ7CiAgYm94LXNoYWRvdzogaW5zZXQgMCA1cHggMTBweCAtNXB4ICMxOTE5MTksIDAgMXB4IDAgMCAjNDQ0Owp9"
       });
     },
     //绑定详情
@@ -499,12 +501,10 @@ export default {
       font-family: PingFangSC-Medium;
       color: #FFFFFF;
       font-size: 20px;
-      margin: 230px 0 0 0;
+      margin: 130px 0 0 0;
     }
 
     .imgSrc {
-      margin: 20px 0 0 0;
-
       img {
         width: 284px;
       }
