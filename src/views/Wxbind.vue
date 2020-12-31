@@ -170,7 +170,7 @@ export default {
             .then(res => {
               if (res.data.code == "200") {
                 let token = res.headers["auth-token"];
-                Cookies.set("token", Btoken);
+                Cookies.set("Btoken", token);
                 window.sessionStorage.setItem("user", this.form.tel);
                 // this.brief();
                 this.$router.push({ path: "/home" });
