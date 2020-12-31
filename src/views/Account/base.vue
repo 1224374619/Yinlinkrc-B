@@ -330,6 +330,7 @@ export default {
         .post(`business-user/binding/wechat/unbind`, params)
         .then(res => {
           this.wxState = false;
+          this.wxdialogVisible = false;
         })
         .catch(error => {});
     },

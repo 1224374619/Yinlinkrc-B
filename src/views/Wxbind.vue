@@ -104,6 +104,7 @@
 // import CustomizedFooter from 'components/customized-footer.vue';
 // import CustomizedNav from 'components/customized-nav.vue';
 import Captcha from "components/captcha.vue";
+import Cookies from "js-cookie";
 // import PasswordInput from 'components/password-input.vue';
 
 export default {
@@ -168,7 +169,7 @@ export default {
               }
             })
             .then(res => {
-              if (res.data.code == "200") {
+              if (res.data.code === "200") {
                 let token = res.headers["auth-token"];
                 Cookies.set("Btoken", token);
                 window.sessionStorage.setItem("user", this.form.tel);
