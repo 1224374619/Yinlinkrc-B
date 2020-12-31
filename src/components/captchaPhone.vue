@@ -34,9 +34,10 @@ export default {
       }, 1000);
       this.$local.post('consumer-user/account/phone/vcode',{phone:this.fromData})
       .catch(error => {
-          this.$message({
-              message: error.response.data.message,
-            });
+          this.$notify.info({
+            title: "消息",
+            message: error.response.data.message
+          });
         });
     }
   },

@@ -37,13 +37,6 @@ export default {
           phone: this.fromData
         })
         .then(res => {
-          if (res.data.code == "200") {
-          } else {
-            this.$message({
-              message: res.data.message,
-              type: "error"
-            });
-          }
         })
         .catch(error => {
           this.$notify.info({

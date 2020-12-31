@@ -1141,7 +1141,7 @@ export default {
   },
   computed: {
     uploadUrl() {
-      return "/api/3/file-service/files/upload";
+      return "/api/v3/file-service/files/upload";
     }
   },
   methods: {

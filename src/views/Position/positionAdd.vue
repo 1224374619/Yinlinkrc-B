@@ -178,11 +178,11 @@
                     :value="item.id"
                   >
                     <span style="float: left">{{ item.detail }}</span>
-                    <span
+                    <!-- <span
                       @click="deleteAddress(item)"
                       class="span-hover"
                       style="float: right; color: #8492a6; font-size: 13px"
-                    >删除</span>
+                    >删除</span> -->
                     <span
                       @click="editAddressre(item)"
                       class="span-hover"

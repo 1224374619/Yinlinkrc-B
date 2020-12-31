@@ -6,19 +6,19 @@
 </template>
 
 <script>
-const captchaLabel = '获取验证码';
+const captchaLabel = "获取验证码";
 const countNumber = 60;
 
 export default {
-  name: 'captcha',
-  props:['fromData'],
+  name: "captcha",
+  props: ["fromData"],
   data() {
     return {
       frozen: false,
       counter: countNumber,
-      captchaInput: '',
-      captchaStatusText: captchaLabel,
-    }
+      captchaInput: "",
+      captchaStatusText: captchaLabel
+    };
   },
   methods: {
     getCaptcha() {
@@ -32,35 +32,49 @@ export default {
           this.frozen = false;
         }
       }, 1000);
-      this.$local.post('/business-user/account/phone/vcode',{phone:this.fromData})
+      this.$local
+        .post("/business-user/account/phone/vcode", { phone: this.fromData })
+        .catch(error => {
+          this.$notify.info({
+            title: "消息",
+            message: error.response.data.message
+          });
+        });
     }
   },
   watch: {
     captchaInput() {
-      this.$emit('input', this.captchaInput);
+      this.$emit("input", this.captchaInput);
     }
   }
-}
+};
 </script>
 
 <style lang="stylus" >
-.captcha
-  display flex
-  flex-direction row
-  .input
-    width 144px
-    height 43px
-    margin 0 0 0 5px
-  .el-input__inner 
-    &::placeholder 
-      color #cbcbcb 
-      font-size 14px 
-  .btn
-    width 150px
-    height 40px
-    margin 0 0 2px 10px
-    font-size 16px
-    color #327cf3
-    border 1px solid #327cf3
+.captcha {
+  display: flex;
+  flex-direction: row;
 
+  .input {
+    width: 144px;
+    height: 43px;
+    margin: 0 0 0 5px;
+  }
+
+  .el-input__inner {
+    &::placeholder {
+      color: #cbcbcb;
+      font-size: 14px;
+    }
+  }
+
+  .btn {
+    width: 150px;
+    height: 40px;
+    margin: 0 0 2px 10px;
+    font-size: 16px;
+    color: #327cf3;
+    border: 1px solid #327cf3;
+  }
+}
 </style>
