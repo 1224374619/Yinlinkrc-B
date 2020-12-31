@@ -522,7 +522,7 @@ export default {
       return "/api/v3/business-user/account/avatar";
     },
     uploadCompanyFile() {
-      return "/api/3/file-service/files/upload";
+      return "/api/v3/file-service/files/upload";
     }
   }
 };
