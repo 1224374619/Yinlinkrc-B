@@ -74,7 +74,7 @@
                 </el-form-item>
                 <el-form-item>
                   <el-button
-                    style="width:270px;height:43px;margin:20px 0 0 0;background:#327cf3;color:#fff"
+                    style="width:270px;height:43px;margin:20px 0 0 0;background:#02b9b8;color:#fff"
                     class="full"
                     @click="onSubmit"
                   >立即登录</el-button>
@@ -307,7 +307,7 @@ export default {
   justify-content: center;
   align-items: center;
   height: 100%;
-  background: #327cf3;
+  background: #02b9b8;
 
   .body {
     .form {
@@ -338,7 +338,7 @@ export default {
 
             .deng {
               font-family: PingFangSC-Medium;
-              color: #327cf3;
+              color: #02b9b8;
               font-size: 24px;
               margin: 39px 0 0 0;
               font-weight: 500;
@@ -383,7 +383,7 @@ export default {
 
             .adjunctive-aside {
               font-family: PingFangSC-Regular;
-              color: #327cf3;
+              color: #02b9b8;
               margin: 0 0 0 30px;
             }
           }

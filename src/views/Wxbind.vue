@@ -51,7 +51,7 @@
                   <el-checkbox style="margin:0 100px 20px 0;" v-model="form.checkLicense">
                     我已同意
                     <el-button
-                      style="color:#327cf3;font-size:14px;"
+                      style="color:#02b9b8;font-size:14px;"
                       type="text"
                       @click="gotoUserPrivacyLicenseUI"
                     >《用户协议及隐私策略》</el-button>
@@ -59,7 +59,7 @@
                 </el-form-item>-->
                 <el-form-item>
                   <el-button
-                    style="width:202px;height:43px;background:#327cf3;color:#fff;border-radius:21px;margin:45px 0 0 40px"
+                    style="width:202px;height:43px;background:#02b9b8;color:#fff;border-radius:21px;margin:45px 0 0 40px"
                     class="full"
                     @click="onSubmit"
                     
@@ -208,9 +208,9 @@ export default {
                 webkitTransitionDuration: "0.4s",
                 transitionDuration: "0.4s",
                 cursor: "pointer",
-                backgroundColor: "#327cf3",
+                backgroundColor: "#02b9b8",
                 color: "white",
-                border: "1px solid #327cf3"
+                border: "1px solid #02b9b8"
               },
               on: {
                 //鼠标移出的回调
@@ -254,7 +254,7 @@ export default {
   justify-content: center;
   align-items: center;
   height: 100%;
-  background: #327cf3;
+  background: #02b9b8;
 
   .body {
     .form {
@@ -295,7 +295,7 @@ export default {
 
               div {
                 font-family: PingFangSC-Medium;
-                color: #327cf3;
+                color: #02b9b8;
                 font-size: 18px;
                 line-height: 18px;
               }
@@ -328,8 +328,8 @@ export default {
             }
 
             .el-checkbox__input.is-checked .el-checkbox__inner {
-              background-color: #327cf3;
-              border-color: #327cf3;
+              background-color: #02b9b8;
+              border-color: #02b9b8;
             }
 
             .el-checkbox__inner {
@@ -337,7 +337,7 @@ export default {
             }
 
             .el-checkbox__inner:hover {
-              border: 1px solid #327cf3;
+              border: 1px solid #02b9b8;
             }
 
             .el-input__inner {
@@ -359,7 +359,7 @@ export default {
             margin: 0 auto;
 
             span:nth-child(2) {
-              color: #327cf3;
+              color: #02b9b8;
             }
           }
         }

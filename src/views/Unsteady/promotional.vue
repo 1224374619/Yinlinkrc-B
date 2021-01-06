@@ -736,7 +736,7 @@ export default {
 
     .title-nav {
       font-family: PingFangSC-Medium;
-      color: #327CF3;
+      color: #02b9b8;
       font-size: 16px;
       margin: 14px 0 0 20px;
     }

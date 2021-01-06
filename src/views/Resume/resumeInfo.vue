@@ -407,7 +407,7 @@ export default {
   div:nth-child(1) {
     margin: 0 0 0 20px;
     font-size: 16px;
-    color: #1890FF;
+    color: #02B9B8;
   }
 
   div:nth-child(2) {
@@ -430,7 +430,7 @@ export default {
   div:nth-child(1) {
     margin: 0 0 0 20px;
     font-size: 16px;
-    color: #1890FF;
+    color: #02B9B8;
   }
 
   div:nth-child(2) {

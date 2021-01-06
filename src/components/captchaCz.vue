@@ -66,8 +66,8 @@ export default {
     height: 40px;
     margin: 0 0 2px 10px;
     font-size: 16px;
-    color: #327cf3;
-    border: 1px solid #327cf3;
+    color: #02b9b8;
+    border: 1px solid #02b9b8;
   }
 }
 </style>

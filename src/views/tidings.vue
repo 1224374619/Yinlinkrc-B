@@ -181,7 +181,7 @@ export default {
     margin: 0 auto 0px;
     background: #FAFAFA;
     font-family: PingFangSC-Medium;
-    color: #327CF3;
+    color: #02b9b8;
     line-height: 40px;
     font-size: 16px;
     border: 1px solid rgba(244, 244, 244, 1);

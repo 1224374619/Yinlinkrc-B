@@ -1411,7 +1411,7 @@ export default {
 
       div:nth-child(7) {
         font-family: PingFangSC-Regular;
-        color: #327CF3;
+        color: #02b9b8;
         font-size: 14px;
         width: 60px;
         margin: 0 0 0 15px;
@@ -1419,7 +1419,7 @@ export default {
 
       div:nth-child(8) {
         font-family: PingFangSC-Regular;
-        color: #327CF3;
+        color: #02b9b8;
         font-size: 14px;
         width: 30px;
         margin: 0 0 0 15px;
@@ -1479,7 +1479,7 @@ export default {
       span:nth-child(1) {
         margin: 0 0 0 16px;
         font-family: PingFangSC-Regular;
-        color: #327CF3;
+        color: #02b9b8;
         font-size: 16px;
       }
 

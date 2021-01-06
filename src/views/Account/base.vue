@@ -608,7 +608,7 @@ export default {
   height: 50px;
   background: #F1F1F1;
   font-family: PingFangSC-Medium;
-  color: #327cf3;
+  color: #02b9b8;
   line-height: 50px;
   font-size: 16px;
   border: 1px solid rgba(244, 244, 244, 1);
@@ -641,10 +641,10 @@ export default {
       .el-button {
         width: 94px;
         height: 30px;
-        border: 0.75px solid #327cf3;
+        border: 0.75px solid #02b9b8;
         border-radius: 5px;
         font-family: PingFangSC-Regular;
-        color: #327cf3;
+        color: #02b9b8;
         font-size: 16px;
         line-height: 0px;
         padding: 0 1px 0 0;

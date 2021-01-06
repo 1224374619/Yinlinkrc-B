@@ -103,7 +103,11 @@
               :on-success="handleAvatarSuccess"
               :on-error="handleAvatarError"
             >
-              <el-button size="small" plain type="primary">添加文件</el-button>
+              <div
+                v-if="this.file.fileAccessVo.fileName"
+                style="margin:5px 0 0 0"
+              >{{this.file.fileAccessVo.fileName}}</div>
+              <el-button v-else size="small" plain type="primary">添加文件</el-button>
             </el-upload>
           </div>
         </div>
@@ -202,7 +206,7 @@
     >
       <div>
         <div class="loading">
-          <i style="font-size:60px;color:#20A0ff;" class="el-icon-loading"></i>
+          <i style="font-size:60px;color:#02b9b8;" class="el-icon-loading"></i>
         </div>
         <div class="loading-text">下载中...</div>
       </div>
@@ -1130,7 +1134,9 @@ export default {
       transId: "",
       interviewStates: null,
       companyAddress: "",
-      file: "",
+      file: {
+        fileAccessVo: {}
+      },
       offerList: {},
       completedPercentMax: "",
       completedPercentMin: ""
@@ -1153,10 +1159,10 @@ export default {
     handleAvatarSuccess(res, file) {
       this.file = res.data;
       this.$notify({
-              title: "消息",
-              message: "附件上传成功",
-              type: "success"
-            });
+        title: "消息",
+        message: "附件上传成功",
+        type: "success"
+      });
     },
     //发送offer
     reqOffer(res) {
@@ -1179,11 +1185,10 @@ export default {
             this.dialogVisibleoffer = false;
             this.DialogVisibleOffer = false;
             this.$notify({
-        title: "消息",
-        message: "Offer发送成功",
-        type: "success"
-      });
-            
+              title: "消息",
+              message: "Offer发送成功",
+              type: "success"
+            });
           }
         })
         .catch(error => {});
@@ -1721,7 +1726,7 @@ export default {
 
     span {
       font-family: PingFangSC-Regular;
-      color: #327CF3;
+      color: #02b9b8;
       font-size: 16px;
     }
   }
@@ -1734,7 +1739,7 @@ export default {
 
     span {
       font-family: PingFangSC-Regular;
-      color: #327CF3;
+      color: #02b9b8;
       font-size: 16px;
     }
   }
@@ -1794,7 +1799,7 @@ export default {
   div:nth-child(1) {
     margin: 0 0 0 20px;
     font-size: 16px;
-    color: #1890FF;
+    color: #02B9B8;
   }
 
   div:nth-child(2) {

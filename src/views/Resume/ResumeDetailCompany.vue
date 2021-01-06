@@ -243,7 +243,7 @@ export default {
 
   div {
     margin: 0 0 0 20px;
-    color: #1890FF;
+    color: #02B9B8;
   }
 }
 
@@ -259,7 +259,7 @@ export default {
 
   div {
     margin: 0 0 0 20px;
-    color: #1890FF;
+    color: #02B9B8;
   }
 }
 

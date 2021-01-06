@@ -10,7 +10,7 @@
           
           router
           background-color="#FFFFFF"
-          active-text-color="#327cf3"
+          active-text-color="#02b9b8"
           
         >
           <template v-for="(item,index) in $router.options.routes" v-if="item.item === 4">

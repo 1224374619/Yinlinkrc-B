@@ -115,7 +115,7 @@ export default {
 
     .title-nav {
       font-family: PingFangSC-Medium;
-      color: #327CF3;
+      color: #02b9b8;
       font-size: 16px;
       margin: 13px 0 0 20px;
     }
@@ -193,8 +193,8 @@ export default {
           button:nth-child(1) {
             width: 93px;
             height: 33px;
-            background: #327CF3;
-            border: 1px solid #327CF3;
+            background: #02b9b8;
+            border: 1px solid #02b9b8;
             border-radius: 5px;
             font-family: PingFangSC-Regular;
             color: #FFFFFF;
@@ -208,7 +208,7 @@ export default {
             border: 1px solid rgba(50, 124, 243, 1);
             border-radius: 5px;
             font-family: PingFangSC-Regular;
-            color: #327CF3;
+            color: #02b9b8;
             font-size: 18px;
             margin: 0 0 0 20px;
           }

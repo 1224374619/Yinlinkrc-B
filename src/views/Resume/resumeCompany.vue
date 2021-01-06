@@ -13,7 +13,7 @@
     >
       <div>
         <div class="loading">
-          <i style="font-size:60px;color:#20A0ff;" class="el-icon-loading"></i>
+          <i style="font-size:60px;color:#02b9b8;" class="el-icon-loading"></i>
         </div>
         <div class="loading-text">下载中...</div>
       </div>
@@ -101,7 +101,7 @@
       <div class="tab-operations">
         <span @click="uploadFile" style="color:#FF7152;font-size:12px">批量下载简历</span>
       </div>
-      <el-table :data="tableData" style="width: 100%;" @selection-change="handleSelectionChange">
+      <el-table :data="tableData" style="width: 100%;margin:50px 0 0 0" @selection-change="handleSelectionChange">
         <el-table-column type="selection"></el-table-column>
         <el-table-column prop="fullName" label="姓名"></el-table-column>
         <el-table-column prop="sex" label="性别"></el-table-column>
@@ -515,12 +515,12 @@ export default {
 
   div {
     margin: 0 0 0 20px;
-    color: #1890FF;
+    color: #02B9B8;
   }
 }
 
 .tab-operations {
-  margin: -20px 0 10px 900px;
+  margin: -10px 0 10px 900px;
   font-family: PingFangSC-Regular;
 }
 

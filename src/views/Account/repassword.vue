@@ -161,7 +161,7 @@ export default {
   height: 50px;
   background: #F1F1F1;
   font-family: PingFangSC-Medium;
-  color: #327cf3;
+  color: #02b9b8;
   line-height: 50px;
   font-size: 16px;
   border: 1px solid rgba(244, 244, 244, 1);

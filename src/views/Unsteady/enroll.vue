@@ -13,7 +13,7 @@
       >
         <div>
           <div class="loading">
-            <i style="font-size:60px;color:#20A0ff;" class="el-icon-loading"></i>
+            <i style="font-size:60px;color:#02b9b8;" class="el-icon-loading"></i>
           </div>
           <div class="loading-text">下载中...</div>
         </div>
@@ -377,7 +377,7 @@ export default {
 
     .title-nav {
       font-family: PingFangSC-Medium;
-      color: #327CF3;
+      color: #02b9b8;
       font-size: 16px;
       margin: 17px 0 0 20px;
     }
@@ -419,8 +419,8 @@ export default {
     }
 
     .enroll-buttons {
-      background: #327CF3;
-      border: 1px solid #327CF3;
+      background: #02b9b8;
+      border: 1px solid #02b9b8;
       width: 80px;
       height: 28px;
       font-family: PingFangSC-Regular;

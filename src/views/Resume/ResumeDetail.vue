@@ -9,7 +9,7 @@
     >
       <div>
         <div class="loading">
-          <i style="font-size:60px;color:#20A0ff;" class="el-icon-loading"></i>
+          <i style="font-size:60px;color:#02b9b8;" class="el-icon-loading"></i>
         </div>
         <div class="loading-text">下载中...</div>
       </div>
@@ -345,7 +345,7 @@ export default {
       linktitle: "复制链接",
       textlink: "service@163.com",
       dialogVisible: false,
-      centerDialogVisible:false,
+      centerDialogVisible: false,
       centerDialogVisibles: false,
       dialogVisibledit: false,
       positionId: "",
@@ -706,13 +706,20 @@ export default {
   },
   created() {
     let token = Cookies.get("Btoken");
-    let list = decodeURIComponent(this.$route.query.resinfo);
-    this.resinfo = JSON.parse(list);
-    this.positionId = this.$route.query.positionId;
-    this.resumeId = this.$route.query.resumeId;
-    this.resumeIds = this.$route.query.resumeIds;
-    this.resumeIdes = this.$route.query.resumeIdes;
-    this.processedState = this.$route.query.processedState;
+    if (this.$route.query.resinfo) {
+      let list = decodeURIComponent(this.$route.query.resinfo);
+      this.resinfo = JSON.parse(list);
+    } else if (this.$route.query.positionId) {
+      this.positionId = this.$route.query.positionId;
+    } else if (this.$route.query.resumeId) {
+      this.resumeId = this.$route.query.resumeId;
+    } else if (this.$route.query.resumeIds) {
+      this.resumeIds = this.$route.query.resumeIds;
+    } else if (this.$route.query.resumeIdes) {
+      this.resumeIdes = this.$route.query.resumeIdes;
+    } else if (this.$route.query.processedState) {
+      this.processedState = this.$route.query.processedState;
+    }
     this.address();
     if (token) {
       if (this.resumeId) {
@@ -790,7 +797,7 @@ export default {
 
     span {
       font-family: PingFangSC-Regular;
-      color: #327CF3;
+      color: #02b9b8;
       font-size: 16px;
     }
   }
@@ -803,7 +810,7 @@ export default {
 
     span {
       font-family: PingFangSC-Regular;
-      color: #327CF3;
+      color: #02b9b8;
       font-size: 16px;
     }
   }
@@ -827,7 +834,7 @@ export default {
 
   div {
     margin: 0 0 0 20px;
-    color: #1890FF;
+    color: #02B9B8;
   }
 }
 
@@ -843,7 +850,7 @@ export default {
 
   div {
     margin: 0 0 0 20px;
-    color: #1890FF;
+    color: #02B9B8;
   }
 }
 

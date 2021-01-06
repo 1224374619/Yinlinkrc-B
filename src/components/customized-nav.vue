@@ -3,7 +3,7 @@
     <nav>
       <div class="nav-body">
         <img style="height:40px" @click="gotoHomeUI" :src="require('../assets/images/logo.png')" />
-        <!-- <span v-if="!ctlHideMenus" style="margin:5px 0 0 27px;color:#327cf3;">上海<i class="el-icon-caret-bottom"></i></span> -->
+        <!-- <span v-if="!ctlHideMenus" style="margin:5px 0 0 27px;color:#02b9b8;">上海<i class="el-icon-caret-bottom"></i></span> -->
         <div class="menu">
           <div class="group" v-if="this.status === 0">
             <!-- <router-link :to="{path: '/home' }" index="1">
@@ -383,7 +383,7 @@ nav {
           justify-content: center;
 
           &.router-link-active {
-            color: #327cf3;
+            color: #02b9b8;
             font-family: 'PingFangSC-Medium';
             margin: 0 0 0 0;
 

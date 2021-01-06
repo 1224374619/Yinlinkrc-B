@@ -16,7 +16,7 @@
     >
       <div>
         <div class="loading">
-          <i style="font-size:60px;color:#20A0ff;" class="el-icon-loading"></i>
+          <i style="font-size:60px;color:#02b9b8;" class="el-icon-loading"></i>
         </div>
         <div class="loading-text">下载中...</div>
       </div>
@@ -488,7 +488,7 @@ export default {
 
   div {
     margin: 0 0 0 20px;
-    color: #1890FF;
+    color: #02B9B8;
   }
 }
 

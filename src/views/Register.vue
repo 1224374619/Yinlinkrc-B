@@ -56,7 +56,7 @@
                 </el-form-item>
                 <el-form-item>
                   <el-button
-                    style="width:270px;height:43px;margin:20px 0 0 0;background:#327cf3;color:#fff"
+                    style="width:270px;height:43px;margin:20px 0 0 0;background:#02b9b8;color:#fff"
                     class="full"
                     @click="onSubmit"
                     :disabled="!form.checkLicense"
@@ -66,7 +66,7 @@
                   <el-checkbox style="margin:0 100px 20px 0;" v-model="form.checkLicense">
                     我已同意
                     <el-button
-                      style="color:#327cf3;font-size:14px;"
+                      style="color:#02b9b8;font-size:14px;"
                       type="text"
                       @click="gotoUserPrivacyLicenseUI"
                     >《用户协议及隐私策略》</el-button>
@@ -292,7 +292,7 @@ export default {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background: #327cf3;
+  background: #02b9b8;
   height: 100%;
 
   .body {
@@ -325,7 +325,7 @@ export default {
 
             .deng {
               font-family: PingFangSC-Medium;
-              color: #327cf3;
+              color: #02b9b8;
               font-size: 24px;
               margin: 39px 0 0 0;
               font-weight: 500;
@@ -348,8 +348,8 @@ export default {
             }
 
             .el-checkbox__input.is-checked .el-checkbox__inner {
-              background-color: #327cf3;
-              border-color: #327cf3;
+              background-color: #02b9b8;
+              border-color: #02b9b8;
             }
 
             .el-checkbox__inner {
@@ -357,7 +357,7 @@ export default {
             }
 
             .el-checkbox__inner:hover {
-              border: 1px solid #327cf3;
+              border: 1px solid #02b9b8;
             }
 
             .el-input__inner {
