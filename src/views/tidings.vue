@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="containeres">
     <div class="nav">
       <span style="margin:0 0 0 20px">消息中心</span>
     </div>
@@ -13,7 +13,7 @@
           v-model="activeName"
           type="card"
           @tab-click="handleClick"
-          style="width:96%;margin:20px auto;"
+          style="width:920px;margin:20px;"
         >
           <el-tab-pane label="未读消息" name="first">
             <el-table :data="tableData" style="width: 100%;height:450px">
@@ -167,8 +167,8 @@ export default {
 };
 </script>
 
-<style lang="stylus" scoped>
-.container {
+<style lang="stylus">
+.containeres {
   margin: 0 auto;
   width: 1280px;
   border: 1px solid #ffffff;
