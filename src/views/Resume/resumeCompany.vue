@@ -428,7 +428,8 @@ export default {
       this.$router.push({
         path: "/resume/talent/Detail",
         query: {
-          resumeIdes: tab.id
+          resumeIdes: tab.id,
+          state: 2,
         }
       });
     },

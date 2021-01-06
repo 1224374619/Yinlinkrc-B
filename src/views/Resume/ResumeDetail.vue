@@ -705,46 +705,26 @@ export default {
     }
   },
   created() {
-    let token = Cookies.get("Btoken");
-    if (this.$route.query.resinfo) {
+    let state = this.$route.query.state;
+    if (state === 0) {
       let list = decodeURIComponent(this.$route.query.resinfo);
       this.resinfo = JSON.parse(list);
-    } else if (this.$route.query.positionId) {
       this.positionId = this.$route.query.positionId;
-    } else if (this.$route.query.resumeId) {
-      this.resumeId = this.$route.query.resumeId;
-    } else if (this.$route.query.resumeIds) {
-      this.resumeIds = this.$route.query.resumeIds;
-    } else if (this.$route.query.resumeIdes) {
-      this.resumeIdes = this.$route.query.resumeIdes;
-    } else if (this.$route.query.processedState) {
       this.processedState = this.$route.query.processedState;
-    }
-    this.address();
-    if (token) {
-      if (this.resumeId) {
-        this.resumeDetail();
-        this.arrResume = this.resumeId;
-        this.id = this.resumeId;
-        // this.arrResume.push(this.resumeId);
-      } else if (this.resumeIds) {
-        this.resumeDetails();
-        this.arrResume = this.resumeIds;
-        this.id = this.resumeIds;
-        // this.arrResume.push(this.resumeIds);
-      } else {
-        this.resumeDetailes();
-        this.arrResume = this.resumeIdes;
-        this.id = this.resumeIdes;
-        // this.arrResume.push(this.resumeIdes);
-      }
+      this.resumeId = this.$route.query.resumeId;
+      this.resumeDetail();
+      this.arrResume = this.resumeId;
+    } else if (state === 1) {
+      this.resumeIds = this.$route.query.resumeIds;
+      this.resumeDetails();
+      this.arrResume = this.resumeIds;
     } else {
-      this.$notify.info({
-        title: "消息",
-        message: "登陆超时，请重新登录"
-      });
-      this.$router.push({ path: "/login" });
+      this.resumeIdes = this.$route.query.resumeIdes;
+      this.resumeDetailes();
+      this.arrResume = this.resumeIdes;
     }
+
+    this.address();
   },
   filters: {
     level(level) {

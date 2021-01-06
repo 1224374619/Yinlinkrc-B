@@ -1484,6 +1484,7 @@ export default {
         path: "/resume/talent/Detail",
         query: {
           resumeId: tab.id,
+          state: 0,
           resinfo: encodeURIComponent(arr),
           positionId: this.positionID,
           processedState: this.processedState
