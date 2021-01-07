@@ -101,10 +101,9 @@
               :headers="myHeaders"
               :show-file-list="false"
               :on-success="handleAvatarSuccess"
-              :on-error="handleAvatarError"
             >
               <div
-                v-if="this.file.fileAccessVo.fileName"
+                v-if="this.file.fileAccessVo"
                 style="margin:5px 0 0 0"
               >{{this.file.fileAccessVo.fileName}}</div>
               <el-button v-else size="small" plain type="primary">添加文件</el-button>
@@ -288,7 +287,7 @@
       <div class="tab-operation">
         <span @click="uploadFile" style="color:#FF7152;font-size:12px">批量下载简历</span>
       </div>
-      <div class="tab-operations" v-if="ms">
+      <!-- <div class="tab-operations" v-if="ms">
         <ul
           class="el-dropdown-menu el-popper"
           id="dropdown-menu-6024"
@@ -332,7 +331,7 @@
           >已失效</li>
           <div x-arrow class="popper__arrow" style="left: 59px;"></div>
         </ul>
-      </div>
+      </div> -->
       <el-tabs
         v-model="activeName"
         type="card"
@@ -619,7 +618,21 @@
           ></el-pagination>
         </el-tab-pane>
         <el-tab-pane name="second">
-          <span slot="label" @mouseover="selectStyle()">面试</span>
+          <template slot="label">
+            <el-dropdown>
+              <span class="el-dropdown-link">面试</span>
+              <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item @click.native="interviewstatus(1)">全部</el-dropdown-item>
+                <el-dropdown-item @click.native="interviewstatus(2)">待接受</el-dropdown-item>
+                <el-dropdown-item @click.native="interviewstatus(3)">已拒绝</el-dropdown-item>
+                <el-dropdown-item @click.native="interviewstatus(4)">待面试</el-dropdown-item>
+                <el-dropdown-item @click.native="interviewstatus(5)">取消面试</el-dropdown-item>
+                <el-dropdown-item @click.native="interviewstatus(6)">已完成</el-dropdown-item>
+                <el-dropdown-item @click.native="interviewstatus(7)">已失效</el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
+          </template>
+          <!-- <span slot="label" @mouseover="selectStyle()">面试</span> -->
           <el-table :data="tableData" style="width: 100%" @selection-change="handleSelectionChange">
             <el-table-column type="selection" width="55"></el-table-column>
             <el-table-column prop="fullName" label="姓名" show-overflow-tooltip></el-table-column>
@@ -1134,9 +1147,7 @@ export default {
       transId: "",
       interviewStates: null,
       companyAddress: "",
-      file: {
-        fileAccessVo: {}
-      },
+      file: "",
       offerList: {},
       completedPercentMax: "",
       completedPercentMin: ""
@@ -1235,6 +1246,7 @@ export default {
         .catch(error => {});
     },
     interviewstatus(e) {
+      this.activeName = "second";
       if (e === 1) {
         this.interviewStates = null;
       } else if (e === 2) {
