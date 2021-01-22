@@ -40,9 +40,12 @@ import supervise from '../views/Unsteady/supervise.vue'
 import promotionalDetail from '../views/Unsteady/promotionalDetail.vue'
 import attention from '../views/Unsteady/attention.vue'
 import enroll from '../views/Unsteady/enroll.vue'
+
+import preview from '../views/preview.vue'
 Vue.use(Router);
 // const router = new Router({})
-let routes = [{
+let routes = [
+    {
         path: '/',
         component: Home,
         redirect: '/home',
@@ -68,6 +71,12 @@ let routes = [{
         path: '/login',
         component: Login,
         name: 'login',
+        hidden: true
+    },
+    {
+        path: '/preview',
+        name: 'preview',
+        component: preview,
         hidden: true
     },
     {

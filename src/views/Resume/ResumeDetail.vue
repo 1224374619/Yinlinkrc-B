@@ -160,8 +160,8 @@
       <div class="resume" v-if="this.resumeDeta.base !== underfined">
         <div class="block">
           <img
-            width="100px;height:100px"
-            style="border-radius:50px"
+            width="100px;height:auto"
+            style="border-radius:10px"
             :src="resumeDeta.base.avatarUrl"
           />
         </div>
@@ -389,7 +389,7 @@ export default {
         phone: [
           { required: true, message: "请填写面试联系方式", trigger: "change" },
           {
-            pattern: /^[1][3578][0-9]{9}$/,
+            pattern: /^[1][356789][0-9]{9}$/,
             message: "请输入正确的手机号",
             trigger: ["change", "blur"]
           }
@@ -582,7 +582,7 @@ export default {
       // );
       this.dialogVisible = true;
       this.$local
-        .get(`/business-core/resumes/download/${this.positionId}/${this.id}`, {
+        .get(`/business-core/resumes/download/${this.positionId}/${this.resumeId}`, {
           responseType: "blob"
         })
         .then(res => {
@@ -681,7 +681,7 @@ export default {
     },
     resumeDetails() {
       this.$http
-        .get(`/business-core/platformTalentPool/databases/${this.resumeIds}`)
+        .get(`/business-core/platformTalentPool/databases/${this.resumeId}`)
         .then(res => {
           let response = res.data.data;
           if (res.data.code == "200") {
@@ -693,7 +693,7 @@ export default {
     },
     resumeDetailes() {
       this.$http
-        .get(`/business-core/CorporateTalentPool/databases/${this.resumeIdes}`)
+        .get(`/business-core/CorporateTalentPool/databases/${this.resumeId}`)
         .then(res => {
           let response = res.data.data;
           if (res.data.code == "200") {
@@ -706,7 +706,7 @@ export default {
   },
   created() {
     let state = this.$route.query.state;
-    if (state === 0) {
+    if (state == 0) {
       let list = decodeURIComponent(this.$route.query.resinfo);
       this.resinfo = JSON.parse(list);
       this.positionId = this.$route.query.positionId;
@@ -714,14 +714,18 @@ export default {
       this.resumeId = this.$route.query.resumeId;
       this.resumeDetail();
       this.arrResume = this.resumeId;
-    } else if (state === 1) {
-      this.resumeIds = this.$route.query.resumeIds;
+    } else if (state == 1) {
+      this.resumeId = this.$route.query.resumeIds;
       this.resumeDetails();
-      this.arrResume = this.resumeIds;
+      this.arrResume = this.resumeId;
+    }else if (state == 3) {
+      this.resumeId = this.$route.query.resumeId
+      this.resumeDetail();
+      this.arrResume = this.resumeId;
     } else {
-      this.resumeIdes = this.$route.query.resumeIdes;
+      this.resumeId = this.$route.query.resumeIdes;
       this.resumeDetailes();
-      this.arrResume = this.resumeIdes;
+      this.arrResume = this.resumeId;
     }
 
     this.address();

@@ -1,5 +1,10 @@
 <template>
   <div style="margin:96px 0 0 0;">
+    <el-dialog title width="30%" :visible.sync="dialogetx" style="border-radius:5px;">
+      <div>
+        <pdf ref="pdf" :src="url"></pdf>
+      </div>
+    </el-dialog>
     <el-dialog
       title
       :visible.sync="centerDialogVisible"
@@ -331,7 +336,7 @@
           >已失效</li>
           <div x-arrow class="popper__arrow" style="left: 59px;"></div>
         </ul>
-      </div> -->
+      </div>-->
       <el-tabs
         v-model="activeName"
         type="card"
@@ -360,10 +365,18 @@
               <template slot-scope="scope">
                 <el-button
                   style="color:#FF7152"
+                  v-if="scope.row.isResumeAttached"
+                  @click="fileUrl(scope.row)"
+                  type="text"
+                  size="small"
+                >查看附件</el-button>
+                <el-button
+                  style="color:#FF7152"
+                  v-else
                   @click="examing(scope.row)"
                   type="text"
                   size="small"
-                >查看</el-button>
+                >查看在线</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -405,10 +418,18 @@
               <template slot-scope="scope">
                 <el-button
                   style="color:#FF7152"
+                  v-if="scope.row.isResumeAttached"
+                  @click="fileUrl(scope.row)"
+                  type="text"
+                  size="small"
+                >查看附件</el-button>
+                <el-button
+                  style="color:#FF7152"
+                  v-else
                   @click="examing(scope.row)"
                   type="text"
                   size="small"
-                >查看</el-button>
+                >查看在线</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -450,10 +471,18 @@
               <template slot-scope="scope">
                 <el-button
                   style="color:#FF7152"
+                  v-if="scope.row.isResumeAttached"
+                  @click="fileUrl(scope.row)"
+                  type="text"
+                  size="small"
+                >查看附件</el-button>
+                <el-button
+                  style="color:#FF7152"
+                  v-else
                   @click="examing(scope.row)"
                   type="text"
                   size="small"
-                >查看</el-button>
+                >查看在线</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -489,10 +518,18 @@
               <template slot-scope="scope">
                 <el-button
                   style="color:#FF7152"
+                  v-if="scope.row.isResumeAttached"
+                  @click="fileUrl(scope.row)"
+                  type="text"
+                  size="small"
+                >查看附件</el-button>
+                <el-button
+                  style="color:#FF7152"
+                  v-else
                   @click="examing(scope.row)"
                   type="text"
                   size="small"
-                >查看</el-button>
+                >查看在线</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -536,16 +573,18 @@
               <template slot-scope="scope">
                 <el-button
                   style="color:#FF7152"
+                  v-if="scope.row.isResumeAttached"
+                  @click="fileUrl(scope.row)"
+                  type="text"
+                  size="small"
+                >查看附件</el-button>
+                <el-button
+                  style="color:#FF7152"
+                  v-else
                   @click="examing(scope.row)"
                   type="text"
                   size="small"
-                >查看</el-button>
-                <!-- <el-button
-                  style="color:#FF7152"
-                  @click="info(scope.row)"
-                  type="text"
-                  size="small"
-                >通知面试</el-button>-->
+                >查看在线</el-button>
                 <el-button
                   style="color:#FF7152"
                   @click="unfit(scope.row)"
@@ -587,10 +626,18 @@
               <template slot-scope="scope">
                 <el-button
                   style="color:#FF7152"
+                  v-if="scope.row.isResumeAttachedd"
+                  @click="fileUrl(scope.row)"
+                  type="text"
+                  size="small"
+                >查看附件</el-button>
+                <el-button
+                  style="color:#FF7152"
+                  v-else
                   @click="examing(scope.row)"
                   type="text"
                   size="small"
-                >查看</el-button>
+                >查看在线</el-button>
                 <el-button
                   style="color:#FF7152"
                   @click="info(scope.row)"
@@ -668,10 +715,18 @@
               <template slot-scope="scope">
                 <el-button
                   style="color:#FF7152"
+                  v-if="scope.row.isResumeAttachedd"
+                  @click="fileUrl(scope.row)"
+                  type="text"
+                  size="small"
+                >查看附件</el-button>
+                <el-button
+                  style="color:#FF7152"
+                  v-else
                   @click="examing(scope.row)"
                   type="text"
                   size="small"
-                >查看</el-button>
+                >查看在线</el-button>
                 <el-button
                   v-if="scope.row.interviewState === 'TO_CANCEL_THE_INTERVIEW'"
                   style="color:#FF7152"
@@ -762,10 +817,18 @@
               <template slot-scope="scope">
                 <el-button
                   style="color:#FF7152"
+                  v-if="scope.row.isResumeAttached"
+                  @click="fileUrl(scope.row)"
+                  type="text"
+                  size="small"
+                >查看附件</el-button>
+                <el-button
+                  style="color:#FF7152"
+                  v-else
                   @click="examing(scope.row)"
                   type="text"
                   size="small"
-                >查看</el-button>
+                >查看在线</el-button>
                 <el-button
                   style="color:#FF7152"
                   @click="employed(scope.row)"
@@ -813,10 +876,18 @@
               <template slot-scope="scope">
                 <el-button
                   style="color:#FF7152"
+                  v-if="scope.row.isResumeAttached"
+                  @click="fileUrl(scope.row)"
+                  type="text"
+                  size="small"
+                >查看附件</el-button>
+                <el-button
+                  style="color:#FF7152"
+                  v-else
                   @click="examing(scope.row)"
                   type="text"
                   size="small"
-                >查看</el-button>
+                >查看在线</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -858,10 +929,18 @@
               <template slot-scope="scope">
                 <el-button
                   style="color:#FF7152"
+                  v-if="scope.row.isResumeAttached"
+                  @click="fileUrl(scope.row)"
+                  type="text"
+                  size="small"
+                >查看附件</el-button>
+                <el-button
+                  style="color:#FF7152"
+                  v-else
                   @click="examing(scope.row)"
                   type="text"
                   size="small"
-                >查看</el-button>
+                >查看在线</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -926,10 +1005,11 @@ import "tinymce/plugins/visualchars";
 import "tinymce/plugins/wordcount";
 import citys from "../../assets/city.json";
 import qs from "qs";
+import pdf from "vue-pdf";
 
 export default {
   name: "home",
-  components: { Editor },
+  components: { Editor,pdf },
   data() {
     return {
       detailOffer: `<p class="MsoNormal" style="mso-add-space: auto; text-align: center; line-height: 150%;" align="center"><strong><span style="font-family: 微软雅黑; line-height: 150%; font-size: 18pt;"><span style="font-family: 微软雅黑;">录</span> <span style="font-family: 微软雅黑;">用</span> <span style="font-family: 微软雅黑;">通</span> <span style="font-family: 微软雅黑;">知</span> <span style="font-family: 微软雅黑;">书</span></span></strong></p>
@@ -1051,6 +1131,7 @@ export default {
           { required: true, message: "请填写面试联系人", trigger: "change" }
         ]
       },
+      url: "",
       page: {
         total: 0,
         pageSize: 10,
@@ -1143,6 +1224,7 @@ export default {
       arrPosition: [],
       multipleSelection: [],
       dialogVisible: false,
+      dialogetx: false,
       addressList: [],
       transId: "",
       interviewStates: null,
@@ -1162,6 +1244,36 @@ export default {
     }
   },
   methods: {
+    //查看附件
+    fileUrl(res) {
+      this.$http
+        .get(`/business-core/resumes/${res.id}/file/url`)
+        .then(res => {
+          if (res.data.code === "200") {
+            this.previewResume(res);
+          } else {
+          }
+        })
+        .catch(error => {});
+    },
+    //doc docx预览
+    previewResume(res) {
+      console.log(res.data.data.ext);
+      let format = res.data.data.ext;
+      if (format === "doc" || format === "docx") {
+        let label = "resume-file";
+        let params = res.data.data;
+        var arr = JSON.stringify(params);
+        let Logistics = this.$router.resolve(
+          "/preview?obj=" + encodeURIComponent(arr)
+        );
+        window.open(Logistics.href, "_blank");
+      } else {
+        this.dialogetx = true;
+        console.log(res.data.data.accessUrl)
+        this.url = res.data.data.accessUrl;
+      }
+    },
     //预览
     previewOffer() {
       this.dialogVisiblepreviewOffer = true;

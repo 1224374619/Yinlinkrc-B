@@ -6,6 +6,11 @@
         <span style="font-size:12px;margin:0 0 0 20px">当前仅支持在线简历</span>
       </div>
     </div>
+    <el-dialog title width="30%" :visible.sync="dialogetx" style="border-radius:5px;">
+      <div>
+        <pdf ref="pdf" :src="url"></pdf>
+      </div>
+    </el-dialog>
     <el-dialog
       title
       :show-close="false"
@@ -117,7 +122,20 @@
         </el-table-column>
         <el-table-column prop="name" label="操作" width="90">
           <template slot-scope="scope">
-            <el-button style="color:#FF7152" @click="examing(scope.row)" type="text" size="small">查看</el-button>
+            <el-button
+              style="color:#FF7152"
+              v-if="scope.row.isResumeAttached"
+              @click="fileUrl(scope.row)"
+              type="text"
+              size="small"
+            >查看附件</el-button>
+            <el-button
+              style="color:#FF7152"
+              v-else
+              @click="examing(scope.row)"
+              type="text"
+              size="small"
+            >查看在线</el-button>
             <el-button @click="upload(scope.row)" style="color:#FF7152" type="text" size="small">下载</el-button>
           </template>
         </el-table-column>
@@ -143,12 +161,16 @@ import positionCatalog from "../../assets/positionCatalog.json";
 import industry from "../../assets/industry.json";
 const timeUtil = require("../../timeUtil.js");
 import qs from "qs";
+import pdf from "vue-pdf";
 export default {
   name: "home",
+  components: {pdf },
   data() {
     return {
       positionCatalog: [],
       city: [],
+      url: "",
+      dialogetx: false,
       industry: [],
       props: {
         value: "code",
@@ -156,6 +178,7 @@ export default {
         children: "children"
       },
       dialogVisible: false,
+      
       optionsDegree: [
         {
           value: "0",
@@ -233,6 +256,35 @@ export default {
     };
   },
   methods: {
+    //查看附件
+    fileUrl(res) {
+      this.$http
+        .get(`/business-core/resumes/${res.id}/file/url`)
+        .then(res => {
+          if (res.data.code === "200") {
+            this.previewResume(res);
+          } else {
+          }
+        })
+        .catch(error => {});
+    },
+    //doc docx预览
+    previewResume(res) {
+      console.log(res.data.data.ext);
+      let format = res.data.data.ext;
+      if (format === "doc" || format === "docx") {
+        let label = "resume-file";
+        let params = res.data.data;
+        var arr = JSON.stringify(params);
+        let Logistics = this.$router.resolve(
+          "/preview?obj=" + encodeURIComponent(arr)
+        );
+        window.open(Logistics.href, "_blank");
+      } else {
+        this.dialogetx = true;
+        this.url = res.data.data.accessUrl;
+      }
+    },
     //下载简历
     handleSelectionChange(val) {
       this.arrResume = [];
@@ -244,7 +296,68 @@ export default {
     //下载
     upload(tab) {
       // this.arrResume.push(tab.id);
-      this.uploadFile();
+      this.uploadFiles(tab);
+    },
+    uploadFiles(tab) {
+      this.dialogVisible = true;
+      this.$local
+        .get(
+          `/business-core/resumes/download/${tab.id}`,
+
+          {
+            responseType: "blob"
+          }
+        )
+        .then(res => {
+          this.dialogVisible = false;
+          const disposition = res.headers["content-disposition"];
+          let fileName = disposition.substring(
+            disposition.indexOf("filename=") + 9,
+            disposition.length
+          );
+          // iso8859-1的字符转换成中文
+          fileName = decodeURI(escape(fileName));
+          // 去掉双引号
+          fileName = fileName.replace(/\"/g, "");
+          const content = res.data;
+          let blob = new Blob([res.data], {
+            type: "application/vnd.ms-excel"
+          });
+          console.log(blob);
+          if (window.navigator.msSaveOrOpenBlob) {
+            // console.log(2)
+            navigator.msSaveBlob(blob, fileName);
+          } else {
+            // console.log(3)
+            var link = document.createElement("a");
+            link.href = window.URL.createObjectURL(blob);
+            link.download = fileName;
+            link.click();
+            //释放内存
+            window.URL.revokeObjectURL(link.href);
+          }
+        })
+        .catch(error => {
+          this.dialogVisible = false;
+          console.log(error.response);
+          if (error.response.status === 404) {
+            this.$notify.info({
+              title: "消息",
+              message: "页面丢失，请重新加载"
+            });
+          } else if (error.response.status === 403) {
+            this.$notify.info({
+              title: "消息",
+              message: "登陆超时，请重新登录"
+            });
+          } else {
+            console.log(error.response.data);
+            this.$notify.info({
+              title: "消息",
+              message: "简历附件不存在"
+            });
+          }
+        });
     },
     uploadFile() {
       let resumeList = {
@@ -417,9 +530,7 @@ export default {
           } else {
           }
         })
-        .catch(error => {
-          
-        });
+        .catch(error => {});
     },
     //查看
     examing(tab) {
@@ -428,7 +539,7 @@ export default {
         path: "/resume/talent/Detail",
         query: {
           resumeIds: tab.id,
-          state: 1,
+          state: 1
         }
       });
     },

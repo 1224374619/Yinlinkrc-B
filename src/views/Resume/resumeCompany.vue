@@ -3,6 +3,11 @@
     <div class="resume-navs">
       <div>企业人才库</div>
     </div>
+    <el-dialog title width="30%" :visible.sync="dialogetx" style="border-radius:5px;">
+      <div>
+        <pdf ref="pdf" :src="url"></pdf>
+      </div>
+    </el-dialog>
     <el-dialog
       title
       :show-close="false"
@@ -135,7 +140,20 @@
         </el-table-column>
         <el-table-column prop="name" label="操作" width="90">
           <template slot-scope="scope">
-            <el-button style="color:#FF7152" @click="examing(scope.row)" type="text" size="small">查看</el-button>
+            <el-button
+              style="color:#FF7152"
+              v-if="scope.row.isResumeAttached"
+              @click="fileUrl(scope.row)"
+              type="text"
+              size="small"
+            >查看附件</el-button>
+            <el-button
+              style="color:#FF7152"
+              v-else
+              @click="examing(scope.row)"
+              type="text"
+              size="small"
+            >查看在线</el-button>
             <el-button @click="upload(scope.row)" style="color:#FF7152" type="text" size="small">下载</el-button>
           </template>
         </el-table-column>
@@ -159,10 +177,14 @@ import Cookies from "js-cookie";
 import citys from "../../assets/city.json";
 const timeUtil = require("../../timeUtil.js");
 import qs from "qs";
+import pdf from "vue-pdf";
 export default {
   name: "home",
+  components: {pdf },
   data() {
     return {
+      url: "",
+      dialogetx: false,
       city: [],
       props: {
         value: "code",
@@ -249,6 +271,34 @@ export default {
     };
   },
   methods: {
+    //查看附件
+    fileUrl(res) {
+      this.$http
+        .get(`/business-core/resumes/${res.id}/file/url`)
+        .then(res => {
+          if (res.data.code === "200") {
+            this.previewResume(res);
+          } else {
+          }
+        })
+        .catch(error => {});
+    },
+    //doc docx预览
+    previewResume(res) {
+      let format = res.data.data.ext;
+      if (format === "doc" || format === "docx") {
+        let label = "resume-file";
+        let params = res.data.data;
+        var arr = JSON.stringify(params);
+        let Logistics = this.$router.resolve(
+          "/preview?obj=" + encodeURIComponent(arr)
+        );
+        window.open(Logistics.href, "_blank");
+      } else {
+        this.dialogetx = true;
+        this.url = res.data.data.accessUrl;
+      }
+    },
     //下载简历
     handleSelectionChange(val) {
       this.arrResume = [];
@@ -263,7 +313,70 @@ export default {
     upload(tab) {
       // console.log(tab);
       // this.arrResume.push(tab.id);
-      this.uploadFile();
+      this.uploadFiles(tab);
+    },
+     uploadFiles(tab) {
+      // let params = {
+      //   resumeIds: this.arrResume,
+      //   positionIds: this.arrPosition
+      // };
+      // let resumeList = qs.stringify(
+      //   { resumeIds: this.arrResume },
+      //   { arrayFormat: "repeat" }
+      // );
+      this.dialogVisible = true;
+      this.$local
+        .get(`/business-core/resumes/download/${tab.id}`, {
+          responseType: "blob"
+        })
+        .then(res => {
+          this.dialogVisible = false;
+          const disposition = res.headers["content-disposition"];
+          let fileName = disposition.substring(
+            disposition.indexOf("filename=") + 9,
+            disposition.length
+          );
+          // iso8859-1的字符转换成中文
+          fileName = decodeURI(escape(fileName));
+          // 去掉双引号
+          fileName = fileName.replace(/\"/g, "");
+          const content = res.data;
+          let blob = new Blob([res.data], {
+            type: "application/vnd.ms-excel"
+          });
+          console.log(blob);
+          if (window.navigator.msSaveOrOpenBlob) {
+            // console.log(2)
+            navigator.msSaveBlob(blob, fileName);
+          } else {
+            // console.log(3)
+            var link = document.createElement("a");
+            link.href = window.URL.createObjectURL(blob);
+            link.download = fileName;
+            link.click();
+            //释放内存
+            window.URL.revokeObjectURL(link.href);
+          }
+        })
+        .catch(error => {
+          this.dialogVisible = false;
+          if (error.response.status === 404) {
+                this.$notify.info({
+                  title: "消息",
+                  message: "页面丢失，请重新加载"
+                });
+              } else if (error.response.status === 403) {
+                this.$notify.info({
+                  title: "消息",
+                  message: "登陆超时，请重新登录"
+                });
+              } else {
+                this.$notify.info({
+                  title: "消息",
+                  message: error.response.data.message
+                });
+              }
+        });
     },
     uploadFile() {
       let params = {

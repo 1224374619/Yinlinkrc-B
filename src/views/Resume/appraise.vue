@@ -50,7 +50,7 @@
                 v-model="textarea2"
               ></el-input>
               <div class="access-button">
-                <el-button>取消</el-button>
+                <el-button @click="item.isReply = false">取消</el-button>
                 <el-button @click="addappraise(item)" type="primary">发送</el-button>
               </div>
             </div>
@@ -180,7 +180,7 @@
               </div>
             </div>
             <div v-else>
-              <div v-if="item.sublist !== null" class="access-back">
+              <div v-if="item.sublist.length !== 0" class="access-back">
                 <span>企业回复：</span>
                 <span>{{item.sublist[0].content}}</span>
                 <div>{{item.sublist[0].createdTime|formatDateOne}}</div>
@@ -1176,7 +1176,8 @@ export default {
       this.$router.push({
         path: "/resume/talent/Detail",
         query: {
-          resumeId: tab.resumeId
+          resumeId: tab.resumeId,
+          state : 3
         }
       });
     },

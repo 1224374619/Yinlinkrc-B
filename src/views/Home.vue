@@ -165,10 +165,10 @@
           <div class="right-second">
             <div class="enterprise">
               <div class="enter-head">
-                <!-- <img :src="squareUrl" /> -->
+                <img :src="squareUrl" />
                 <div>
                   <span>企业信息完整度</span>
-                  <!-- <el-progress class="progess" :percentage="companyDetails.completedPercent"></el-progress> -->
+                  <el-progress style="margin-left: 20px;" :percentage="50"></el-progress>
                 </div>
               </div>
               <div class="enter-content">
@@ -469,7 +469,6 @@ export default {
             width: 420px;
             height: 300px;
             margin: 40px 30px 0 0;
-            
 
             div:nth-child(1) {
               font-family: PingFangSC-Regular;
@@ -581,6 +580,7 @@ export default {
 
           .enter-head {
             display: flex;
+            flex-direction: row;
             align-items: center;
             justify-content: center;
             margin: 0 0 0 10px;
@@ -590,8 +590,11 @@ export default {
               height: 50px;
             }
 
+            .el-progress-bar__inner {
+              background-color: red;
+            }
+
             div {
-              margin-left: 20px;
               text-align: left;
               font-size: 12px;
               color: #999;
