@@ -203,11 +203,12 @@
           </div>
           <div class="jotension-content">
             <div>企业行业：{{resumeDeta.target.industries[0].secondary}}</div>
-            <div style>薪资范围：{{resumeDeta.target.salaryMin}}-{{resumeDeta.target.salaryMax}}k</div>
+            <div v-if='resumeDeta.target.salaryMin === 35'>薪资范围：35k以上</div>
+            <div v-else>薪资范围：{{resumeDeta.target.salaryMin}}-{{resumeDeta.target.salaryMax}}k</div>
           </div>
           <div class="jotension-content">
             <div>求职状态：{{resumeDeta.target.jobSearchStatus}}</div>
-            <div style>工作类型：{{resumeDeta.target.jobType}}</div>
+            <div>工作类型：{{resumeDeta.target.jobType}}</div>
           </div>
         </div>
       </div>
