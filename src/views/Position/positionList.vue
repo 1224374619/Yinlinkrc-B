@@ -1,7 +1,7 @@
 <template>
   <div style="margin:96px 0 0 0;">
     <div class="resume-navs">
-      <div>简历看板</div>
+      <div>职位看板</div>
     </div>
     <div class="left-second">
       <ul>

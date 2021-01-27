@@ -66,7 +66,6 @@
             </el-form-item>-->
             <el-form-item label="角色:" prop="role">
               <el-select v-model="ruleForms.role" style="width:240px" placeholder="请选择角色">
-                <el-option label="创建者" value="ROLE_CREATOR"></el-option>
                 <el-option label="普通用户" value="ROLE_USER"></el-option>
                 <el-option label="管理员" value="ROLE_ADMIN"></el-option>
               </el-select>
@@ -142,7 +141,11 @@
       <el-table :data="tableData" style="width: 96%;margin:0 auto">
         <el-table-column prop="realName" label="姓名"></el-table-column>
         <el-table-column prop="phone" label="手机号" show-overflow-tooltip></el-table-column>
-        <el-table-column prop="role" label="角色" show-overflow-tooltip></el-table-column>
+        <el-table-column prop="role" label="角色" show-overflow-tooltip>
+          <template slot-scope="scope">
+            <span>{{scope.row.role|level}}</span>
+          </template>
+        </el-table-column>
         <!-- <el-table-column prop="role" label="权限" show-overflow-tooltip></el-table-column> -->
         <el-table-column label="注册时间" show-overflow-tooltip>
           <template slot-scope="scope">
@@ -194,7 +197,7 @@ export default {
   data() {
     // 手机号验证
     var checkPhone = (rule, value, callback) => {
-      const phoneReg = /^1[3|4|5|6|7|8][0-9]{9}$/;
+      const phoneReg = /^1[3|4|5|6|7|8|9][0-9]{9}$/;
       if (!value) {
         return callback(new Error("电话号码不能为空"));
       }
@@ -423,7 +426,21 @@ export default {
       this.$router.push({ path: "/login" });
     }
     
-  }
+  },
+  filters: {
+    level(level) {
+      var a;
+      switch (level) {
+        case "ROLE_ADMIN":
+          a = "管理员";
+          break;
+        case "ROLE_USER":
+          a = "普通用户";
+          break;
+      }
+      return a;
+    }
+  },
 };
 </script>
 
