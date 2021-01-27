@@ -24,7 +24,7 @@
             </el-form-item>
             <el-form-item label="角色:" prop="role">
               <el-select v-model="ruleForm.role" style="width:240px" placeholder="请选择角色">
-                <el-option label="创建者" value="ROLE_CREATOR"></el-option>
+                
                 <el-option label="普通用户" value="ROLE_USER"></el-option>
                 <el-option label="管理员" value="ROLE_ADMIN"></el-option>
               </el-select>

@@ -480,7 +480,7 @@ export default {
                 district: this.companyInfo.city[2],
                 province: this.companyInfo.city[0]
               },
-              description: this.companyInfo.detail,
+              description: this.companyInfo.description,
               fullName: this.companyInfo.fullName,
               industryCode: null,
               industryFirst: this.companyInfo.industry[0],

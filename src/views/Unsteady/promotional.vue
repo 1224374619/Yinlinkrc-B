@@ -504,7 +504,7 @@ export default {
       console.log(file.response.data.fileAccessVo.accessUrl);
       this.dialogDrag = false;
       tinyMCE.editors["tinymce"].insertContent(
-        '<img style="width:500px" src = "' + file.response.data.fileAccessVo.accessUrl + '">'
+        '<img style="width:500px;height:auto" src = "' + file.response.data.fileAccessVo.accessUrl + '">'
       );
     },
     //图片上传

@@ -239,9 +239,9 @@
               </el-form-item>
               <el-form-item label="投递邮箱" prop="email">
                 <el-input style="width:240px" v-model="ruleForm.email"></el-input>
-                <el-button style="margin:0 0 0 20px" @click.prevent="addDomain">新增</el-button>
+                <!-- <el-button style="margin:0 0 0 20px" @click.prevent="addDomain">新增</el-button> -->
               </el-form-item>
-              <el-form-item
+              <!-- <el-form-item
                 v-for="(domain, index) in ruleForm.domains"
                 :label="''"
                 :key="domain.key"
@@ -252,7 +252,7 @@
               >
                 <el-input style="width:240px" v-model="ruleForm.value"></el-input>
                 <el-button style="margin:0 0 0 20px" @click.prevent="removeDomain(domain)">删除</el-button>
-              </el-form-item>
+              </el-form-item> -->
               <el-form-item label="上线时间" prop="onlineTime">
                 <el-date-picker
                   style="width:240px"

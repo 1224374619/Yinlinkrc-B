@@ -123,14 +123,14 @@
               :options="cityList"
             ></el-cascader>
           </el-form-item>
-          <el-form-item label="企业地址" prop="detail">
+          <el-form-item label="企业地址">
             <el-input
               type="textarea"
-              style="width:500px;margin:20px 0 0 0"
+              style="width:500px;"
               :rows="4"
               maxlength="80"
-  show-word-limit
-              v-model="companyInfo.detail"
+              show-word-limit
+              v-model="companyInfo.address.detail"
               placeholder="请输入内容"
             ></el-input>
           </el-form-item>
@@ -139,7 +139,7 @@
               style="width:500px"
               type="textarea"
               maxlength="300"
-  show-word-limit
+              show-word-limit
               :rows="4"
               placeholder="请输入内容"
               v-model="companyInfo.description"
@@ -161,7 +161,7 @@
                 v-else
                 style="border:1px solid #dcdfe6;margin:0 200px 0 0"
                 class="el-icon-plus avatar-uploader-icon"
-              ></i> -->
+              ></i>-->
               <div class="el-upload__tip">支持图片格式：png、jpg、jpeg，最大不超过 3M。</div>
               <div class="el-upload__tip">为了尽快通过审核，请上传真实合法且清晰的执照图片。</div>
             </el-upload>
@@ -331,7 +331,9 @@ export default {
       optionList: [],
       companyInfo: {
         completedPercent: 0,
-        detail: "",
+        address: {
+          detail: ""
+        },
         fullName: "",
         industry: [],
         nature: "",
@@ -387,9 +389,7 @@ export default {
         industry: [
           { required: true, message: "请选择所属行业", trigger: "blur" }
         ],
-        city: [{ required: true, message: "请选择企业地址", trigger: "blur" },
-        
-        ],
+        city: [{ required: true, message: "请选择企业地址", trigger: "blur" }],
         detail: [
           { required: true, message: "请填写企业地址", trigger: "blur" },
           { min: 0, max: 80, message: "长度在 0 到 80 个字", trigger: "blur" }
@@ -413,7 +413,7 @@ export default {
   },
   methods: {
     handleAvatarSuccess(res, file) {
-      console.log(URL.createObjectURL(file.raw))
+      console.log(URL.createObjectURL(file.raw));
       this.imageUrl = URL.createObjectURL(file.raw);
       this.file = res.data;
     },
@@ -437,9 +437,7 @@ export default {
           } else {
           }
         })
-        .catch(error => {
-          
-        });
+        .catch(error => {});
     },
     //获取公司详情
     companyDetail() {
@@ -458,17 +456,15 @@ export default {
               response.address.city,
               response.address.district
             ];
-            this.companyInfo.detail = response.address.detail;
+
+            // this.companyInfo.address.companyDetail = response.address.detail;
             this.companyInfo.logoUrl = response.logo.accessUrl;
             this.imageUrl = response.logo.accessUrl;
             this.companyInfo.addressId = response.addressId;
-            this;
           } else {
           }
         })
-        .catch(error => {
-          
-        });
+        .catch(error => {});
     },
     //获取公司审核信息
     companyVerify() {
@@ -485,9 +481,7 @@ export default {
           } else {
           }
         })
-        .catch(error => {
-          
-        });
+        .catch(error => {});
     },
     //更新公司审核信息
     updateCompanyVerify(formName) {
@@ -495,7 +489,7 @@ export default {
         if (valid) {
           let params = {
             cert: this.files ? this.files : null,
-            enterpriseForm: this.companyInfos.enterpriseForm,
+            enterpriseForm: this.companyInfos.enterpriseForm instanceof Array?(this.companyInfos.enterpriseForm[1]?this.companyInfos.enterpriseForm[1]:this.companyInfos.enterpriseForm[0]):this.companyInfos.enterpriseForm,
             enterpriseFormCode: null,
             registeredAddress: this.companyInfos.registeredAddress,
             uniformSocialCreditCode: this.companyInfos.uniformSocialCreditCode
@@ -514,9 +508,7 @@ export default {
               } else {
               }
             })
-            .catch(error => {
-              
-            });
+            .catch(error => {});
         } else {
           console.log("error submit!!");
           return false;
@@ -531,7 +523,7 @@ export default {
             addressId: this.companyInfo.addressId,
             companyAddressBody: {
               city: this.companyInfo.city[1],
-              detail: this.companyInfo.detail,
+              detail: this.companyInfo.address.detail,
               district: this.companyInfo.city[2],
               province: this.companyInfo.city[0]
             },
@@ -562,9 +554,7 @@ export default {
               } else {
               }
             })
-            .catch(error => {
-              
-            });
+            .catch(error => {});
         } else {
           console.log("error submit!!");
           return false;
@@ -589,6 +579,7 @@ export default {
       this.companyInfos.enterpriseForm = this.enterpriseForm;
       this.companyInfos.registeredAddress = this.registeredAddress;
       this.companyInfos.uniformSocialCreditCode = this.uniformSocialCreditCode;
+      console.log(this.companyInfos.enterpriseForm)
       // this.companyInfo.companyName = this.companyName
       // if (this.enterpriseRegisterInfoEditMode) {
       //   this.$notify({
@@ -605,11 +596,12 @@ export default {
     },
     clearAndReloads() {
       this.enterpriseInfoEditMode = true;
+      this.companyDetail();
     }
   },
   computed: {
     uploadUrl() {
-      return "/api/3/file-service/files/upload";
+      return "/api/v3/file-service/files/upload";
     }
   },
   created() {
@@ -622,7 +614,7 @@ export default {
       this.brief();
       this.companyDetail();
       this.companyVerify();
-    }else {
+    } else {
       this.$notify.info({
         title: "消息",
         message: "登陆超时，请重新登录"

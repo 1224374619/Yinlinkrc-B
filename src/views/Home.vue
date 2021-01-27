@@ -19,17 +19,17 @@
         <div class="left">
           <div class="left-first">
             <div>简历看板</div>
-            <div @click="moreResume" style="font-size:14px">更多》</div>
+            <div @click="moreResume" style="font-size:14px;cursor:pointer">更多》</div>
           </div>
           <div class="left-second">
             <ul>
               <li>
                 <span>本日新增</span>
-                <span style="color:#FF7152;font-size:24px">{{incrementDailys}}</span>
+                <span style="color:#FF7152;font-size:24px">{{this.incrementBoardList.incrementDaily}}</span>
               </li>
               <li>
                 <span>待处理</span>
-                <span style="color:#FF7152;font-size:24px">{{toProcessNums}}</span>
+                <span style="color:#FF7152;font-size:24px">{{this.incrementBoardList.toProcessNum}}</span>
               </li>
             </ul>
           </div>
@@ -37,7 +37,7 @@
         <div class="left">
           <div class="left-first">
             <div>职位看板</div>
-            <div @click="morePosition" style="font-size:14px">更多》</div>
+            <div @click="morePosition" style="font-size:14px;cursor:pointer">更多》</div>
           </div>
           <div class="left-second">
             <ul>
@@ -68,7 +68,7 @@
         <div class="left">
           <div class="left-first">
             <div>面试日历</div>
-            <div style="font-size:14px">更多》</div>
+            
           </div>
           <div class="left-second">
             <ul>
@@ -165,10 +165,10 @@
           <div class="right-second">
             <div class="enterprise">
               <div class="enter-head">
-                <img :src="squareUrl" />
+                <img :src="this.avatarUrl" />
                 <div>
                   <span>企业信息完整度</span>
-                  <el-progress style="margin-left: 20px;" :percentage="50"></el-progress>
+                  <el-progress style="margin-left: 20px;" :percentage="companyDetails.completedPercent"></el-progress>
                 </div>
               </div>
               <div class="enter-content">
@@ -198,10 +198,10 @@ export default {
   data() {
     return {
       interviewTime: new Date(),
+      avatarUrl:'',
       interviewBoardList: {},
       interview: {},
-      incrementDailys: "",
-      toProcessNums: "",
+      incrementBoardList:{},
       auditFailedNums: "",
       auditingNums: "",
       editingNums: "",
@@ -287,10 +287,12 @@ export default {
       this.$http
         .get("/business-core/dashboard/resume")
         .then(res => {
-          // let response = res.data.data;
+          let response = res.data.data;
           if (res.data.code == "200") {
-            this.incrementDailys = res.data.data.incrementDaily;
-            this.toProcessNums = res.data.data.toProcessNum;
+            this.incrementBoardList = response;
+            console.log(this.incrementBoardList)
+            // this.incrementDailys = res.data.data.incrementDaily;
+            // this.toProcessNums = res.data.data.toProcessNum;
           } else {
           }
         })
@@ -321,7 +323,8 @@ export default {
           if (res.data.code == "200") {
             this.companyID = res.data.data.id;
             this.companyDetails = res.data.data;
-            // this.squareUrl = res.data.data.logoUrl;
+            this.avatarUrl = this.companyDetails.logoUrl;
+            console.log(this.avatarUrl)
           } else {
           }
         })
@@ -591,7 +594,7 @@ export default {
             }
 
             .el-progress-bar__inner {
-              background-color: red;
+              background-color: #02b9b8;
             }
 
             div {

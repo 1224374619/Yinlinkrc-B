@@ -36,7 +36,8 @@
               <div>{{item.age}}岁</div>
               <div>面试联系人：{{item.contactName}}</div>
               <div>{{item.interviewTime|formatDateTwo}}</div>
-              <div style="cursor:pointer" @click="examing(item)">查看简历</div>
+              <div style="cursor:pointer" v-if="item.isResumeAttached" @click="fileUrl(item)">查看附件</div>
+              <div style="cursor:pointer" v-else @click="examing(item)">查看在线</div>
               <div style="cursor:pointer" @click="accessTabs(item)">评价</div>
             </div>
             <div v-if="!accessTextarea" class="access-line"></div>
@@ -45,7 +46,7 @@
                 type="textarea"
                 :autosize="{ minRows: 2, maxRows: 4}"
                 maxlength="300"
-  show-word-limit
+                show-word-limit
                 placeholder="请输入内容"
                 v-model="textarea2"
               ></el-input>
@@ -172,7 +173,7 @@
                 :autosize="{ minRows: 2, maxRows: 4}"
                 placeholder="请输入内容"
                 maxlength="300"
-  show-word-limit
+                show-word-limit
                 v-model="textarea3"
               ></el-input>
               <div class="access-button">
@@ -263,6 +264,34 @@ export default {
     };
   },
   methods: {
+    //查看附件
+    fileUrl(res) {
+      this.$http
+        .get(`/business-core/resumes/${res.resumeId}/file/url`)
+        .then(res => {
+          if (res.data.code === "200") {
+            this.previewResume(res);
+          } else {
+          }
+        })
+        .catch(error => {});
+    },
+    //doc docx预览
+    previewResume(res) {
+      let format = res.data.data.ext;
+      if (format === "doc" || format === "docx") {
+        let label = "resume-file";
+        let params = res.data.data;
+        var arr = JSON.stringify(params);
+        let Logistics = this.$router.resolve(
+          "/preview?obj=" + encodeURIComponent(arr)
+        );
+        window.open(Logistics.href, "_blank");
+      } else {
+        this.dialogetx = true;
+        this.url = res.data.data.accessUrl;
+      }
+    },
     changeisMine() {
       if (this.tabname === "first") {
         this.noEvaluations();
@@ -1177,7 +1206,7 @@ export default {
         path: "/resume/talent/Detail",
         query: {
           resumeId: tab.resumeId,
-          state : 3
+          state: 3
         }
       });
     },
