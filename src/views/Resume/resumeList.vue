@@ -617,7 +617,7 @@
                 <span>{{scope.row.submittedTime|formatDateOne}}</span>
               </template>
             </el-table-column>
-            <el-table-column prop="address" label="面试时间" show-overflow-tooltip>
+            <el-table-column prop="address" label="查看时间" show-overflow-tooltip>
               <template slot-scope="scope">
                 <span>{{scope.row.operatorTime|formatDateOne}}</span>
               </template>

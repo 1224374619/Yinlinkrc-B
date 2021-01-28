@@ -143,7 +143,7 @@
                 class="tabs-read"
                 :data-clipboard-text="this.textlink"
                 @click="copy"
-              >service@163.com</span>
+              >service@yinlinkrc.com</span>
             </el-tooltip>
           </div>
           <div class="foot">请您最晚于面试前12小时确认是否参加面试</div>

@@ -141,7 +141,7 @@
               show-word-limit
             ></el-input>-->
             <!-- <div><i style="font-size:30px;position:absolute;top:40px;z-index:400;left:70px" class="el-icon-picture"></i></div> -->
-            <div @click="previews()" style="width:42px;position:absolute;top:40px;z-index:400;left:57px;">
+            <div @click="previews()" style="width:42px;position:absolute;top:40px;z-index:380;left:57px;">
               <img
                 style="width:20px;margin:9px 0 0 12px"
                 src="../../assets/images/appraise-chuan.png"

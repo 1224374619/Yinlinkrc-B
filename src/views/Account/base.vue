@@ -65,7 +65,7 @@
         <el-form-item label="手机号" prop="phone">
           <el-input style="width:240px" placeholder="请输入手机号" v-model="ruleForm.phone"></el-input>
         </el-form-item>
-        <el-form-item label="密码" prop="phone">
+        <el-form-item label="密码" prop="password">
           <el-input style="width:240px" placeholder="请输入原密码" v-model="ruleForm.password"></el-input>
         </el-form-item>
         <el-form-item label="验证码" prop="vcode">
@@ -189,7 +189,7 @@ export default {
   data() {
     // 手机号验证
     var checkPhone = (rule, value, callback) => {
-      const phoneReg = /^1[3|4|5|6|7|8][0-9]{9}$/;
+      const phoneReg = /^1[3|4|5|6|7|8|9][0-9]{9}$/;
       if (!value) {
         return callback(new Error("电话号码不能为空"));
       }

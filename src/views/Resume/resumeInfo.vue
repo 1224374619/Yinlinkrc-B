@@ -522,6 +522,7 @@ export default {
   .tab-operations {
     position: absolute;
     margin: 7px 0 0 260px;
+    z-index: 380
   }
 
   .demo-form {
