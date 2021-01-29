@@ -20,7 +20,7 @@
           <div v-else>活动地址：{{this.appraiseDetails.activityAddress.detail}}</div>
           <div>报名人数：{{this.appraiseDetails.registeredNum}}/{{this.appraiseDetails.registrationNum}}</div>
           <div>
-            <button @click="share('https://www.yinlinkrc.com/client-zh/#/appraiseDetail?id='+ id)">分享活动</button>
+            <button @click="share('https://www.yinlinkrc.com/#/appraiseDetail?id='+ id)">分享活动</button>
             <button @click="enroll(id)">报名详情</button>
           </div>
         </div>

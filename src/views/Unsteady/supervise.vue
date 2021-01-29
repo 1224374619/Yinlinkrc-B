@@ -33,7 +33,7 @@
             <el-table-column label="操作">
               <template slot-scope="scope">
                 <el-button @click="handleClickreport(scope.row)" type="text" size="small">报名详情</el-button>
-                <el-button type="text" size="small">分享</el-button>
+                <el-button  type="text" size="small" @click="share('https://www.yinlinkrc.com/#/appraiseDetail?id='+ scope.row.id)">分享</el-button>
                 <el-button type="text" @click="handleClickdetail(scope.row)" size="small">查看</el-button>
               </template>
             </el-table-column>
@@ -75,7 +75,7 @@
             <el-table-column label="操作">
               <template slot-scope="scope">
                 <el-button @click="handleClickreport(scope.row)" type="text" size="small">报名详情</el-button>
-                <el-button type="text" size="small">分享</el-button>
+                <el-button  type="text" size="small" @click="share('https://www.yinlinkrc.com/#/appraiseDetail?id='+ scope.row.id)">分享</el-button>
                 <el-button type="text" @click="handleClickdetail(scope.row)" size="small">查看</el-button>
               </template>
             </el-table-column>
@@ -128,7 +128,7 @@
             <el-table-column label="操作">
               <template slot-scope="scope">
                 <el-button @click="handleClickreport(scope.row)" type="text" size="small">报名详情</el-button>
-                <el-button type="text" size="small">分享</el-button>
+                <el-button  type="text" size="small" @click="share('https://www.yinlinkrc.com/#/appraiseDetail?id='+ scope.row.id)">分享</el-button>
                 <el-button type="text" @click="handleClickdetail(scope.row)" size="small">查看</el-button>
               </template>
             </el-table-column>
@@ -170,7 +170,7 @@
             <el-table-column label="操作">
               <template slot-scope="scope">
                 <el-button @click="handleClickreport(scope.row)" type="text" size="small">报名详情</el-button>
-                <el-button type="text" size="small">分享</el-button>
+                <el-button  type="text" size="small" @click="share('https://www.yinlinkrc.com/#/appraiseDetail?id='+ scope.row.id)">分享</el-button>
                 <el-button type="text" @click="handleClickdetail(scope.row)" size="small">查看</el-button>
               </template>
             </el-table-column>
@@ -208,6 +208,23 @@ export default {
     };
   },
   methods: {
+    //分享活动
+    share(data) {
+      console.log(data)
+      let url = data;
+      let oInput = document.createElement("input");
+      oInput.value = url;
+      document.body.appendChild(oInput);
+      oInput.select(); // 选择对象;
+      console.log(oInput.value);
+      document.execCommand("Copy"); // 执行浏览器复制命令
+      this.$notify({
+        title: "成功",
+        message: "复制带剪切板成功",
+        type: "success"
+      });
+      oInput.remove();
+    },
     //报名状态筛选
     activitytatus(res) {
       console.log(res);

@@ -1009,7 +1009,7 @@ import pdf from "vue-pdf";
 
 export default {
   name: "home",
-  components: { Editor,pdf },
+  components: { Editor, pdf },
   data() {
     return {
       detailOffer: `<p class="MsoNormal" style="mso-add-space: auto; text-align: center; line-height: 150%;" align="center"><strong><span style="font-family: 微软雅黑; line-height: 150%; font-size: 18pt;"><span style="font-family: 微软雅黑;">录</span> <span style="font-family: 微软雅黑;">用</span> <span style="font-family: 微软雅黑;">通</span> <span style="font-family: 微软雅黑;">知</span> <span style="font-family: 微软雅黑;">书</span></span></strong></p>
@@ -1270,8 +1270,21 @@ export default {
         window.open(Logistics.href, "_blank");
       } else {
         this.dialogetx = true;
-        console.log(res.data.data.accessUrl)
+        console.log(res.data.data.accessUrl);
         this.url = res.data.data.accessUrl;
+      }
+      if (this.processedState === "TO_PROCESS") {
+        this.$http
+          .put(
+            `/business-core/position/${this.positionID}/resumes/${tab.id}/processing`
+          )
+          .then(res => {
+            let response = res.data.data.list;
+            if (res.data.code == "200") {
+            } else {
+            }
+          })
+          .catch(error => {});
       }
     },
     //预览

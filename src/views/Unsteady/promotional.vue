@@ -97,10 +97,9 @@
           <el-form-item label="报名人数" prop="unsteadyNum">
             <el-input
               class="unsteadyNum"
-              maxlength="1000"
               show-word-limit
               v-model="unsteadyForm.unsteadyNum"
-            ></el-input>人
+            ></el-input> 人
           </el-form-item>
           <el-form-item label="活动方式" prop="pattern">
             <el-radio-group v-model="unsteadyForm.pattern" class="pattern">
