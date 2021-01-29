@@ -626,7 +626,7 @@
               <template slot-scope="scope">
                 <el-button
                   style="color:#FF7152"
-                  v-if="scope.row.isResumeAttachedd"
+                  v-if="scope.row.isResumeAttached"
                   @click="fileUrl(scope.row)"
                   type="text"
                   size="small"
