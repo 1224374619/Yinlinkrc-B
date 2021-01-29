@@ -1232,7 +1232,8 @@ export default {
       file: "",
       offerList: {},
       completedPercentMax: "",
-      completedPercentMin: ""
+      completedPercentMin: "",
+      fileResumeId:''
     };
   },
   mounted() {
@@ -1246,6 +1247,8 @@ export default {
   methods: {
     //查看附件
     fileUrl(res) {
+      console.log(res);
+      this.fileResumeId = res.id
       this.$http
         .get(`/business-core/resumes/${res.id}/file/url`)
         .then(res => {
@@ -1258,7 +1261,7 @@ export default {
     },
     //doc docx预览
     previewResume(res) {
-      console.log(res.data.data.ext);
+      console.log(res);
       let format = res.data.data.ext;
       if (format === "doc" || format === "docx") {
         let label = "resume-file";
@@ -1273,14 +1276,18 @@ export default {
         console.log(res.data.data.accessUrl);
         this.url = res.data.data.accessUrl;
       }
+      
       if (this.processedState === "TO_PROCESS") {
         this.$http
           .put(
-            `/business-core/position/${this.positionID}/resumes/${tab.id}/processing`
+            `/business-core/position/${this.positionID}/resumes/${this.fileResumeId}/processing`
           )
           .then(res => {
             let response = res.data.data.list;
             if (res.data.code == "200") {
+              this.activeName = 'sixth'
+              let pars = {tab:"sixth"}
+              this.handleClick(pars)
             } else {
             }
           })
