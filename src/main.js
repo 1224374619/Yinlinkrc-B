@@ -52,7 +52,6 @@ VueAMap.initAMapApiLoader({
 })
 Vue.use(scroll)
 import vuescroll from 'vuescroll';
-// import BaiduMap from 'vue-baidu-map'
 Vue.use(ElementUI);
 // Vue.prototype.$Cookies=Cookies;
 Vue.prototype.$moment = Moment;
