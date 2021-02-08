@@ -31,11 +31,11 @@
         </div>
       </div>
       <div class="copyright homepage">
-        <p>Copyright © 2021 (银领人才网) | 沪ICP备19030136号-1 | <img style="height:15px;margin:0 5px 0 0" :src="require('../assets/images/guo.png')" /><a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=31010602005194">沪公网安备 31010602005194号</a></p>
+        <p>©2019 上海银领网络科技有限公司 版权所有  <a target="_blank" style="margin:0 0 0 15px" href="https://beian.miit.gov.cn">沪ICP备19030136号-1</a>  <img style="height:15px;margin:0 5px 0 15px" :src="require('../assets/images/guo.png')" /><a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=31010602005194">沪公网安备 31010602005194号</a></p>
       </div>
     </template>
     <div :class="{ 'copyright': true, 'landing-page': isLandingPage }" v-else>
-      <p>Copyright © 2021 (银领人才网) | 沪ICP备19030136号-1 |  <img style="height:15px;margin:0 5px 0 0" :src="require('../assets/images/guo.png')" /><a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=31010602005194">沪公网安备 31010602005194号</a></p>
+      <p>©2019 上海银领网络科技有限公司 版权所有  <a target="_blank" style="margin:0 0 0 15px" href="https://beian.miit.gov.cn">沪ICP备19030136号-1</a>   <img style="height:15px;margin:0 5px 0 15px" :src="require('../assets/images/guo.png')" /><a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=31010602005194">沪公网安备 31010602005194号</a></p>
     </div>
   </div>
 </template>
