@@ -235,7 +235,7 @@
             <div>{{item.position}} | {{item.salaryBeforeTax}}k</div>
           </div>
           <div class="jotension-content">
-            <div>工作内容：{{item.description}}</div>
+            <div style="white-space: pre-line;">工作内容：{{item.description}}</div>
           </div>
         </div>
       </div>
@@ -247,10 +247,10 @@
             <div>{{item.beginTime|formatDateOne}}-{{item.endTime|formatDateOne}}</div>
           </div>
           <div class="jotension-content">
-            <div>个人职责：{{item.duty}}</div>
+            <div style="white-space: pre-line;">个人职责：{{item.duty}}</div>
           </div>
           <div class="jotension-content">
-            <div>项目介绍：{{item.description}}</div>
+            <div style="white-space: pre-line;">项目介绍：{{item.description}}</div>
           </div>
         </div>
       </div>
@@ -291,7 +291,7 @@
       <div class="jotension">
         <div class="title">自我评价</div>
         <div class="train-content" v-if="this.resumeDeta.evaluation !== underfined">
-          <div style="width:700px;">{{resumeDeta.evaluation.content}}</div>
+          <div style="width:700px;white-space: pre-line;">{{resumeDeta.evaluation.content}}</div>
         </div>
       </div>
       <div class="pagination" v-if="this.processedState === 'UNFIT'">
