@@ -1,7 +1,7 @@
 <template>
   <div class="unsteady">
     <div class="title">
-      <div class="title-nav">{{this.activityName}}</div>
+      <div class="title-nav">{{ this.activityName }}</div>
     </div>
     <div class="content">
       <el-dialog
@@ -13,7 +13,10 @@
       >
         <div>
           <div class="loading">
-            <i style="font-size:60px;color:#02b9b8;" class="el-icon-loading"></i>
+            <i
+              style="font-size: 60px; color: #02b9b8"
+              class="el-icon-loading"
+            ></i>
           </div>
           <div class="loading-text">下载中...</div>
         </div>
@@ -21,7 +24,7 @@
       <el-form :inline="true" :model="formInline" class="demo-form-inline">
         <el-form-item label="报名状态">
           <el-select
-            style="width:150px"
+            style="width: 150px"
             v-model="formInline.region"
             placeholder="请选择"
             @change="region()"
@@ -33,7 +36,7 @@
         </el-form-item>
         <el-form-item label="审核状态">
           <el-select
-            style="width:150px"
+            style="width: 150px"
             v-model="formInline.regions"
             placeholder="请选择"
             @change="regions()"
@@ -53,23 +56,23 @@
           <el-input placeholder="搜索活动名称" suffix-icon="el-icon-search" v-model="input1"></el-input>
         </el-form-item>
       </el-form>-->
-      <div class="excel" @click="uploadFile()">导处Excel</div>
+      <div class="excel" @click="uploadFile()">导出Excel</div>
       <div>
         <el-table
           :data="tableData"
-          style="width: 923px;margin:10px 0 0 20px"
+          style="width: 923px; margin: 10px 0 0 20px"
           @selection-change="handleSelectionChange"
         >
           <el-table-column type="selection" width="55"></el-table-column>
           <el-table-column
-            v-for="(item,index) in this.formAttributes"
+            v-for="(item, index) in this.formAttributes"
             :key="index"
             :label="item.chineseName"
             v-if="item.englishName === 'surname'"
             prop="registrations.surname"
           ></el-table-column>
           <el-table-column
-            v-for="(item,index) in this.formAttributes"
+            v-for="(item, index) in this.formAttributes"
             :key="index"
             show-overflow-tooltip
             :label="item.chineseName"
@@ -77,7 +80,7 @@
             prop="registrations.email"
           ></el-table-column>
           <el-table-column
-            v-for="(item,index) in this.formAttributes"
+            v-for="(item, index) in this.formAttributes"
             :key="index"
             show-overflow-tooltip
             :label="item.chineseName"
@@ -85,63 +88,78 @@
             prop="registrations.phone"
           ></el-table-column>
           <el-table-column
-            v-for="(item,index) in this.formAttributes"
+            v-for="(item, index) in this.formAttributes"
             :key="index"
             :label="item.chineseName"
             v-if="item.englishName === 'sex'"
             prop="registrations.sex"
           ></el-table-column>
           <el-table-column
-            v-for="(item,index) in this.formAttributes"
+            v-for="(item, index) in this.formAttributes"
             :key="index"
             :label="item.chineseName"
             v-if="item.englishName === 'age'"
             prop="registrations.age"
           ></el-table-column>
           <el-table-column
-            v-for="(item,index) in this.formAttributes"
+            v-for="(item, index) in this.formAttributes"
             :key="index"
             :label="item.chineseName"
             v-if="item.englishName === 'position'"
             prop="registrations.position"
           ></el-table-column>
           <el-table-column
-            v-for="(item,index) in this.formAttributes"
+            v-for="(item, index) in this.formAttributes"
             :key="index"
             :label="item.chineseName"
             v-if="item.englishName === 'record'"
             prop="registrations.record"
           ></el-table-column>
           <el-table-column
-            v-for="(item,index) in this.formAttributes"
+            v-for="(item, index) in this.formAttributes"
             :key="index"
             :label="item.chineseName"
             v-if="item.englishName === 'school'"
             prop="registrations.school"
           ></el-table-column>
           <el-table-column
-            v-for="(item,index) in this.formAttributes"
+            v-for="(item, index) in this.formAttributes"
             :key="index"
             :label="item.chineseName"
             v-if="item.englishName === 'major'"
             prop="registrations.major"
           ></el-table-column>
-          <el-table-column prop="registrationReview" v-if="!verify" label="审核状态">
-            <template slot-scope="scope">{{scope.row.registrationReview|levels}}</template>
+          <el-table-column
+            prop="registrationReview"
+            v-if="!verify"
+            label="审核状态"
+          >
+            <template slot-scope="scope">{{
+              scope.row.registrationReview | levels
+            }}</template>
           </el-table-column>
           <el-table-column label="报名状态">
-            <template slot-scope="scope">{{scope.row.registrationStatus|level}}</template>
+            <template slot-scope="scope">{{
+              scope.row.registrationStatus | level
+            }}</template>
           </el-table-column>
         </el-table>
       </div>
-      <div style="margin:30px 0 20px 0" v-if="this.formInline.regions === 'PROCESSING'">
+      <div
+        style="margin: 30px 0 20px 0"
+        v-if="this.formInline.regions === 'PROCESSING'"
+      >
         <button
           class="enroll-button"
-          style="margin:0 0 0 60px"
+          style="margin: 0 0 0 60px"
           @click="examinenotPass"
           type="danger"
-        >审核不通过</button>
-        <button class="enroll-buttons" @click="examinePass" type="primary">审核通过</button>
+        >
+          审核不通过
+        </button>
+        <button class="enroll-buttons" @click="examinePass" type="primary">
+          审核通过
+        </button>
       </div>
       <el-pagination
         @size-change="handleSizeChange"
@@ -165,7 +183,7 @@ export default {
       formInline: {
         user: "",
         region: "0",
-        regions: "PROCESSING"
+        regions: "PROCESSING",
       },
       verify: true,
       tableData: [],
@@ -177,8 +195,8 @@ export default {
         total: 0,
         pageSize: 10,
         current: 1,
-        pageSizeOpts: [10, 20, 30]
-      }
+        pageSizeOpts: [10, 20, 30],
+      },
     };
   },
   methods: {
@@ -193,41 +211,43 @@ export default {
     examinenotPass() {
       let params = {
         activityId: this.id,
-        registrationIds: this.arrActivity
+        registrationIds: this.arrActivity,
       };
       this.$http
         .put(`/business-core/activity/registration/noPass`, params)
-        .then(res => {
+        .then((res) => {
           if (res.data.code == 200) {
             this.$notify({
               title: "成功",
               message: res.data.message,
-              type: "success"
+              type: "success",
             });
+            this.enroll()
           } else {
           }
         })
-        .catch(error => {});
+        .catch((error) => {});
     },
     //审核通过
     examinePass() {
       let params = {
         activityId: this.id,
-        registrationIds: this.arrActivity
+        registrationIds: this.arrActivity,
       };
       this.$http
         .put(`/business-core/activity/registration/pass`, params)
-        .then(res => {
+        .then((res) => {
           if (res.data.code == 200) {
             this.$notify({
               title: "成功",
               message: res.data.message,
-              type: "success"
+              type: "success",
             });
+            this.enroll()
           } else {
           }
         })
-        .catch(error => {});
+        .catch((error) => {});
     },
     //报名列表
     enroll() {
@@ -240,11 +260,11 @@ export default {
         registrationReview:
           this.formInline.regions === "0" ? null : this.formInline.regions,
         sortBy: null,
-        sortOrder: null
+        sortOrder: null,
       };
       this.$http
         .post(`/business-core/activity/registration/list`, params)
-        .then(res => {
+        .then((res) => {
           if (res.data.code == 200) {
             this.tableData = res.data.data.activityRegistrationRowVO.list;
             this.formAttributes = res.data.data.formAttributes;
@@ -258,7 +278,7 @@ export default {
           } else {
           }
         })
-        .catch(error => {});
+        .catch((error) => {});
     },
     handleSelectionChange(val) {
       this.arrActivity = [];
@@ -269,53 +289,60 @@ export default {
     },
     //下载
     uploadFile() {
-      let activityList = {
-        activityId: this.id,
-        registrationIds: this.arrActivity
-      };
-      this.dialogVisible = true;
-      this.$localo
-        .post("/business-core/activity/registration/export", activityList, {
-          responseType: "blob"
-        })
-        .then(res => {
-          console.log(res.headers);
-          this.dialogVisible = false;
-          const disposition = res.headers["content-disposition"];
-          console.log(disposition);
-          let fileName = disposition.substring(
-            disposition.indexOf("filename=") + 9,
-            disposition.length
-          );
-          console.log(fileName.split(";"));
-
-          // iso8859-1的字符转换成中文
-          console.log(escape(fileName));
-          fileName = decodeURI(fileName.split(";")[0]);
-          console.log(fileName);
-          // 去掉双引号
-          fileName = fileName.replace(/\"/g, "");
-          const content = res.data;
-          let blob = new Blob([res.data], {
-            type: "application/vnd.ms-excel"
-          });
-          console.log(blob);
-          if (window.navigator.msSaveOrOpenBlob) {
-            // console.log(2)
-            navigator.msSaveBlob(blob, fileName);
-          } else {
-            // console.log(3)
-            var link = document.createElement("a");
-            link.href = window.URL.createObjectURL(blob);
-            link.download = fileName;
-            link.click();
-            //释放内存
-            window.URL.revokeObjectURL(link.href);
-          }
-        })
-        .catch(error => {
-          this.dialogVisible = false;
+      if (this.arrActivity.length === 0) {
+        this.$notify.info({
+          title: "消息",
+          message: "请选择需要导出的文件",
         });
+      } else {
+        let activityList = {
+          activityId: this.id,
+          registrationIds: this.arrActivity,
+        };
+        this.dialogVisible = true;
+        this.$localo
+          .post("/business-core/activity/registration/export", activityList, {
+            responseType: "blob",
+          })
+          .then((res) => {
+            console.log(res.headers);
+            this.dialogVisible = false;
+            const disposition = res.headers["content-disposition"];
+            console.log(disposition);
+            let fileName = disposition.substring(
+              disposition.indexOf("filename=") + 9,
+              disposition.length
+            );
+            console.log(fileName.split(";"));
+
+            // iso8859-1的字符转换成中文
+            console.log(escape(fileName));
+            fileName = decodeURI(fileName.split(";")[0]);
+            console.log(fileName);
+            // 去掉双引号
+            fileName = fileName.replace(/\"/g, "");
+            const content = res.data;
+            let blob = new Blob([res.data], {
+              type: "application/vnd.ms-excel",
+            });
+            console.log(blob);
+            if (window.navigator.msSaveOrOpenBlob) {
+              // console.log(2)
+              navigator.msSaveBlob(blob, fileName);
+            } else {
+              // console.log(3)
+              var link = document.createElement("a");
+              link.href = window.URL.createObjectURL(blob);
+              link.download = fileName;
+              link.click();
+              //释放内存
+              window.URL.revokeObjectURL(link.href);
+            }
+          })
+          .catch((error) => {
+            this.dialogVisible = false;
+          });
+      }
     },
     handleSizeChange(val) {
       this.page.pageSize = val;
@@ -323,7 +350,7 @@ export default {
     },
     handleCurrentChange(val) {
       this.page.current = val;
-    }
+    },
   },
   created() {
     this.id = this.$route.query.id;
@@ -359,8 +386,8 @@ export default {
           break;
       }
       return a;
-    }
-  }
+    },
+  },
 };
 </script>
 <style lang="stylus">
