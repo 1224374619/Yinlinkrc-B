@@ -51,7 +51,7 @@
                 v-model="textarea2"
               ></el-input>
               <div class="access-button">
-                <el-button @click="item.isReply = false">取消</el-button>
+                <el-button @click="iisReply(item)">取消</el-button>
                 <el-button @click="addappraise(item)" type="primary">发送</el-button>
               </div>
             </div>
@@ -1130,6 +1130,10 @@ export default {
         })
         .catch(error => {});
     },
+    iisReply(item) {
+      item.isReply = false
+      this.textarea2 = ''
+    },
     //未评价新增
     addappraise(item) {
       let params = {
@@ -1315,6 +1319,7 @@ export default {
     //回复
     appraise() {
       this.accessTextarea = !this.accessTextarea;
+      this.textarea3 = ''
     },
     //分页
     handleSizeChange(val) {
@@ -1403,7 +1408,7 @@ export default {
         font-family: PingFangSC-Medium;
         color: #373737;
         font-size: 17px;
-        width: 55px;
+        width: 75px;
         margin: 0 0 0 15px;
       }
 

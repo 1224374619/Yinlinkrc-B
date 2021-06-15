@@ -3,7 +3,7 @@
     <div class="title"></div>
     <div class="content">
       <div class="tab-operations">
-        <el-input placeholder="搜索活动名称" suffix-icon="el-icon-search" v-model="supervise"></el-input>
+        <el-input placeholder="搜索活动名称" v-model="supervise"><i @click="activityList()" style="line-height:40px" slot="suffix" class="el-icon-search"></i></el-input>
       </div>
       <el-tabs v-model="activeName" type="card" @tab-click="handleClick" class="card">
         <el-tab-pane name="first">

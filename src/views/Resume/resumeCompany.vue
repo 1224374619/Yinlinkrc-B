@@ -1,9 +1,14 @@
 <template>
-  <div style="margin:96px 0 0 0;">
+  <div style="margin: 96px 0 0 0">
     <div class="resume-navs">
       <div>企业人才库</div>
     </div>
-    <el-dialog title width="30%" :visible.sync="dialogetx" style="border-radius:5px;">
+    <el-dialog
+      title
+      width="30%"
+      :visible.sync="dialogetx"
+      style="border-radius: 5px"
+    >
       <div>
         <pdf ref="pdf" :src="url"></pdf>
       </div>
@@ -18,16 +23,24 @@
     >
       <div>
         <div class="loading">
-          <i style="font-size:60px;color:#02b9b8;" class="el-icon-loading"></i>
+          <i
+            style="font-size: 60px; color: #02b9b8"
+            class="el-icon-loading"
+          ></i>
         </div>
         <div class="loading-text">下载中...</div>
       </div>
     </el-dialog>
     <div class="resume-seconds">
-      <el-form :inline="true" :model="formInline" label-width="100px" class="demo-form-inline">
+      <el-form
+        :inline="true"
+        :model="formInline"
+        label-width="100px"
+        class="demo-form-inline"
+      >
         <el-form-item label="关键词">
           <el-input
-            style="width:200px"
+            style="width: 200px"
             placeholder="请输入关键字"
             suffix-icon="el-icon-search"
             v-model="formInline.keyword"
@@ -35,13 +48,21 @@
         </el-form-item>
         <br />
         <el-form-item label="性别">
-          <el-select style="width:200px" v-model="formInline.sex" placeholder="性别">
+          <el-select
+            style="width: 200px"
+            v-model="formInline.sex"
+            placeholder="性别"
+          >
             <el-option label="男" value="0"></el-option>
             <el-option label="女" value="1"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="学历">
-          <el-select style="width:200px" v-model="formInline.degree" placeholder="学历">
+          <el-select
+            style="width: 200px"
+            v-model="formInline.degree"
+            placeholder="学历"
+          >
             <el-option
               v-for="item in optionsDegree"
               :key="item.value"
@@ -51,18 +72,27 @@
           </el-select>
         </el-form-item>
         <el-form-item label="现居地">
-          <el-cascader style="width:200px" v-model="formInline.city" :props="props" :options="city"></el-cascader>
+          <el-cascader
+            style="width: 200px"
+            v-model="formInline.city"
+            :props="props"
+            :options="city"
+          ></el-cascader>
         </el-form-item>
         <el-form-item label="职位名称">
           <el-input
-            style="width:200px"
+            style="width: 200px"
             placeholder="请输入职位名称"
             suffix-icon="el-icon-search"
             v-model="formInline.positionName"
           ></el-input>
         </el-form-item>
         <el-form-item label="海外工作经历">
-          <el-select style="width:200px" v-model="formInline.overseaYear" placeholder="海外工作经历">
+          <el-select
+            style="width: 200px"
+            v-model="formInline.overseaYear"
+            placeholder="海外工作经历"
+          >
             <el-option label="无工作经验" value="0"></el-option>
             <el-option label="1年" value="1"></el-option>
             <el-option label="2年" value="2"></el-option>
@@ -75,7 +105,11 @@
           </el-select>
         </el-form-item>
         <el-form-item label="工作年限">
-          <el-select style="width:200px" v-model="formInline.workYear" placeholder="工作年限">
+          <el-select
+            style="width: 200px"
+            v-model="formInline.workYear"
+            placeholder="工作年限"
+          >
             <el-option
               v-for="item in optionsWorkYear"
               :key="item.value"
@@ -86,75 +120,110 @@
         </el-form-item>
         <el-form-item label="年龄">
           <el-date-picker
-            style="width:95px"
+            style="width: 95px"
             v-model="formInline.birthdayMin"
             type="year"
             placeholder="选择"
-          ></el-date-picker>-
+          ></el-date-picker
+          >-
           <el-date-picker
-            style="width:95px"
+            style="width: 95px"
             v-model="formInline.birthdayMax"
             type="year"
             placeholder="选择"
           ></el-date-picker>
         </el-form-item>
-        <el-form-item style="display: flex;justify-content: flex-end;">
+        <el-form-item style="display: flex; justify-content: flex-end">
           <el-button @click="back">重置</el-button>
-          <el-button @click="onSubmit" style="background:#FF7152;color:#ffffff">查询</el-button>
+          <el-button
+            @click="onSubmit"
+            style="background: #ff7152; color: #ffffff"
+            >查询</el-button
+          >
         </el-form-item>
       </el-form>
       <div class="tab-operations">
-        <span @click="uploadFile" style="color:#FF7152;font-size:12px">批量下载简历</span>
+        <span @click="uploadFile" style="color: #ff7152; font-size: 12px"
+          >批量下载简历</span
+        >
       </div>
-      <el-table :data="tableData" style="width: 100%;margin:50px 0 0 0" @selection-change="handleSelectionChange">
+      <el-table
+        :data="tableData"
+        style="width: 100%; margin: 50px 0 0 0"
+        @selection-change="handleSelectionChange"
+      >
         <el-table-column type="selection"></el-table-column>
         <el-table-column prop="fullName" label="姓名"></el-table-column>
         <el-table-column prop="sex" label="性别"></el-table-column>
         <el-table-column label="年龄">
           <template slot-scope="scope">
-            <span>{{scope.row.age}}岁</span>
+            <span>{{ scope.row.age }}岁</span>
           </template>
         </el-table-column>
         <el-table-column label="工作年限" show-overflow-tooltip>
           <template slot-scope="scope">
-            <span>{{scope.row.workAge}}年</span>
+            <span>{{ scope.row.workAge }}年</span>
           </template>
         </el-table-column>
         <el-table-column label="海外工作年限" show-overflow-tooltip width="90">
           <template slot-scope="scope">
-            <span>{{scope.row.overseasAge}}年</span>
+            <span>{{ scope.row.overseasAge }}年</span>
           </template>
         </el-table-column>
-        <el-table-column prop="district" label="现居地" show-overflow-tooltip></el-table-column>
-        <el-table-column prop="degree" label="学历" show-overflow-tooltip></el-table-column>
-        <el-table-column prop="positionName" label="投递职位" show-overflow-tooltip></el-table-column>
-        <el-table-column prop="targetPosition" label="简历状态" show-overflow-tooltip>
+        <el-table-column
+          prop="district"
+          label="现居地"
+          show-overflow-tooltip
+        ></el-table-column>
+        <el-table-column
+          prop="degree"
+          label="学历"
+          show-overflow-tooltip
+        ></el-table-column>
+        <el-table-column
+          prop="positionName"
+          label="投递职位"
+          show-overflow-tooltip
+        ></el-table-column>
+        <el-table-column
+          prop="targetPosition"
+          label="简历状态"
+          show-overflow-tooltip
+        >
           <template slot-scope="scope">
-            <span>{{scope.row.processedState|processedState}}</span>
+            <span>{{ scope.row.processedState | processedState }}</span>
           </template>
         </el-table-column>
         <el-table-column label="投递时间" width="95" show-overflow-tooltip>
           <template slot-scope="scope">
-            <span>{{scope.row.submittedTime|formatDateOne}}</span>
+            <span>{{ scope.row.submittedTime | formatDateOne }}</span>
           </template>
         </el-table-column>
         <el-table-column prop="name" label="操作" width="90">
           <template slot-scope="scope">
             <el-button
-              style="color:#FF7152"
+              style="color: #ff7152"
               v-if="scope.row.isResumeAttached"
               @click="fileUrl(scope.row)"
               type="text"
               size="small"
-            >查看附件</el-button>
+              >查看附件</el-button
+            >
             <el-button
-              style="color:#FF7152"
+              style="color: #ff7152"
               v-else
               @click="examing(scope.row)"
               type="text"
               size="small"
-            >查看在线</el-button>
-            <el-button @click="upload(scope.row)" style="color:#FF7152" type="text" size="small">下载</el-button>
+              >查看在线</el-button
+            >
+            <el-button
+              @click="upload(scope.row)"
+              style="color: #ff7152"
+              type="text"
+              size="small"
+              >下载</el-button
+            >
           </template>
         </el-table-column>
       </el-table>
@@ -180,7 +249,7 @@ import qs from "qs";
 import pdf from "vue-pdf";
 export default {
   name: "home",
-  components: {pdf },
+  components: { pdf },
   data() {
     return {
       url: "",
@@ -189,60 +258,60 @@ export default {
       props: {
         value: "code",
         label: "tag",
-        children: "children"
+        children: "children",
       },
       dialogVisible: false,
       optionsDegree: [
         {
           value: "0",
-          label: "初中及以下"
+          label: "初中及以下",
         },
         {
           value: "1",
-          label: "中专/中技"
+          label: "中专/中技",
         },
         {
           value: "2",
-          label: "高中"
+          label: "高中",
         },
         {
           value: "3",
-          label: "大专"
+          label: "大专",
         },
         {
           value: "4",
-          label: "本科"
+          label: "本科",
         },
         {
           value: "5",
-          label: "硕士"
+          label: "硕士",
         },
         {
           value: "6",
-          label: "博士"
-        }
+          label: "博士",
+        },
       ],
       optionsWorkYear: [
         {
           value: "0",
-          label: "无"
+          label: "无",
         },
         {
           value: "1",
-          label: "1-3年"
+          label: "1-3年",
         },
         {
           value: "2",
-          label: "3-5年"
+          label: "3-5年",
         },
         {
           value: "3",
-          label: "5-10年"
+          label: "5-10年",
         },
         {
           value: "4",
-          label: "10年以上"
-        }
+          label: "10年以上",
+        },
       ],
       birthdayMin: "",
       birthdayMax: "",
@@ -250,7 +319,7 @@ export default {
         total: 0,
         pageSize: 10,
         current: 1,
-        pageSizeOpts: [10, 20, 30]
+        pageSizeOpts: [10, 20, 30],
       },
       formInline: {
         keyword: "",
@@ -261,13 +330,13 @@ export default {
         overseaYear: "",
         workYear: "",
         birthdayMin: "",
-        birthdayMax: ""
+        birthdayMax: "",
       },
       currentPage4: 4,
       tableData: [],
       arrResume: [],
       multipleSelection: [],
-      arrPosition: []
+      arrPosition: [],
     };
   },
   methods: {
@@ -275,13 +344,13 @@ export default {
     fileUrl(res) {
       this.$http
         .get(`/business-core/resumes/${res.id}/file/url`)
-        .then(res => {
+        .then((res) => {
           if (res.data.code === "200") {
             this.previewResume(res);
           } else {
           }
         })
-        .catch(error => {});
+        .catch((error) => {});
     },
     //doc docx预览
     previewResume(res) {
@@ -315,7 +384,7 @@ export default {
       // this.arrResume.push(tab.id);
       this.uploadFiles(tab);
     },
-     uploadFiles(tab) {
+    uploadFiles(tab) {
       // let params = {
       //   resumeIds: this.arrResume,
       //   positionIds: this.arrPosition
@@ -327,9 +396,9 @@ export default {
       this.dialogVisible = true;
       this.$local
         .get(`/business-core/resumes/download/${tab.id}`, {
-          responseType: "blob"
+          responseType: "blob",
         })
-        .then(res => {
+        .then((res) => {
           this.dialogVisible = false;
           const disposition = res.headers["content-disposition"];
           let fileName = disposition.substring(
@@ -342,7 +411,7 @@ export default {
           fileName = fileName.replace(/\"/g, "");
           const content = res.data;
           let blob = new Blob([res.data], {
-            type: "application/vnd.ms-excel"
+            type: "application/vnd.ms-excel",
           });
           console.log(blob);
           if (window.navigator.msSaveOrOpenBlob) {
@@ -358,30 +427,31 @@ export default {
             window.URL.revokeObjectURL(link.href);
           }
         })
-        .catch(error => {
+        .catch((error) => {
           this.dialogVisible = false;
+          console.log(error)
           if (error.response.status === 404) {
-                this.$notify.info({
-                  title: "消息",
-                  message: "页面丢失，请重新加载"
-                });
-              } else if (error.response.status === 403) {
-                this.$notify.info({
-                  title: "消息",
-                  message: "登陆超时，请重新登录"
-                });
-              } else {
-                this.$notify.info({
-                  title: "消息",
-                  message: error.response.data.message
-                });
-              }
+            this.$notify.info({
+              title: "消息",
+              message: "页面丢失，请重新加载",
+            });
+          } else if (error.response.status === 403) {
+            this.$notify.info({
+              title: "消息",
+              message: "登陆超时，请重新登录",
+            });
+          }  else {
+            this.$notify.info({
+              title: "消息",
+              message: error.response.data.message,
+            });
+          }
         });
     },
     uploadFile() {
       let params = {
         resumeIds: this.arrResume,
-        positionIds: this.arrPosition
+        positionIds: this.arrPosition,
       };
       // let resumeList = qs.stringify(
       //   { resumeIds: this.arrResume },
@@ -389,10 +459,10 @@ export default {
       // );
       this.dialogVisible = true;
       this.$local
-        .post("/business-core/resumes/batchPackageDownloadLong",params, {
-          responseType: "blob"
+        .post("/business-core/resumes/batchPackageDownloadLong", params, {
+          responseType: "blob",
         })
-        .then(res => {
+        .then((res) => {
           this.dialogVisible = false;
           const disposition = res.headers["content-disposition"];
           let fileName = disposition.substring(
@@ -405,7 +475,7 @@ export default {
           fileName = fileName.replace(/\"/g, "");
           const content = res.data;
           let blob = new Blob([res.data], {
-            type: "application/vnd.ms-excel"
+            type: "application/vnd.ms-excel",
           });
           console.log(blob);
           if (window.navigator.msSaveOrOpenBlob) {
@@ -421,25 +491,112 @@ export default {
             window.URL.revokeObjectURL(link.href);
           }
         })
-        .catch(error => {
+        .catch((error) => {
+          console.log(error.response)
           this.dialogVisible = false;
           if (error.response.status === 404) {
-                this.$notify.info({
-                  title: "消息",
-                  message: "页面丢失，请重新加载"
-                });
-              } else if (error.response.status === 403) {
-                this.$notify.info({
-                  title: "消息",
-                  message: "登陆超时，请重新登录"
-                });
-              } else {
-                this.$notify.info({
-                  title: "消息",
-                  message: error.response.data.message
-                });
-              }
+            this.$notify.info({
+              title: "消息",
+              message: "页面丢失，请重新加载",
+            });
+          } else if (error.response.status === 403) {
+            this.$notify.info({
+              title: "消息",
+              message: "登陆超时，请重新登录",
+            });
+          }else if (error.response.status === 400) {
+            this.$notify.info({
+              title: "消息",
+              message: "请选择要下载的文件",
+            });
+          } else {
+            this.$notify.info({
+              title: "消息",
+              message: error.response.data.message,
+            });
+          }
         });
+    },
+    //列表
+    platforms() {
+      if (this.formInline.birthdayMin) {
+        this.birthdayMin = this.formInline.birthdayMin.getTime();
+        this.birthdayMax = this.formInline.birthdayMax.getTime();
+      } else {
+        this.birthdayMin = null;
+        this.birthdayMax = null;
+      }
+      let workAgeMin;
+      let workAgeMax;
+      switch (this.formInline.workYear) {
+        case "0":
+          workAgeMin = 0;
+          workAgeMax = 0;
+          break;
+        case "1":
+          workAgeMin = 1;
+          workAgeMax = 3;
+          break;
+        case "2":
+          workAgeMin = 3;
+          workAgeMax = 5;
+          break;
+        case "3":
+          workAgeMin = 5;
+          workAgeMax = 10;
+          break;
+        case "4":
+          workAgeMin = 10;
+          workAgeMax = null;
+          break;
+        default:
+          workAgeMin = null;
+          workAgeMax = null;
+          break;
+      }
+      let city = timeUtil.CodeToTag(
+        [
+          this.formInline.city[0],
+          this.formInline.city[1],
+          this.formInline.city[2],
+        ],
+        this.city
+      );
+      let degree = timeUtil.qualifications(this.formInline.degree);
+      let params = {
+        birthdayMax: this.birthdayMax,
+        birthdayMin: this.birthdayMin,
+        city: city[1] ? city[1] : null,
+        companyName: null,
+        degree: degree ? degree : null,
+        keywords: this.formInline.keyword ? this.formInline.keyword : null,
+        overseasAge: Number(this.formInline.overseaYear)
+          ? Number(this.formInline.overseaYear)
+          : null,
+        pageNum: 1,
+        pageSize: 10,
+        positionName: this.formInline.positionName
+          ? this.formInline.positionName
+          : null,
+        positionCatalog: null,
+        province: city[0] ? city[0] : null,
+        sexCode: this.formInline.sex ? this.formInline.sex : null,
+        sortBy: null,
+        sortOrder: null,
+        workAgeMax: workAgeMax ? workAgeMax : null,
+        workAgeMin: workAgeMin ? workAgeMin : null,
+      };
+      this.$http
+        .post("/business-core/CorporateTalentPool/databases/search", params)
+        .then((res) => {
+          let response = res.data.data.list;
+          if (res.data.code == "200") {
+            this.tableData = response;
+            this.page.total = res.data.data.total;
+          } else {
+          }
+        })
+        .catch((error) => {});
     },
     //列表
     platform() {
@@ -482,7 +639,7 @@ export default {
         [
           this.formInline.city[0],
           this.formInline.city[1],
-          this.formInline.city[2]
+          this.formInline.city[2],
         ],
         this.city
       );
@@ -508,11 +665,11 @@ export default {
         sortBy: null,
         sortOrder: null,
         workAgeMax: workAgeMax ? workAgeMax : null,
-        workAgeMin: workAgeMin ? workAgeMin : null
+        workAgeMin: workAgeMin ? workAgeMin : null,
       };
       this.$http
         .post("/business-core/CorporateTalentPool/databases/search", params)
-        .then(res => {
+        .then((res) => {
           let response = res.data.data.list;
           if (res.data.code == "200") {
             this.tableData = response;
@@ -520,9 +677,7 @@ export default {
           } else {
           }
         })
-        .catch(error => {
-          
-        });
+        .catch((error) => {});
     },
     //查看
     examing(tab) {
@@ -531,19 +686,19 @@ export default {
         .put(
           `/business-core/position/${tab.positionId}/resumes/${tab.id}/processing`
         )
-        .then(res => {
+        .then((res) => {
           let response = res.data.data.list;
           if (res.data.code == "200") {
           } else {
           }
         })
-        .catch(error => {});
+        .catch((error) => {});
       this.$router.push({
         path: "/resume/talent/Detail",
         query: {
           resumeIdes: tab.id,
           state: 2,
-        }
+        },
       });
     },
     //重置
@@ -557,11 +712,11 @@ export default {
         overseaYear: "",
         workYear: "",
         birthdayMin: "",
-        birthdayMax: ""
+        birthdayMax: "",
       };
     },
     onSubmit() {
-      this.platform();
+      this.platforms();
     },
     handleSizeChange(val) {
       this.page.pageSize = val;
@@ -571,7 +726,7 @@ export default {
     handleCurrentChange(val) {
       this.page.current = val;
       this.platform();
-    }
+    },
   },
   created() {
     let token = Cookies.get("Btoken");
@@ -581,7 +736,7 @@ export default {
     } else {
       this.$notify.info({
         title: "消息",
-        message: "登陆超时，请重新登录"
+        message: "登陆超时，请重新登录",
       });
       this.$router.push({ path: "/login" });
     }
@@ -601,7 +756,7 @@ export default {
           break;
         case "INTERVIEW":
           a = "面试";
-          break;  
+          break;
         case "EMPLOYED":
           a = "已入职";
           break;
@@ -610,8 +765,8 @@ export default {
           break;
       }
       return a;
-    }
-  }
+    },
+  },
 };
 </script>
 

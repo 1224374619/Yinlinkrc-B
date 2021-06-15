@@ -47,7 +47,7 @@
       <div>
         <span>邮箱：Nicole.yin@yinlinkrc.com</span>
       </div>
-      <div style="display: flex;
+      <!-- <div style="display: flex;
   flex-direction: row;">
         <span>在此留言：</span>
         <el-input
@@ -64,7 +64,7 @@
           style="width:200px;height:40px;margin:20px 0 0 300px"
           :disabled="ruleForm.textarea === ''?true:false"
         >提交</el-button>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>

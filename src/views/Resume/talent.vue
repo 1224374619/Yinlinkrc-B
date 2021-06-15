@@ -1,12 +1,19 @@
 <template>
-  <div style="margin:96px 0 0 0;">
+  <div style="margin: 96px 0 0 0">
     <div class="resume-navs">
       <div>
         平台人才库
-        <span style="font-size:12px;margin:0 0 0 20px">当前仅支持在线简历</span>
+        <span style="font-size: 12px; margin: 0 0 0 20px"
+          >当前仅支持在线简历</span
+        >
       </div>
     </div>
-    <el-dialog title width="30%" :visible.sync="dialogetx" style="border-radius:5px;">
+    <el-dialog
+      title
+      width="30%"
+      :visible.sync="dialogetx"
+      style="border-radius: 5px"
+    >
       <div>
         <pdf ref="pdf" :src="url"></pdf>
       </div>
@@ -21,19 +28,32 @@
     >
       <div>
         <div class="loading">
-          <i style="font-size:60px;color:#02b9b8;" class="el-icon-loading"></i>
+          <i
+            style="font-size: 60px; color: #02b9b8"
+            class="el-icon-loading"
+          ></i>
         </div>
         <div class="loading-text">下载中...</div>
       </div>
     </el-dialog>
     <div class="resume-seconds">
-      <el-form :inline="true" :model="formInline" label-width="100px" class="demo-form-inline">
+      <el-form
+        :inline="true"
+        :model="formInline"
+        label-width="100px"
+        class="demo-form-inline"
+      >
         <el-form-item label="意向城市">
-          <el-cascader style="width:200px" v-model="formInline.city" :props="props" :options="city"></el-cascader>
+          <el-cascader
+            style="width: 200px"
+            v-model="formInline.city"
+            :props="props"
+            :options="city"
+          ></el-cascader>
         </el-form-item>
         <el-form-item label="企业行业">
           <el-cascader
-            style="width:200px"
+            style="width: 200px"
             v-model="formInline.industry"
             :props="props"
             :options="industry"
@@ -41,14 +61,18 @@
         </el-form-item>
         <el-form-item label="职位类型">
           <el-cascader
-            style="width:200px"
+            style="width: 200px"
             v-model="formInline.positionCatalog"
             :props="props"
             :options="positionCatalog"
           ></el-cascader>
         </el-form-item>
         <el-form-item label="最高学历">
-          <el-select style="width:200px" v-model="formInline.degree" placeholder="最高学历">
+          <el-select
+            style="width: 200px"
+            v-model="formInline.degree"
+            placeholder="最高学历"
+          >
             <el-option
               v-for="item in optionsDegree"
               :key="item.value"
@@ -58,7 +82,11 @@
           </el-select>
         </el-form-item>
         <el-form-item label="工作年限">
-          <el-select style="width:200px" v-model="formInline.workYear" placeholder="工作年限">
+          <el-select
+            style="width: 200px"
+            v-model="formInline.workYear"
+            placeholder="工作年限"
+          >
             <el-option
               v-for="item in optionsWorkYear"
               :key="item.value"
@@ -69,27 +97,37 @@
         </el-form-item>
         <el-form-item label="年龄">
           <el-date-picker
-            style="width:95px"
+            style="width: 95px"
             v-model="formInline.birthdayMin"
             type="year"
             placeholder="选择"
-          ></el-date-picker>-
+          ></el-date-picker
+          >-
           <el-date-picker
-            style="width:95px"
+            style="width: 95px"
             v-model="formInline.birthdayMax"
             type="year"
             placeholder="选择"
           ></el-date-picker>
         </el-form-item>
-        <el-form-item style="display: flex;justify-content: flex-end;">
+        <el-form-item style="display: flex; justify-content: flex-end">
           <el-button @click="back">重置</el-button>
-          <el-button @click="onSubmit" style="background:#FF7152;color:#ffffff">查询</el-button>
+          <el-button
+            @click="onSubmit"
+            style="background: #ff7152; color: #ffffff"
+            >查询</el-button
+          >
         </el-form-item>
       </el-form>
-      <el-button @click="uploadFile" type="text" style="float:right;margin:0 20px 0 0">批量下载简历</el-button>
+      <el-button
+        @click="uploadFile"
+        type="text"
+        style="float: right; margin: 0 20px 0 0"
+        >批量下载简历</el-button
+      >
       <el-table
         :data="tableData"
-        style="width: 98%;margin:0 auto"
+        style="width: 98%; margin: 0 auto"
         @selection-change="handleSelectionChange"
       >
         <el-table-column type="selection"></el-table-column>
@@ -97,23 +135,39 @@
         <el-table-column prop="sex" label="性别"></el-table-column>
         <el-table-column label="年龄">
           <template slot-scope="scope">
-            <span>{{scope.row.age}}岁</span>
+            <span>{{ scope.row.age }}岁</span>
           </template>
         </el-table-column>
         <el-table-column label="工作年限" show-overflow-tooltip>
           <template slot-scope="scope">
-            <span>{{scope.row.workAge}}年</span>
+            <span>{{ scope.row.workAge }}年</span>
           </template>
         </el-table-column>
         <el-table-column label="海外工作年限" show-overflow-tooltip width="90">
           <template slot-scope="scope">
-            <span>{{scope.row.overseasAge}}年</span>
+            <span>{{ scope.row.overseasAge }}年</span>
           </template>
         </el-table-column>
-        <el-table-column prop="district" label="现居地" show-overflow-tooltip></el-table-column>
-        <el-table-column prop="degree" label="学历" show-overflow-tooltip></el-table-column>
-        <el-table-column prop="school" label="毕业院校" show-overflow-tooltip></el-table-column>
-        <el-table-column prop="targetPosition" label="求职意向" show-overflow-tooltip></el-table-column>
+        <el-table-column
+          prop="district"
+          label="现居地"
+          show-overflow-tooltip
+        ></el-table-column>
+        <el-table-column
+          prop="degree"
+          label="学历"
+          show-overflow-tooltip
+        ></el-table-column>
+        <el-table-column
+          prop="school"
+          label="毕业院校"
+          show-overflow-tooltip
+        ></el-table-column>
+        <el-table-column
+          prop="targetPosition"
+          label="求职意向"
+          show-overflow-tooltip
+        ></el-table-column>
         <el-table-column label="投递本公司" width="95">
           <template slot-scope="scope">
             <span v-if="scope.row.isSubOurCompany">是</span>
@@ -123,20 +177,28 @@
         <el-table-column prop="name" label="操作" width="90">
           <template slot-scope="scope">
             <el-button
-              style="color:#FF7152"
+              style="color: #ff7152"
               v-if="scope.row.isResumeAttached"
               @click="fileUrl(scope.row)"
               type="text"
               size="small"
-            >查看附件</el-button>
+              >查看附件</el-button
+            >
             <el-button
-              style="color:#FF7152"
+              style="color: #ff7152"
               v-else
               @click="examing(scope.row)"
               type="text"
               size="small"
-            >查看在线</el-button>
-            <el-button @click="upload(scope.row)" style="color:#FF7152" type="text" size="small">下载</el-button>
+              >查看在线</el-button
+            >
+            <el-button
+              @click="upload(scope.row)"
+              style="color: #ff7152"
+              type="text"
+              size="small"
+              >下载</el-button
+            >
           </template>
         </el-table-column>
       </el-table>
@@ -164,7 +226,7 @@ import qs from "qs";
 import pdf from "vue-pdf";
 export default {
   name: "home",
-  components: {pdf },
+  components: { pdf },
   data() {
     return {
       positionCatalog: [],
@@ -175,67 +237,67 @@ export default {
       props: {
         value: "code",
         label: "tag",
-        children: "children"
+        children: "children",
       },
       dialogVisible: false,
-      
+
       optionsDegree: [
         {
           value: "0",
-          label: "初中及以下"
+          label: "初中及以下",
         },
         {
           value: "1",
-          label: "中专/中技"
+          label: "中专/中技",
         },
         {
           value: "2",
-          label: "高中"
+          label: "高中",
         },
         {
           value: "3",
-          label: "大专"
+          label: "大专",
         },
         {
           value: "4",
-          label: "本科"
+          label: "本科",
         },
         {
           value: "5",
-          label: "硕士"
+          label: "硕士",
         },
         {
           value: "6",
-          label: "博士"
-        }
+          label: "博士",
+        },
       ],
       optionsWorkYear: [
         {
           value: "0",
-          label: "无"
+          label: "无",
         },
         {
           value: "1",
-          label: "1-3年"
+          label: "1-3年",
         },
         {
           value: "2",
-          label: "3-5年"
+          label: "3-5年",
         },
         {
           value: "3",
-          label: "5-10年"
+          label: "5-10年",
         },
         {
           value: "4",
-          label: "10年以上"
-        }
+          label: "10年以上",
+        },
       ],
       page: {
         total: 0,
         pageSize: 10,
         current: 1,
-        pageSizeOpts: [10, 20, 30]
+        pageSizeOpts: [10, 20, 30],
       },
       formInline: {
         city: "",
@@ -244,7 +306,7 @@ export default {
         degree: "",
         workYear: "",
         birthdayMin: "",
-        birthdayMax: ""
+        birthdayMax: "",
       },
       birthdayMin: "",
       birthdayMax: "",
@@ -252,7 +314,7 @@ export default {
       currentPage4: 4,
       tableData: [],
       arrResume: [],
-      multipleSelection: []
+      multipleSelection: [],
     };
   },
   methods: {
@@ -260,13 +322,13 @@ export default {
     fileUrl(res) {
       this.$http
         .get(`/business-core/resumes/${res.id}/file/url`)
-        .then(res => {
+        .then((res) => {
           if (res.data.code === "200") {
             this.previewResume(res);
           } else {
           }
         })
-        .catch(error => {});
+        .catch((error) => {});
     },
     //doc docx预览
     previewResume(res) {
@@ -305,10 +367,10 @@ export default {
           `/business-core/resumes/download/${tab.id}`,
 
           {
-            responseType: "blob"
+            responseType: "blob",
           }
         )
-        .then(res => {
+        .then((res) => {
           this.dialogVisible = false;
           const disposition = res.headers["content-disposition"];
           let fileName = disposition.substring(
@@ -321,7 +383,7 @@ export default {
           fileName = fileName.replace(/\"/g, "");
           const content = res.data;
           let blob = new Blob([res.data], {
-            type: "application/vnd.ms-excel"
+            type: "application/vnd.ms-excel",
           });
           console.log(blob);
           if (window.navigator.msSaveOrOpenBlob) {
@@ -337,24 +399,24 @@ export default {
             window.URL.revokeObjectURL(link.href);
           }
         })
-        .catch(error => {
+        .catch((error) => {
           this.dialogVisible = false;
           console.log(error.response);
           if (error.response.status === 404) {
             this.$notify.info({
               title: "消息",
-              message: "页面丢失，请重新加载"
+              message: "页面丢失，请重新加载",
             });
           } else if (error.response.status === 403) {
             this.$notify.info({
               title: "消息",
-              message: "登陆超时，请重新登录"
+              message: "登陆超时，请重新登录",
             });
           } else {
             console.log(error.response.data);
             this.$notify.info({
               title: "消息",
-              message: "简历附件不存在"
+              message: "简历附件不存在",
             });
           }
         });
@@ -362,7 +424,7 @@ export default {
     uploadFile() {
       let resumeList = {
         resumeIds: this.arrResume,
-        positionIds: null
+        positionIds: null,
       };
       // let resumeList = qs.stringify(
       //   { resumeIds: 119 },
@@ -374,10 +436,10 @@ export default {
           `/business-core/resumes/batchPackageDownloadLong/byResumeId`,
           resumeList,
           {
-            responseType: "blob"
+            responseType: "blob",
           }
         )
-        .then(res => {
+        .then((res) => {
           this.dialogVisible = false;
           const disposition = res.headers["content-disposition"];
           let fileName = disposition.substring(
@@ -390,7 +452,7 @@ export default {
           fileName = fileName.replace(/\"/g, "");
           const content = res.data;
           let blob = new Blob([res.data], {
-            type: "application/vnd.ms-excel"
+            type: "application/vnd.ms-excel",
           });
           console.log(blob);
           if (window.navigator.msSaveOrOpenBlob) {
@@ -406,33 +468,128 @@ export default {
             window.URL.revokeObjectURL(link.href);
           }
         })
-        .catch(error => {
+        .catch((error) => {
           this.dialogVisible = false;
           console.log(error.response);
           if (error.response.status === 404) {
             this.$notify.info({
               title: "消息",
-              message: "页面丢失，请重新加载"
+              message: "页面丢失，请重新加载",
             });
           } else if (error.response.status === 403) {
             this.$notify.info({
               title: "消息",
-              message: "登陆超时，请重新登录"
+              message: "登陆超时，请重新登录",
+            });
+          } else if (this.multipleSelection.length === 0) {
+            this.$notify.info({
+              title: "消息",
+              message: "请选择要下载的文件",
             });
           } else {
-            if (this.multipleSelection.length === 0) {
-              this.$notify.info({
-                title: "消息",
-                message: "请选择要下载的文件"
-              });
-            } else {
-              this.$notify.info({
-                title: "消息",
-                message: "下载失败"
-              });
-            }
+            this.$notify.info({
+              title: "消息",
+              message: "下载失败",
+            });
           }
         });
+    },
+     platforms() {
+      if (this.formInline.birthdayMin) {
+        this.birthdayMin = this.formInline.birthdayMin.getTime();
+        this.birthdayMax = this.formInline.birthdayMax.getTime();
+      } else {
+        this.birthdayMin = null;
+        this.birthdayMax = null;
+      }
+      let workAgeMin;
+      let workAgeMax;
+      switch (this.formInline.workYear) {
+        case "0":
+          workAgeMin = 0;
+          workAgeMax = 0;
+          break;
+        case "1":
+          workAgeMin = 1;
+          workAgeMax = 3;
+          break;
+        case "2":
+          workAgeMin = 3;
+          workAgeMax = 5;
+          break;
+        case "3":
+          workAgeMin = 5;
+          workAgeMax = 10;
+          break;
+        case "4":
+          workAgeMin = 10;
+          workAgeMax = null;
+          break;
+        default:
+          workAgeMin = null;
+          workAgeMax = null;
+          break;
+      }
+      let city = timeUtil.CodeToTag(
+        [
+          this.formInline.city[0],
+          this.formInline.city[1],
+          this.formInline.city[2],
+        ],
+        this.city
+      );
+      let positionCatalog = timeUtil.CodeToTag(
+        [
+          this.formInline.positionCatalog[0],
+          this.formInline.positionCatalog[1],
+          this.formInline.positionCatalog[2],
+        ],
+        this.positionCatalog
+      );
+      let industry = timeUtil.CodeToTag(
+        [this.formInline.industry[0], this.formInline.industry[1]],
+        this.industry
+      );
+      console.log(this.formInline.degree);
+      let degree = timeUtil.qualifications(this.formInline.degree);
+
+      let params = {
+        birthdayMax: this.birthdayMax,
+        birthdayMin: this.birthdayMin,
+        city: city[1] ? city[1] : null,
+        degree: degree ? degree : null,
+        industry: this.formInline.industry[0]
+          ? {
+              first: industry[0] ? industry[0] : null,
+              secondary: industry[1] ? industry[1] : null,
+            }
+          : null,
+        pageNum: 1,
+        pageSize: 10,
+        positionCatalog: this.formInline.positionCatalog[0]
+          ? {
+              first: positionCatalog[0] ? positionCatalog[0] : null,
+              secondary: positionCatalog[1] ? positionCatalog[1] : null,
+              third: positionCatalog[2] ? positionCatalog[2] : null,
+            }
+          : null,
+        province: city[0] ? city[0] : null,
+        sortBy: null,
+        sortOrder: null,
+        workAgeMax: workAgeMax ? workAgeMax : null,
+        workAgeMin: workAgeMin ? workAgeMin : null,
+      };
+      this.$http
+        .post("/business-core/platformTalentPool/databases/search", params)
+        .then((res) => {
+          let response = res.data.data.list;
+          if (res.data.code == "200") {
+            this.tableData = response;
+            this.page.total = res.data.data.total;
+          } else {
+          }
+        })
+        .catch((error) => {});
     },
     //列表
     platform() {
@@ -475,7 +632,7 @@ export default {
         [
           this.formInline.city[0],
           this.formInline.city[1],
-          this.formInline.city[2]
+          this.formInline.city[2],
         ],
         this.city
       );
@@ -483,7 +640,7 @@ export default {
         [
           this.formInline.positionCatalog[0],
           this.formInline.positionCatalog[1],
-          this.formInline.positionCatalog[2]
+          this.formInline.positionCatalog[2],
         ],
         this.positionCatalog
       );
@@ -502,7 +659,7 @@ export default {
         industry: this.formInline.industry[0]
           ? {
               first: industry[0] ? industry[0] : null,
-              secondary: industry[1] ? industry[1] : null
+              secondary: industry[1] ? industry[1] : null,
             }
           : null,
         pageNum: this.page.current,
@@ -511,18 +668,18 @@ export default {
           ? {
               first: positionCatalog[0] ? positionCatalog[0] : null,
               secondary: positionCatalog[1] ? positionCatalog[1] : null,
-              third: positionCatalog[2] ? positionCatalog[2] : null
+              third: positionCatalog[2] ? positionCatalog[2] : null,
             }
           : null,
         province: city[0] ? city[0] : null,
         sortBy: null,
         sortOrder: null,
         workAgeMax: workAgeMax ? workAgeMax : null,
-        workAgeMin: workAgeMin ? workAgeMin : null
+        workAgeMin: workAgeMin ? workAgeMin : null,
       };
       this.$http
         .post("/business-core/platformTalentPool/databases/search", params)
-        .then(res => {
+        .then((res) => {
           let response = res.data.data.list;
           if (res.data.code == "200") {
             this.tableData = response;
@@ -530,7 +687,7 @@ export default {
           } else {
           }
         })
-        .catch(error => {});
+        .catch((error) => {});
     },
     //查看
     examing(tab) {
@@ -539,8 +696,8 @@ export default {
         path: "/resume/talent/Detail",
         query: {
           resumeIds: tab.id,
-          state: 1
-        }
+          state: 1,
+        },
       });
     },
     //重置
@@ -552,11 +709,11 @@ export default {
         degree: "",
         workYear: "",
         birthdayMin: "",
-        birthdayMax: ""
+        birthdayMax: "",
       };
     },
     onSubmit() {
-      this.platform();
+      this.platforms();
     },
     handleSizeChange(val) {
       this.page.pageSize = val;
@@ -566,7 +723,7 @@ export default {
     handleCurrentChange(val) {
       this.page.current = val;
       this.platform();
-    }
+    },
   },
   created() {
     let token = Cookies.get("Btoken");
@@ -578,11 +735,11 @@ export default {
     } else {
       this.$notify.info({
         title: "消息",
-        message: "登陆超时，请重新登录"
+        message: "登陆超时，请重新登录",
       });
       this.$router.push({ path: "/login" });
     }
-  }
+  },
 };
 </script>
 
